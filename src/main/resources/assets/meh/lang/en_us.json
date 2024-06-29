@@ -1,0 +1,14 @@
+{
+    "key.meh.switch_chat_channel": "Switch Chat Channel (Hypixel)",
+    "meh.channel.switch": "Chat channel switched to: %s.",
+    "meh.channel.new.msg": "Creating new chat channel for %s.",
+    "meh.channel.all.name": "All",
+    "text.autoconfig.meh.option.known_channels": "Known Channels",
+    "text.autoconfig.meh.option.known_channels.@Tooltip": "A list of channels loaded into the client by default. Channels listed here are not removeable.",
+    "text.autoconfig.meh.option.KnownChannel": "Known Channel",
+    "text.autoconfig.meh.option.KnownChannel.id": "Channel Id",
+    "text.autoconfig.meh.option.KnownChannel.name": "Channel Name",
+    "text.autoconfig.meh.option.KnownChannel.color": "Channel Color",
+    "text.autoconfig.meh.option.KnownChannel.command_prefix": "Command Prefix",
+    "text.autoconfig.meh.option.KnownChannel.command_prefix.@Tooltip": "The command prefix to use in order to chat in this channel. '/' is optional."
+}
