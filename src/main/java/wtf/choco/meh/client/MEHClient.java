@@ -61,51 +61,51 @@ public final class MEHClient implements ClientModInitializer {
     private static ConfigHolder<MEHConfig> config;
 
     @Override
-	public void onInitializeClient() {
-	    instance = this;
+    public void onInitializeClient() {
+        instance = this;
 
-	    AutoConfig.register(MEHConfig.class, GsonConfigSerializer::new);
-	    config = AutoConfig.getConfigHolder(MEHConfig.class);
+        AutoConfig.register(MEHConfig.class, GsonConfigSerializer::new);
+        config = AutoConfig.getConfigHolder(MEHConfig.class);
 
-	    // Register configured known channels
-	    for (MEHConfig.KnownChannel channel : getConfig().getKnownChannels()) {
-	        ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), false);
-	        this.channelSelector.addChannel(chatChannel);
+        // Register configured known channels
+        for (MEHConfig.KnownChannel channel : getConfig().getKnownChannels()) {
+            ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), false);
+            this.channelSelector.addChannel(chatChannel);
         }
 
-	    ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> connectedToHypixel = false);
-	    ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-	        ServerData server = client.getCurrentServer();
-	        this.connectedToHypixel = (server != null) && PATTERN_HYPIXEL_IP.matcher(server.ip).matches();
-	    });
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> connectedToHypixel = false);
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            ServerData server = client.getCurrentServer();
+            this.connectedToHypixel = (server != null) && PATTERN_HYPIXEL_IP.matcher(server.ip).matches();
+        });
 
-	    ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
-	        if (!isConnectedToHypixel()) {
-	            return true;
-	        }
+        ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
+            if (!isConnectedToHypixel()) {
+                return true;
+            }
 
-	        ChatChannel selectedChannel = channelSelector.getSelectedChannel();
-	        if (!selectedChannel.hasCommandPrefix()) {
-	            return true;
-	        }
+            ChatChannel selectedChannel = channelSelector.getSelectedChannel();
+            if (!selectedChannel.hasCommandPrefix()) {
+                return true;
+            }
 
-	        Minecraft minecraft = Minecraft.getInstance();
-	        minecraft.player.connection.sendCommand(selectedChannel.getCommandPrefix() + " " + message);
-	        return false;
-	    });
+            Minecraft minecraft = Minecraft.getInstance();
+            minecraft.player.connection.sendCommand(selectedChannel.getCommandPrefix() + " " + message);
+            return false;
+        });
 
-	    ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
-	        if (overlay || !isConnectedToHypixel()) {
-	            return;
-	        }
+        ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            if (overlay || !isConnectedToHypixel()) {
+                return;
+            }
 
-	        String stringMessage = ChatFormatting.stripFormatting(message.getString());
-	        Matcher matcher = PATTERN_MESSAGE.matcher(stringMessage);
-	        if (!matcher.find()) {
-	            return;
-	        }
+            String stringMessage = ChatFormatting.stripFormatting(message.getString());
+            Matcher matcher = PATTERN_MESSAGE.matcher(stringMessage);
+            if (!matcher.find()) {
+                return;
+            }
 
-	        Minecraft minecraft = Minecraft.getInstance();
+            Minecraft minecraft = Minecraft.getInstance();
             String playerName = matcher.group("name");
             if (playerName.equals(minecraft.player.getName().getString())) {
                 return;
@@ -131,39 +131,39 @@ public final class MEHClient implements ClientModInitializer {
             if (!(minecraft.screen instanceof ChatScreen)) {
                 this.channelSelector.selectChannel(newChannelIndex);
             }
-	    });
+        });
 
-	    ClientTickEvents.END_CLIENT_TICK.register(client -> {
-	        if (!isConnectedToHypixel()) {
-	            return;
-	        }
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (!isConnectedToHypixel()) {
+                return;
+            }
 
-	        while (KEY_SWITCH_CHANNEL.consumeClick()) {
-	            ChatChannel channel = switchChannel(!Screen.hasShiftDown());
-	            Component message = Component.translatable("meh.channel.switch", channel.getDisplayName(true));
-	            client.player.sendSystemMessage(message);
-	        }
-	    });
-	}
+            while (KEY_SWITCH_CHANNEL.consumeClick()) {
+                ChatChannel channel = switchChannel(!Screen.hasShiftDown());
+                Component message = Component.translatable("meh.channel.switch", channel.getDisplayName(true));
+                client.player.sendSystemMessage(message);
+            }
+        });
+    }
 
-	public boolean isConnectedToHypixel() {
+    public boolean isConnectedToHypixel() {
         return connectedToHypixel || FabricLoader.getInstance().isDevelopmentEnvironment();
     }
 
-	public ChannelSelector getChannelSelector() {
+    public ChannelSelector getChannelSelector() {
         return channelSelector;
     }
 
-	public ChatChannel switchChannel(boolean next) {
+    public ChatChannel switchChannel(boolean next) {
         return next ? channelSelector.nextChannel() : channelSelector.previousChannel();
-	}
+    }
 
-	public static MEHClient getInstance() {
+    public static MEHClient getInstance() {
         return instance;
     }
 
-	public static MEHConfig getConfig() {
-	    return config.getConfig();
-	}
+    public static MEHConfig getConfig() {
+        return config.getConfig();
+    }
 
 }
