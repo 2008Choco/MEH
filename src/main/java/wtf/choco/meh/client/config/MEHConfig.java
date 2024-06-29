@@ -18,6 +18,7 @@ public final class MEHConfig implements ConfigData {
     @ConfigEntry.Gui.RequiresRestart
     private List<KnownChannel> known_channels = Util.make(new ArrayList<>(), channels -> {
         channels.add(new KnownChannel("party", "Party", 0x84C5DB, "pc"));
+        channels.add(new KnownChannel("guild", "Guild", 0xEB3A09, "gc"));
     });
 
     public List<KnownChannel> getKnownChannels() {
