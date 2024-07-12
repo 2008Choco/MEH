@@ -128,7 +128,7 @@ public final class MEHClient implements ClientModInitializer {
             minecraft.player.sendSystemMessage(Component.translatable("meh.channel.new.msg", channel.getDisplayName(true)));
 
             // If the chat window isn't open, we'll automatically switch to the newly created channel
-            if (!(minecraft.screen instanceof ChatScreen)) {
+            if (getConfig().isAutoSwitchOnNewMessage() && !(minecraft.screen instanceof ChatScreen)) {
                 this.channelSelector.selectChannel(newChannelIndex);
             }
         });

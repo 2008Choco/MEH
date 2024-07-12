@@ -3,6 +3,8 @@
     "meh.channel.switch": "Chat channel switched to: %s.",
     "meh.channel.new.msg": "Creating new chat channel for %s.",
     "meh.channel.all.name": "All",
+    "text.autoconfig.meh.option.auto_switch_on_new_message": "Auto Switch on New Message",
+    "text.autoconfig.meh.option.auto_switch_on_new_message.@Tooltip": "When receiving a new private message, automatically switch to the newly created channel (if your chat is closed)",
     "text.autoconfig.meh.option.known_channels": "Known Channels",
     "text.autoconfig.meh.option.known_channels.@Tooltip": "A list of channels loaded into the client by default. Channels listed here are not removeable.",
     "text.autoconfig.meh.option.KnownChannel": "Known Channel",

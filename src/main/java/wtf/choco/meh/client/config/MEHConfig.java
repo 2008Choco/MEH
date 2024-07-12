@@ -15,11 +15,18 @@ import wtf.choco.meh.client.MEHClient;
 public final class MEHConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
+    private boolean auto_switch_on_new_message = true;
+
+    @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.RequiresRestart
     private List<KnownChannel> known_channels = Util.make(new ArrayList<>(), channels -> {
         channels.add(new KnownChannel("party", "Party", 0x84C5DB, "pc"));
         channels.add(new KnownChannel("guild", "Guild", 0xEB3A09, "gc"));
     });
+
+    public boolean isAutoSwitchOnNewMessage() {
+        return auto_switch_on_new_message;
+    }
 
     public List<KnownChannel> getKnownChannels() {
         return known_channels;
