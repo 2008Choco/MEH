@@ -3,6 +3,7 @@
 	"package": "wtf.choco.meh.client.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"ChatScreenAccessor",
 	    "MixinChatScreen"
 	],
 	"injectors": {

@@ -1,4 +1,4 @@
-package wtf.choco.meh.client.channel;
+package wtf.choco.meh.client.chat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,12 +58,25 @@ public final class ChannelSelector {
         return getSelectedChannel();
     }
 
+    public ChatChannel getNextChannel() {
+        return channels.get((selectedChannelIndex + 1) % channels.size());
+    }
+
     public ChatChannel previousChannel() {
         if (--selectedChannelIndex < 0) {
             this.selectedChannelIndex = (channels.size() - 1);
         }
 
         return getSelectedChannel();
+    }
+
+    public ChatChannel getPreviousChannel() {
+        int index = selectedChannelIndex - 1;
+        if (index < 0) {
+            index += (channels.size() + 1);
+        }
+
+        return channels.get(index);
     }
 
     public ChatChannel selectChannel(int index) {

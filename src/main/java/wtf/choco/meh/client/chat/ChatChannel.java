@@ -1,4 +1,4 @@
-package wtf.choco.meh.client.channel;
+package wtf.choco.meh.client.chat;
 
 import java.util.Objects;
 
