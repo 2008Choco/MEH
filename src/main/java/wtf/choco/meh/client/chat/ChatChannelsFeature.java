@@ -32,7 +32,7 @@ public class ChatChannelsFeature extends Feature {
      * To [MVP++] Player:
      * From UnrankedPlayer:
      */
-    private static final Pattern PATTERN_MESSAGE = Pattern.compile("^(?:<direction>From|To)(?:\\s\\[.+\\])?\\s(?<name>\\w+):");
+    private static final Pattern PATTERN_MESSAGE = Pattern.compile("^(?<direction>From|To)(?:\\s\\[.+\\])?\\s(?<name>\\w+):");
 
     private final ChannelSelector channelSelector = new ChannelSelector();
     private final MEHClient mod;
