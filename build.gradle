@@ -20,6 +20,7 @@ loom {
 repositories {
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
+    maven { url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1" }
 }
 
 dependencies {
@@ -33,6 +34,8 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
     modApi "com.terraformersmc:modmenu:11.0.1"
+
+    modRuntimeOnly "me.djtheredstoner:DevAuth-fabric:1.2.1"
 }
 
 processResources {

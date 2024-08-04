@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
 import wtf.choco.meh.client.config.MEHConfig;
+import wtf.choco.meh.client.pksim.PKSim3Feature;
 
 public final class MEHClient implements ClientModInitializer {
 
@@ -31,6 +32,7 @@ public final class MEHClient implements ClientModInitializer {
     private static ConfigHolder<MEHConfig> config;
 
     private ChatChannelsFeature chatChannelsFeature;
+    private PKSim3Feature pkSimFeature;
 
     @Override
     public void onInitializeClient() {
@@ -48,6 +50,17 @@ public final class MEHClient implements ClientModInitializer {
         });
 
         this.chatChannelsFeature = new ChatChannelsFeature(this);
+        this.pkSimFeature = new PKSim3Feature();
+
+        /*
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("testscoreboardlines")
+                .executes(context -> {
+                    return 1;
+                })
+            ));
+        }
+        */
     }
 
     public boolean isConnectedToHypixel() {
@@ -56,6 +69,10 @@ public final class MEHClient implements ClientModInitializer {
 
     public ChatChannelsFeature getChatChannelsFeature() {
         return chatChannelsFeature;
+    }
+
+    public PKSim3Feature getPKSimFeature() {
+        return pkSimFeature;
     }
 
     public static MEHClient getInstance() {
