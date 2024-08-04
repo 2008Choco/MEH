@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,7 +22,6 @@ import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.MEHKeybinds;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.ChatChannelEvents;
-import wtf.choco.meh.client.event.ChatScreenEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
@@ -47,9 +48,16 @@ public class ChatChannelsFeature extends Feature {
 
         ClientSendMessageEvents.ALLOW_CHAT.register(this::onAllowOutgoingChat);
         ClientReceiveMessageEvents.GAME.register(this::onReceiveChatMessage);
-        ClientTickEvents.END_CLIENT_TICK.register(this::onRenderClientTick);
-        ChatScreenEvents.KEY_PRESS.register(this::onKeyInChatScreen);
-        ChatScreenEvents.RENDER.register(this::onRenderChatScreen);
+        ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
+
+        ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            if (!(screen instanceof ChatScreen)) {
+                return;
+            }
+
+            ScreenKeyboardEvents.allowKeyPress(screen).register(this::onKeyInChatScreen);
+            ScreenEvents.afterRender(screen).register(this::onRenderChatScreen);
+        });
     }
 
     private boolean onAllowOutgoingChat(String message) {
@@ -116,7 +124,7 @@ public class ChatChannelsFeature extends Feature {
     }
 
     @SuppressWarnings("unused")
-    private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int scancode) {
+    private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
         // Don't allow channel switching if not connected to Hypixel
         if (!mod.isConnectedToHypixel()) {
             return true;
@@ -129,7 +137,8 @@ public class ChatChannelsFeature extends Feature {
 
         if (Screen.hasControlDown()) {
             if (key == GLFW.GLFW_KEY_TAB) {
-                this.switchChannel(!Screen.hasShiftDown());
+                boolean next = (modifiers & GLFW.GLFW_MOD_SHIFT) == 0;
+                this.switchChannel(next);
                 return false;
             } else if (key == GLFW.GLFW_KEY_MINUS) {
                 ChannelSelector channelSelector = getChannelSelector();
@@ -147,6 +156,10 @@ public class ChatChannelsFeature extends Feature {
         }
 
         return true;
+    }
+
+    private boolean onKeyInChatScreen(Screen screen, int key, int keycode, int scancode) { // Exists only as a way to target with method reference
+        return onKeyInChatScreen((ChatScreen) screen, key, keycode, scancode);
     }
 
     @SuppressWarnings("unused")
@@ -171,7 +184,11 @@ public class ChatChannelsFeature extends Feature {
         graphics.drawString(minecraft.font, displayName, 4, height - 26, 0xFFFFFF);
     }
 
-    private void onRenderClientTick(Minecraft client) {
+    private void onRenderChatScreen(Screen screen, GuiGraphics graphics, int screenX, int screenY, float delta) { // Exists only as a way to target with method reference
+        this.onRenderChatScreen((ChatScreen) screen, graphics, screenX, screenY, delta);
+    }
+
+    private void onClientTick(Minecraft client) {
         if (!mod.isConnectedToHypixel()) {
             return;
         }
