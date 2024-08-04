@@ -26,7 +26,7 @@ import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
-public class ChatChannelsFeature extends Feature {
+public class ChatChannelsFeature implements Feature {
 
     private static final int DEFAULT_CHAT_BOX_MAX_LENGTH = 256;
 
@@ -59,7 +59,7 @@ public class ChatChannelsFeature extends Feature {
         });
 
         ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            if (!(screen instanceof ChatScreen)) {
+            if (!(screen instanceof ChatScreen) || !isEnabled()) {
                 return;
             }
 
@@ -68,7 +68,7 @@ public class ChatChannelsFeature extends Feature {
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            if (!(screen instanceof ChatScreen chatScreen)) {
+            if (!(screen instanceof ChatScreen chatScreen) || !isEnabled()) {
                 return;
             }
 
@@ -77,7 +77,7 @@ public class ChatChannelsFeature extends Feature {
     }
 
     private boolean onAllowOutgoingChat(String message) {
-        if (!mod.isConnectedToHypixel()) {
+        if (!mod.isConnectedToHypixel() || !isEnabled()) {
             return true;
         }
 
@@ -92,7 +92,7 @@ public class ChatChannelsFeature extends Feature {
     }
 
     private void onReceiveChatMessage(Component message, boolean actionBar) {
-        if (actionBar || !mod.isConnectedToHypixel()) {
+        if (actionBar || !mod.isConnectedToHypixel() || !isEnabled()) {
             return;
         }
 
@@ -141,13 +141,7 @@ public class ChatChannelsFeature extends Feature {
 
     @SuppressWarnings("unused")
     private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
-        // Don't allow channel switching if not connected to Hypixel
-        if (!mod.isConnectedToHypixel()) {
-            return true;
-        }
-
-        // Don't allow channel switching if writing a command
-        if (isWritingCommand(screen)) {
+        if (!mod.isConnectedToHypixel() || isWritingCommand(screen) || !isEnabled()) {
             return true;
         }
 
@@ -180,7 +174,7 @@ public class ChatChannelsFeature extends Feature {
 
     @SuppressWarnings("unused")
     private void onRenderChatScreen(ChatScreen screen, GuiGraphics graphics, int screenX, int screenY, float delta) {
-        if (!mod.isConnectedToHypixel() || isWritingCommand(screen)) {
+        if (!mod.isConnectedToHypixel() || isWritingCommand(screen) || !isEnabled()) {
             return;
         }
 
@@ -205,7 +199,7 @@ public class ChatChannelsFeature extends Feature {
     }
 
     private void onClientTick(Minecraft client) {
-        if (!mod.isConnectedToHypixel()) {
+        if (!mod.isConnectedToHypixel() || !isEnabled()) {
             return;
         }
 
@@ -267,6 +261,11 @@ public class ChatChannelsFeature extends Feature {
 
     public ChannelSelector getChannelSelector() {
         return channelSelector;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return MEHClient.getConfig().areChatChannelsEnabled();
     }
 
 }

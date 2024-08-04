@@ -14,6 +14,9 @@ import wtf.choco.meh.client.MEHClient;
 @Config(name = MEHClient.MOD_ID)
 public final class MEHConfig implements ConfigData {
 
+    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    private EnabledFeatures enabled_features = new EnabledFeatures();
+
     @ConfigEntry.Gui.Tooltip
     private boolean auto_switch_on_new_message = true;
 
@@ -23,6 +26,10 @@ public final class MEHConfig implements ConfigData {
         channels.add(new KnownChannel("party", "Party", 0x84C5DB, "pc"));
         channels.add(new KnownChannel("guild", "Guild", 0xEB3A09, "gc"));
     });
+
+    public boolean areChatChannelsEnabled() {
+        return enabled_features.chat_channels;
+    }
 
     public boolean isAutoSwitchOnNewMessage() {
         return auto_switch_on_new_message;
@@ -43,6 +50,13 @@ public final class MEHConfig implements ConfigData {
                 throw new ValidationException("Command prefix must not be empty!");
             }
         }
+    }
+
+    public static final class EnabledFeatures {
+
+        @ConfigEntry.Gui.Tooltip
+        private boolean chat_channels = true;
+
     }
 
     public static final class KnownChannel {
