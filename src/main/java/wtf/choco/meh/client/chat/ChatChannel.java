@@ -56,6 +56,10 @@ public final class ChatChannel {
         return (commandPrefix != null);
     }
 
+    public int getCommandPrefixLength() {
+        return hasCommandPrefix() ? commandPrefix.length() : 0;
+    }
+
     @Nullable
     public String getCommandPrefix() {
         return commandPrefix;

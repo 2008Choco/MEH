@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -26,6 +27,8 @@ import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
 public class ChatChannelsFeature extends Feature {
+
+    private static final int DEFAULT_CHAT_BOX_MAX_LENGTH = 256;
 
     /*
      * From [ADMIN] 2008Choco:
@@ -49,6 +52,11 @@ public class ChatChannelsFeature extends Feature {
         ClientSendMessageEvents.ALLOW_CHAT.register(this::onAllowOutgoingChat);
         ClientReceiveMessageEvents.GAME.register(this::onReceiveChatMessage);
         ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
+        ChatChannelEvents.SWITCH.register((from, to, reason) -> {
+            Minecraft client = Minecraft.getInstance();
+            this.ensureChatEditBoxMaxLength(client.screen, to);
+            return true;
+        });
 
         ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (!(screen instanceof ChatScreen)) {
@@ -57,6 +65,14 @@ public class ChatChannelsFeature extends Feature {
 
             ScreenKeyboardEvents.allowKeyPress(screen).register(this::onKeyInChatScreen);
             ScreenEvents.afterRender(screen).register(this::onRenderChatScreen);
+        });
+
+        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            if (!(screen instanceof ChatScreen chatScreen)) {
+                return;
+            }
+
+            this.ensureChatEditBoxMaxLength(chatScreen, channelSelector.getSelectedChannel());
         });
     }
 
@@ -224,6 +240,29 @@ public class ChatChannelsFeature extends Feature {
         }
 
         return next ? channelSelector.nextChannel() : channelSelector.previousChannel();
+    }
+
+    private void ensureChatEditBoxMaxLength(Screen screen, ChatChannel channel) {
+        if (!(screen instanceof ChatScreen chatScreen)) {
+            return;
+        }
+
+        int prefixLength = channel.getCommandPrefixLength();
+        if (prefixLength > 0) {
+            /*
+             * Prefixes, if they exist, don't contain a slash or the extra space that we send...
+             * but the length should account for this because that's what's sent to the server.
+             */
+            prefixLength += 2;
+        }
+
+        EditBox input = ((ChatScreenAccessor) chatScreen).getInput();
+        int newMaxLength = (DEFAULT_CHAT_BOX_MAX_LENGTH - prefixLength);
+        if (input.getValue().length() > newMaxLength) {
+            input.setValue(input.getValue().substring(0, newMaxLength));
+        }
+
+        input.setMaxLength(newMaxLength);
     }
 
     public ChannelSelector getChannelSelector() {
