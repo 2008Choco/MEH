@@ -19,6 +19,7 @@ import org.lwjgl.glfw.GLFW;
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.MEHKeybinds;
 import wtf.choco.meh.client.config.MEHConfig;
+import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.event.ChatScreenEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
@@ -30,7 +31,7 @@ public class ChatChannelsFeature extends Feature {
      * To [MVP++] Player:
      * From UnrankedPlayer:
      */
-    private static final Pattern PATTERN_MESSAGE = Pattern.compile("^(?:From|To)(?:\\s\\[.+\\])?\\s(?<name>\\w+):");
+    private static final Pattern PATTERN_MESSAGE = Pattern.compile("^(?:<direction>From|To)(?:\\s\\[.+\\])?\\s(?<name>\\w+):");
 
     private final ChannelSelector channelSelector = new ChannelSelector();
     private final MEHClient mod;
@@ -95,13 +96,22 @@ public class ChatChannelsFeature extends Feature {
 
         Component channelDisplayName = Component.literal(playerName);
         ChatChannel channel = new ChatChannel(playerName, channelDisplayName, randomColor, "msg " + playerName, true);
+
+        if (!ChatChannelEvents.CREATE.invoker().onCreateChatChannel(channel)) {
+            return;
+        }
+
         int newChannelIndex = channelSelector.addChannel(channel);
 
         minecraft.player.sendSystemMessage(Component.translatable("meh.channel.new.msg", channel.getDisplayName(true)));
 
         // If the chat window isn't open, we'll automatically switch to the newly created channel
         if (MEHClient.getConfig().isAutoSwitchOnNewMessage() && !(minecraft.screen instanceof ChatScreen)) {
-            this.channelSelector.selectChannel(newChannelIndex);
+            boolean incoming = matcher.group("direction").equals("From");
+            ChatChannelEvents.Switch.Reason reason = incoming ? ChatChannelEvents.Switch.Reason.AUTOMATIC_INCOMING : ChatChannelEvents.Switch.Reason.AUTOMATIC_OUTGOING;
+            if (ChatChannelEvents.SWITCH.invoker().onSwitchChatChannel(channelSelector.getSelectedChannel(), channel, reason)) {
+                this.channelSelector.selectChannel(newChannelIndex);
+            }
         }
     }
 
@@ -128,7 +138,10 @@ public class ChatChannelsFeature extends Feature {
                     return false;
                 }
 
-                channelSelector.removeChannel(selectedChannel);
+                if (ChatChannelEvents.DELETE.invoker().onDeleteChatChannel(selectedChannel)) {
+                    channelSelector.removeChannel(selectedChannel);
+                }
+
                 return false;
             }
         }
@@ -165,8 +178,10 @@ public class ChatChannelsFeature extends Feature {
 
         while (MEHKeybinds.KEY_SWITCH_CHANNEL.consumeClick()) {
             ChatChannel channel = switchChannel(!Screen.hasShiftDown());
-            Component message = Component.translatable("meh.channel.switch", channel.getDisplayName(true));
-            client.player.sendSystemMessage(message);
+            if (channel != null) {
+                Component message = Component.translatable("meh.channel.switch", channel.getDisplayName(true));
+                client.player.sendSystemMessage(message);
+            }
         }
     }
 
@@ -175,12 +190,27 @@ public class ChatChannelsFeature extends Feature {
         return !text.isEmpty() && text.charAt(0) == '/';
     }
 
-    public ChannelSelector getChannelSelector() {
-        return channelSelector;
+    private ChatChannel switchChannel(boolean next) {
+        ChatChannel from = channelSelector.getSelectedChannel();
+        ChatChannel to;
+        ChatChannelEvents.Switch.Reason reason;
+        if (next) {
+            to = getChannelSelector().getNextChannel();
+            reason = ChatChannelEvents.Switch.Reason.MANUAL_NEXT;
+        } else {
+            to = getChannelSelector().getPreviousChannel();
+            reason = ChatChannelEvents.Switch.Reason.MANUAL_PREVIOUS;
+        }
+
+        if (!ChatChannelEvents.SWITCH.invoker().onSwitchChatChannel(from, to, reason)) {
+            return null;
+        }
+
+        return next ? channelSelector.nextChannel() : channelSelector.previousChannel();
     }
 
-    public ChatChannel switchChannel(boolean next) {
-        return next ? channelSelector.nextChannel() : channelSelector.previousChannel();
+    public ChannelSelector getChannelSelector() {
+        return channelSelector;
     }
 
 }

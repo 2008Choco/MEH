@@ -5,6 +5,9 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ChatScreen;
 
+/**
+ * Contains client-sided events triggered by interacting with the chat screen window.
+ */
 public final class ChatScreenEvents {
 
     public static final Event<KeyPress> KEY_PRESS = EventFactory.createArrayBacked(KeyPress.class,

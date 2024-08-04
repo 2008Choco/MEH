@@ -73,7 +73,7 @@ public final class ChannelSelector {
     public ChatChannel getPreviousChannel() {
         int index = selectedChannelIndex - 1;
         if (index < 0) {
-            index += (channels.size() + 1);
+            index += (channels.size() - 1);
         }
 
         return channels.get(index);

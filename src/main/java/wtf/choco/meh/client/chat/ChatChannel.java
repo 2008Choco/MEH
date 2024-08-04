@@ -11,8 +11,8 @@ public final class ChatChannel {
 
     private final String id;
     private final Component displayName;
-    private final Component coloredDisplayName;
-    private final int color;
+    private Component coloredDisplayName;
+    private int color;
     private final String commandPrefix;
     private boolean removable = true;
 
@@ -41,6 +41,11 @@ public final class ChatChannel {
 
     public Component getDisplayName() {
         return getDisplayName(false);
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+        this.coloredDisplayName = displayName.copy().withColor(color);
     }
 
     public int getColor() {
