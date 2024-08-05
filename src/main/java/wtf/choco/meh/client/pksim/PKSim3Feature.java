@@ -16,7 +16,7 @@ import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.event.ClientScoreboardEvents;
 import wtf.choco.meh.client.feature.Feature;
 
-public class PKSim3Feature implements Feature {
+public final class PKSim3Feature extends Feature {
 
     private int level = -1;
     private int prestige = -1;
@@ -28,7 +28,11 @@ public class PKSim3Feature implements Feature {
 
     private boolean pkSim = false;
 
-    public PKSim3Feature() {
+    private final MEHClient mod;
+
+    public PKSim3Feature(MEHClient mod) {
+        this.mod = mod;
+
         /*
          * Hypixel is extremely smart with their scoreboards...
          *
@@ -50,7 +54,7 @@ public class PKSim3Feature implements Feature {
     }
 
     private void onTeamUpdate(Component textComponent) {
-        if (!isEnabled()) {
+        if (!mod.isConnectedToHypixel() || !isEnabled()) {
             return;
         }
 
@@ -113,7 +117,7 @@ public class PKSim3Feature implements Feature {
     // Just assume that you're always joining a new server when switching proxied servers and reset the data. It can be re-parsed
     @SuppressWarnings("unused")
     private void onJoinServer(ClientPacketListener handler, PacketSender sender, Minecraft client) {
-        if (!isEnabled()) {
+        if (!mod.isConnectedToHypixel() || !isEnabled()) {
             return;
         }
 

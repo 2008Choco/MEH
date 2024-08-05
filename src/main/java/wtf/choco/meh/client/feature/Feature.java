@@ -1,7 +1,7 @@
 package wtf.choco.meh.client.feature;
 
-public interface Feature {
+public abstract class Feature {
 
-    public boolean isEnabled();
+    public abstract boolean isEnabled();
 
 }

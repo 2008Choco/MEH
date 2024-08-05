@@ -50,7 +50,7 @@ public final class MEHClient implements ClientModInitializer {
         });
 
         this.chatChannelsFeature = new ChatChannelsFeature(this);
-        this.pkSimFeature = new PKSim3Feature();
+        this.pkSimFeature = new PKSim3Feature(this);
 
         /*
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
