@@ -50,6 +50,10 @@ public class PKSim3Feature implements Feature {
     }
 
     private void onTeamUpdate(Component textComponent) {
+        if (!isEnabled()) {
+            return;
+        }
+
         String text = ChatFormatting.stripFormatting(textComponent.getString());
         if (text == null || text.isBlank()) {
             return;
@@ -109,6 +113,10 @@ public class PKSim3Feature implements Feature {
     // Just assume that you're always joining a new server when switching proxied servers and reset the data. It can be re-parsed
     @SuppressWarnings("unused")
     private void onJoinServer(ClientPacketListener handler, PacketSender sender, Minecraft client) {
+        if (!isEnabled()) {
+            return;
+        }
+
         this.pkSim = false;
         this.level = -1;
         this.prestige = -1;
@@ -143,7 +151,7 @@ public class PKSim3Feature implements Feature {
 
     @Override
     public boolean isEnabled() {
-        return true; // TODO: Config option
+        return MEHClient.getConfig().isParkourSimulatorEnabled();
     }
 
     private Component join(Component... components) {
