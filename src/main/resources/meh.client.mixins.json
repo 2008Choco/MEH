@@ -4,8 +4,6 @@
     "compatibilityLevel": "JAVA_17",
     "mixins": [
         "ChatScreenAccessor",
-        "ClientboundSetPlayerTeamPacketAccessor",
-        "ClientPacketListenerMixin",
         "GuiMixin"
     ],
     "injectors": {

@@ -9,12 +9,12 @@ import org.jetbrains.annotations.Nullable;
 public final class ClientTitleEvents {
 
     /**
-     * Callback before a title starts rendering.
+     * Callback for when a title (and subtitle) are being rendered on the client.
      */
-    public static final Event<TitleStart> TITLE_START = EventFactory.createArrayBacked(TitleStart.class,
-            listeners -> (title, subtitle, fadeInTicks, stayTicks, fadeOutTicks) -> {
-                for (TitleStart event : listeners) {
-                    if (!event.onTitleStart(title, subtitle, fadeInTicks, stayTicks, fadeOutTicks)) {
+    public static final Event<TitleRender> TITLE_RENDER = EventFactory.createArrayBacked(TitleRender.class,
+            listeners -> (title, subtitle, fadeInTicks, stayTicks, fadeOutTicks, titleTicks) -> {
+                for (TitleRender event : listeners) {
+                    if (!event.onTitleRender(title, subtitle, fadeInTicks, stayTicks, fadeOutTicks, titleTicks)) {
                         return false;
                     }
                 }
@@ -26,20 +26,23 @@ public final class ClientTitleEvents {
     private ClientTitleEvents() { }
 
     @FunctionalInterface
-    public interface TitleStart {
+    public interface TitleRender {
 
         /**
-         * Called when a new title has been sent to the client and has started rendering.
+         * Called when a title (and subtitle) are being rendered on the client.
          *
          * @param title the title component
          * @param subtitle the subtitle component
          * @param fadeInTicks the fade in ticks
          * @param stayTicks the stay ticks
          * @param fadeOutTicks the fade out ticks
+         * @param titleTicks the remaining title ticks
          *
-         * @return false if the title should not be shown, true to show it
+         * @return false if the title render should be cancelled and not shown, true to show it. If
+         * this method returns false, the title will be cancelled entirely and not continue to render
+         * after this method has returned false
          */
-        public boolean onTitleStart(Component title, @Nullable Component subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
+        public boolean onTitleRender(Component title, @Nullable Component subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks, int titleTicks);
 
     }
 

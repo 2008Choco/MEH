@@ -10,6 +10,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.world.scores.DisplaySlot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.pksim.PKSim3Feature;
+import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
 
 public final class MEHClient implements ClientModInitializer {
 
@@ -27,6 +29,7 @@ public final class MEHClient implements ClientModInitializer {
     private static final Pattern PATTERN_HYPIXEL_IP = Pattern.compile("^(?:\\w+\\.)?hypixel\\.net$", Pattern.CASE_INSENSITIVE);
 
     private boolean connectedToHypixel = false;
+    private HypixelScoreboard hypixelScoreboard = null;
 
     private static MEHClient instance;
     private static ConfigHolder<MEHConfig> config;
@@ -43,10 +46,17 @@ public final class MEHClient implements ClientModInitializer {
         AutoConfig.register(MEHConfig.class, GsonConfigSerializer::new);
         config = AutoConfig.getConfigHolder(MEHConfig.class);
 
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> connectedToHypixel = false);
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            this.connectedToHypixel = false;
+            this.hypixelScoreboard = null;
+        });
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ServerData server = client.getCurrentServer();
             this.connectedToHypixel = (server != null) && PATTERN_HYPIXEL_IP.matcher(server.ip).matches();
+            if (connectedToHypixel) {
+                this.hypixelScoreboard = new HypixelScoreboard(DisplaySlot.SIDEBAR);
+                this.hypixelScoreboard.setAutoRefreshInterval(20);
+            }
         });
 
         this.chatChannelsFeature = new ChatChannelsFeature(this);
@@ -65,6 +75,10 @@ public final class MEHClient implements ClientModInitializer {
 
     public boolean isConnectedToHypixel() {
         return connectedToHypixel || FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+
+    public HypixelScoreboard getHypixelScoreboard() {
+        return hypixelScoreboard;
     }
 
     public ChatChannelsFeature getChatChannelsFeature() {

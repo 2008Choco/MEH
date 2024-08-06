@@ -1,9 +1,10 @@
 package wtf.choco.meh.client.mixin;
 
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,9 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.choco.meh.client.event.ClientTitleEvents;
 
 @Mixin(Gui.class)
-public class GuiMixin {
+public abstract class GuiMixin {
 
-    @Nullable
+    @Shadow
+    private Component title;
     @Shadow
     private Component subtitle;
     @Shadow
@@ -24,12 +26,23 @@ public class GuiMixin {
     private int titleStayTime;
     @Shadow
     private int titleFadeOutTime;
+    @Shadow
+    private int titleTime;
 
-    @Inject(method = "setTitle(Lnet/minecraft/network/chat/Component;)V", at = @At("HEAD"), cancellable = true)
-    private void onSetTitle(Component title, CallbackInfo callback) {
-        if (!ClientTitleEvents.TITLE_START.invoker().onTitleStart(title, subtitle, titleFadeInTime, titleStayTime, titleFadeOutTime)) {
+    @SuppressWarnings("unused")
+    @Inject(method = "renderTitle(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V", cancellable = true, at = @At(
+        value = "INVOKE",
+        target = "Lnet/minecraft/client/gui/Gui;getFont()Lnet/minecraft/client/gui/Font;",
+        shift = At.Shift.BEFORE
+    ))
+    private void onRenderTitle(GuiGraphics graphics, DeltaTracker delta, CallbackInfo callback) {
+        if (!ClientTitleEvents.TITLE_RENDER.invoker().onTitleRender(title, subtitle, titleFadeInTime, titleStayTime, titleFadeOutTime, titleTime)) {
+            this.clear();
             callback.cancel();
         }
     }
+
+    @Shadow
+    public abstract void clear();
 
 }
