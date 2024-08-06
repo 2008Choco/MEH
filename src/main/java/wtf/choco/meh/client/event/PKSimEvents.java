@@ -28,6 +28,17 @@ public final class PKSimEvents {
     );
 
     /**
+     * Callback for when the player's Parkour Simulator coins change.
+     */
+    public static final Event<CoinChange> COIN_CHANGE = EventFactory.createArrayBacked(CoinChange.class,
+            listeners -> (fromCoins, toCoins, reason) -> {
+                for (CoinChange event : listeners) {
+                    event.onCoinChange(fromCoins, toCoins, reason);
+                }
+            }
+    );
+
+    /**
      * Callback for when the player's Parkour Simulator level changes.
      */
     public static final Event<LevelChange> LEVEL_CHANGE = EventFactory.createArrayBacked(LevelChange.class,
@@ -77,6 +88,27 @@ public final class PKSimEvents {
             /**
              * The player has prestiged and their experience was reset.
              */
+            PRESTIGE; // TODO: Unhandled
+
+        }
+
+    }
+
+    @FunctionalInterface
+    public interface CoinChange {
+
+        /**
+         * Called when the player's coins change for some reason.
+         *
+         * @param fromCoins the coins before the change
+         * @param toCoins the coins after the change
+         * @param reason the reason for the change
+         */
+        public void onCoinChange(int fromCoins, int toCoins, Reason reason);
+
+        public static enum Reason {
+
+            PARKOUR_COMPLETION,
             PRESTIGE; // TODO: Unhandled
 
         }

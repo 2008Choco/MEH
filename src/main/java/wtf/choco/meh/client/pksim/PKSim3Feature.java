@@ -63,6 +63,9 @@ public final class PKSim3Feature extends Feature {
         PKSimEvents.LEVEL_CHANGE.register((fromLevel, toLevel, reason) -> Minecraft.getInstance().player.sendSystemMessage(
             Component.literal("Your level changed from " + fromLevel + " to " + toLevel + "! Reason: " + reason.name()))
         );
+        PKSimEvents.COIN_CHANGE.register((fromCoins, toCoins, reason) -> Minecraft.getInstance().player.sendSystemMessage(
+            Component.literal("Your coins have changed from " + fromCoins + " to " + toCoins + "! Reason: " + reason.name())
+        ));
     }
 
     public boolean isOnPKSim3() {
