@@ -12,6 +12,7 @@ import net.minecraft.ChatFormatting;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jetbrains.annotations.Nullable;
 
+import wtf.choco.meh.client.pksim.potion.PotionBuffType;
 import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
 
 public final class PKSimUtils {
@@ -55,6 +56,10 @@ public final class PKSimUtils {
     private static final Pattern PATTERN_COINS_SUBTITLE = Pattern.compile(stackOfCoinsRegExOr() + "(?<coins>.+)");
     private static final Pattern PATTERN_LEVEL_UP_TITLE = Pattern.compile(".\\s*Level-Up\\s*.");
     private static final Pattern PATTERN_LEVEL_UP_SUBTITLE = Pattern.compile("You are now Level (?<level>.+)");
+
+    private static final Pattern PATTERN_POTION_EXPERIENCE_TITLE = Pattern.compile("\\+ (?<percent>\\d+)% Increase");
+    private static final String POTION_LEATHER_CRUMB_TITLE = "Leather Crumb LURE";
+    private static final Pattern PATTERN_DURATION_SUBTITLE = Pattern.compile("DURATION: (?<seconds>\\d+)s*"); // Some subtitles suffix time with "s", others don't
 
     // Action bar patterns
     private static final Pattern PATTERN_ACTION_BAR = Pattern.compile("^Player ID:\\s+(?<playerId>[\\d,]+)\\s+.\\s+PlayTime:\\s+(?<playSeconds>[\\d]+s) (?<playMinutes>[\\d]+m) (?<playHours>[\\d]+h)\\s+.\\s+Quest:\\s+(?<questProgress>\\d+)\\/(?<questRequirement>\\d+)$");
@@ -115,8 +120,25 @@ public final class PKSimUtils {
         return PATTERN_LEVEL_UP_TITLE.matcher(string).matches();
     }
 
-    public static int extractLevelTitle(String string) {
+    public static int extractLevelSubtitle(String string) {
         return extractPatternIntegerValue(PATTERN_LEVEL_UP_SUBTITLE, string, "level");
+    }
+
+    public static PotionBuffType extractPotionBuffTitle(String string) {
+        if (POTION_LEATHER_CRUMB_TITLE.equals(string)) {
+            return PotionBuffType.LEATHER_CRUMB_15;
+        }
+
+        return switch (extractPatternIntegerValue(PATTERN_POTION_EXPERIENCE_TITLE, string, "percent")) {
+            case 5 -> PotionBuffType.EXPERIENCE_5;
+            case 25 -> PotionBuffType.EXPERIENCE_25;
+            case 50 -> PotionBuffType.EXPERIENCE_50;
+            default -> null;
+        };
+    }
+
+    public static int extractPotionBuffSubtitle(String string) {
+        return extractPatternIntegerValue(PATTERN_DURATION_SUBTITLE, string, "seconds");
     }
 
     public static ActionBarData extractActionBarData(String text) {

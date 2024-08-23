@@ -20,7 +20,8 @@ public final class TitleNotificationHandler {
 
     private static final List<TitleNotification<? extends MatchResult>> ALL_NOTIFICATIONS = Arrays.asList(
             new ParkourCompletionTitleNotification(),
-            new LevelUpTitleNotification()
+            new LevelUpTitleNotification(),
+            new PotionBuffTitleNotification()
     );
 
     private final IntSet unhandleableHashes = new IntOpenHashSet();

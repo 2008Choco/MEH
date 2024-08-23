@@ -17,7 +17,7 @@ public final class LevelUpTitleNotification extends TitleNotification<LevelUpMat
             return LevelUpMatchResult.nonMatching();
         }
 
-        int level = PKSimUtils.extractLevelTitle(subtitle);
+        int level = PKSimUtils.extractLevelSubtitle(subtitle);
         if (level < 0) {
             return LevelUpMatchResult.nonMatching();
         }

@@ -5,9 +5,12 @@ import it.unimi.dsi.fastutil.ints.IntIntPair;
 import java.text.NumberFormat;
 import java.time.Duration;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -18,6 +21,7 @@ import wtf.choco.meh.client.event.MEHEvents;
 import wtf.choco.meh.client.event.PKSimEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.pksim.notification.TitleNotificationHandler;
+import wtf.choco.meh.client.pksim.render.PKSimHUDOverlay;
 import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
 
 public final class PKSim3Feature extends Feature {
@@ -38,6 +42,7 @@ public final class PKSim3Feature extends Feature {
     private boolean sentWelcomeMessage = false;
 
     private final MEHClient mod;
+    private final PKSimHUDOverlay hudOverlay;
 
     @SuppressWarnings("resource") // Minecraft#getInstance()
     public PKSim3Feature(MEHClient mod) {
@@ -45,14 +50,12 @@ public final class PKSim3Feature extends Feature {
 
         new TitleNotificationHandler(mod, this);
 
+        this.hudOverlay = new PKSimHUDOverlay(mod, this);
+        HudRenderCallback.EVENT.register(hudOverlay::render);
+        ClientTickEvents.END_CLIENT_TICK.register(hudOverlay::tick);
+
         ClientPlayConnectionEvents.JOIN.register(this::onJoinServer);
-        ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> {
-            if (overlay) {
-                return onActionBar(message);
-            } else {
-                return onChatMessage(message);
-            }
-        });
+        ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> overlay ? onActionBar(message) : onChatMessage(message));
         MEHEvents.HYPIXEL_SCOREBOARD_REFRESH.register(this::onScoreboardRefresh);
 
         // Debug event listeners
@@ -69,7 +72,7 @@ public final class PKSim3Feature extends Feature {
     }
 
     public boolean isOnPKSim3() {
-        return pkSim;
+        return pkSim || FabricLoader.getInstance().isDevelopmentEnvironment();
     }
 
     public void setLevel(int level) {
@@ -136,6 +139,10 @@ public final class PKSim3Feature extends Feature {
         return questRequirement;
     }
 
+    public PKSimHUDOverlay getHUDOverlay() {
+        return hudOverlay;
+    }
+
     // Just assume that you're always joining a new server when switching proxied servers and reset the data. It can be re-parsed
     @SuppressWarnings("unused")
     private void onJoinServer(ClientPacketListener handler, PacketSender sender, Minecraft client) {
@@ -157,6 +164,8 @@ public final class PKSim3Feature extends Feature {
 
         this.pkSim = false;
         this.sentWelcomeMessage = false;
+
+        this.hudOverlay.clearPotionBuffDurations();
     }
 
     private void onScoreboardRefresh(HypixelScoreboard scoreboard) {
