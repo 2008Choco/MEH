@@ -59,16 +59,18 @@ public final class PKSim3Feature extends Feature {
         MEHEvents.HYPIXEL_SCOREBOARD_REFRESH.register(this::onScoreboardRefresh);
 
         // Debug event listeners
-        PKSimEvents.PARKOUR_COMPLETE.register(() -> Minecraft.getInstance().player.sendSystemMessage(Component.literal("Congratulations on completing a parkour!")));
-        PKSimEvents.EXPERIENCE_CHANGE.register((fromExperience, toExperience, fromRequiredExperience, toRequiredExperience, reason) -> Minecraft.getInstance().player.sendSystemMessage(
-            Component.literal("Your experience was changed from " + NumberFormat.getNumberInstance().format(fromExperience) + " to " + NumberFormat.getNumberInstance().format(toExperience) + "! Reason: " + reason.name()))
-        );
-        PKSimEvents.LEVEL_CHANGE.register((fromLevel, toLevel, reason) -> Minecraft.getInstance().player.sendSystemMessage(
-            Component.literal("Your level changed from " + fromLevel + " to " + toLevel + "! Reason: " + reason.name()))
-        );
-        PKSimEvents.COIN_CHANGE.register((fromCoins, toCoins, reason) -> Minecraft.getInstance().player.sendSystemMessage(
-            Component.literal("Your coins have changed from " + fromCoins + " to " + toCoins + "! Reason: " + reason.name())
-        ));
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            PKSimEvents.PARKOUR_COMPLETE.register(() -> Minecraft.getInstance().player.sendSystemMessage(Component.literal("Congratulations on completing a parkour!")));
+            PKSimEvents.EXPERIENCE_CHANGE.register((fromExperience, toExperience, fromRequiredExperience, toRequiredExperience, reason) -> Minecraft.getInstance().player.sendSystemMessage(
+                Component.literal("Your experience was changed from " + NumberFormat.getNumberInstance().format(fromExperience) + " to " + NumberFormat.getNumberInstance().format(toExperience) + "! Reason: " + reason.name()))
+            );
+            PKSimEvents.LEVEL_CHANGE.register((fromLevel, toLevel, reason) -> Minecraft.getInstance().player.sendSystemMessage(
+                Component.literal("Your level changed from " + fromLevel + " to " + toLevel + "! Reason: " + reason.name()))
+            );
+            PKSimEvents.COIN_CHANGE.register((fromCoins, toCoins, reason) -> Minecraft.getInstance().player.sendSystemMessage(
+                Component.literal("Your coins have changed from " + fromCoins + " to " + toCoins + "! Reason: " + reason.name())
+            ));
+        }
     }
 
     public boolean isOnPKSim3() {
