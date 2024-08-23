@@ -33,6 +33,10 @@ public final class PKSimHUDOverlay {
             return;
         }
 
+        if (!MEHClient.getConfig().isParkourSimulatorPotionOverlayEnabled()) {
+            return;
+        }
+
         boolean first = true;
         int offset = 2;
         final int height = 16;

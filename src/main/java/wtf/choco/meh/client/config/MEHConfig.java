@@ -17,6 +17,9 @@ public final class MEHConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     private EnabledFeatures enabled_features = new EnabledFeatures();
 
+    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    private ParkourSimulator parkour_simulator = new ParkourSimulator();
+
     @ConfigEntry.Gui.Tooltip
     private boolean auto_switch_on_new_message = true;
 
@@ -33,6 +36,10 @@ public final class MEHConfig implements ConfigData {
 
     public boolean isParkourSimulatorEnabled() {
         return enabled_features.parkour_simulator;
+    }
+
+    public boolean isParkourSimulatorPotionOverlayEnabled() {
+        return parkour_simulator.potion_overlay;
     }
 
     public boolean isAutoSwitchOnNewMessage() {
@@ -63,6 +70,13 @@ public final class MEHConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         private boolean parkour_simulator = true;
+
+    }
+
+    public static final class ParkourSimulator {
+
+        @ConfigEntry.Gui.Tooltip
+        private boolean potion_overlay = true;
 
     }
 
