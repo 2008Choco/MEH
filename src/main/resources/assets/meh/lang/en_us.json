@@ -10,6 +10,8 @@
     "text.autoconfig.meh.option.enabled_features": "Enabled Features",
     "text.autoconfig.meh.option.enabled_features.chat_channels": "Chat Channels",
     "text.autoconfig.meh.option.enabled_features.chat_channels.@Tooltip": "Organize your chat better with simple chat channels.",
+    "text.autoconfig.meh.option.enabled_features.manual_gg": "Manual GG",
+    "text.autoconfig.meh.option.enabled_features.manual_gg.@Tooltip": "Write \"gg\" in chat after pressing the G key twice.\nOpening chat is not necessary!",
     "text.autoconfig.meh.option.enabled_features.parkour_simulator": "Parkour Simulator",
     "text.autoconfig.meh.option.enabled_features.parkour_simulator.@Tooltip": "Miscellaneous improvements to the Parkour Simulator v3 house on Hypixel Housing.",
     "text.autoconfig.meh.option.parkour_simulator": "Parkour Simulator",

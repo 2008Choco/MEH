@@ -1,17 +1,15 @@
 package wtf.choco.meh.client.scoreboard;
 
-import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
-import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.scores.DisplaySlot;
 import net.minecraft.world.scores.Objective;
@@ -21,16 +19,29 @@ import net.minecraft.world.scores.Scoreboard;
 
 import org.jetbrains.annotations.Nullable;
 
-import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.event.MEHEvents;
 
+/**
+ * A thread-safe auto-refreshing cache of a Hypixel server scoreboard.
+ * <p>
+ * An instance of HypixelScoreboard can read information from the active scoreboard with
+ * {@link #getLine(int)} so long as {@link #refresh(ClientLevel)} has been called at least
+ * once. Each call to refresh() will create a snapshot of what's on the scoreboard at the
+ * moment of invocation as is seen by the client. To automatically refresh,
+ * {@link #setAutoRefreshInterval(int)} can be called with a positive, non-zero integer.
+ * <p>
+ * This class will only scrape scoreboards specifically implemented by Hypixel. This is not
+ * a general purpose scoreboard scraper because Hypixel's implementation is done uniquely
+ * with teams rather than true scoreboard entries to avoid flickering when updating lines.
+ */
 public final class HypixelScoreboard {
+
+    private static final Collection<HypixelScoreboard> LISTENING_SCOREBOARDS = Collections.synchronizedCollection(new ArrayList<>());
 
     static {
         ClientTickEvents.END_WORLD_TICK.register(level -> {
-            HypixelScoreboard scoreboard = MEHClient.getInstance().getHypixelScoreboard();
-            if (scoreboard != null) {
-                scoreboard.onTick(level);
+            for (HypixelScoreboard scoreboard : LISTENING_SCOREBOARDS) {
+                scoreboard.onWorldTick(level);
             }
         });
     }
@@ -48,58 +59,32 @@ public final class HypixelScoreboard {
      * Albeit this is a pain in the ass to work with on the client, but extremely smart on their part!
      */
 
-    private static enum Line {
-
-        LINE_15('!'), // Top line
-        LINE_14('z'),
-        LINE_13('y'),
-        LINE_12('x'),
-        LINE_11('w'),
-        LINE_10('v'),
-        LINE_9('u'),
-        LINE_8('t'),
-        LINE_7('s'),
-        LINE_6('q'),
-        LINE_5('p'),
-        LINE_4('j'),
-        LINE_3('i'),
-        LINE_2('h'),
-        LINE_1('g'); // Bottom line
-
-        private static final Int2ObjectMap<Line> BY_LINE_NUMBER = new Int2ObjectOpenHashMap<>();
-        private static final Char2ObjectMap<Line> BY_CHARACTER = new Char2ObjectOpenHashMap<>();
-
-        static {
-            for (Line line : Line.values()) {
-                BY_LINE_NUMBER.put(line.lineNumber, line);
-                BY_CHARACTER.put(line.character, line);
-            }
-        }
-
-        private final char character;
-        private final int lineNumber;
-
-        private Line(char character) {
-            this.character = character;
-            this.lineNumber = 15 - ordinal();
-        }
-
-    }
-
     private int tick = 0;
     private int autoRefreshInterval = 0;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<Line, String> entries = new EnumMap<>(Line.class);
-    private final DisplaySlot slot;
+    private final Map<HypixelScoreboardLine, String> entries = new EnumMap<>(HypixelScoreboardLine.class);
 
-    public HypixelScoreboard(DisplaySlot slot) {
-        this.slot = slot;
+    public HypixelScoreboard() {
+        LISTENING_SCOREBOARDS.add(this);
     }
 
+    /**
+     * Get the text on the given line of the scoreboard (from the top {@literal ->} down).
+     * <p>
+     * The returned text will be formatted with legacy text as is done by Hypixel's scoreboard. If
+     * a stripped version of the text is required, use {@link ChatFormatting#stripFormatting(String)}.
+     *
+     * @param lineNumber the line number to get where 1 is the top line and 15 is the bottom line
+     *
+     * @return the line contents, or null if no text is currently known for the given line
+     *
+     * @throws IllegalArgumentException if {@code lineNumber} is {@literal <=} 0 or exceeds
+     * {@link #getMaxLine()}
+     */
     @Nullable
     public String getLine(int lineNumber) {
-        Line line = Line.BY_LINE_NUMBER.get(lineNumber);
+        HypixelScoreboardLine line = HypixelScoreboardLine.getByLineNumber(lineNumber);
         if (line == null) {
             throw new IllegalArgumentException("No line exists for line number " + lineNumber);
         }
@@ -115,25 +100,52 @@ public final class HypixelScoreboard {
         return text;
     }
 
+    /**
+     * Get the maximum line that can be fetched from this scoreboard without throwing an exception.
+     * The returned number is inclusive and may be passed directly to {@link #getLine(int)}.
+     *
+     * @return the max line number
+     */
     public int getMaxLine() {
         return entries.size();
     }
 
+    /**
+     * Set the interval (in ticks) between which the scoreboard's data will be automatically scraped
+     * and cached.
+     *
+     * @param refreshIntervalTicks the amount of time (in ticks) between refreshes, or 0 (or less) to
+     * require a manual refresh with {@link #refresh(ClientLevel)}
+     */
     public void setAutoRefreshInterval(int refreshIntervalTicks) {
-        this.autoRefreshInterval = refreshIntervalTicks;
+        this.autoRefreshInterval = Math.max(refreshIntervalTicks, 0);
     }
 
+    /**
+     * Get the interval (in ticks) between which the scoreboard's data will be automatically scraped
+     * and cached.
+     *
+     * @return the auto refresh interval, or 0 if the scoreboard must be manually refreshed
+     */
     public int getAutoRefreshInterval() {
         return autoRefreshInterval;
     }
 
+    /**
+     * Refresh this scoreboard's cached data.
+     * <p>
+     * This method will clear any existing cached entries, scrape all text data from the scoreboard,
+     * and cache it for easy access with {@link #getLine(int)}.
+     *
+     * @param level the client level
+     */
     public void refresh(ClientLevel level) {
         this.lock.writeLock().lock();
         try {
             this.entries.clear();
 
             Scoreboard scoreboard = level.getScoreboard();
-            Objective objective = scoreboard.getDisplayObjective(slot);
+            Objective objective = scoreboard.getDisplayObjective(DisplaySlot.SIDEBAR);
             if (objective == null) {
                 return;
             }
@@ -146,7 +158,7 @@ public final class HypixelScoreboard {
                 }
 
                 char character = entry.charAt(1);
-                Line line = Line.BY_CHARACTER.get(character);
+                HypixelScoreboardLine line = HypixelScoreboardLine.getByCharacter(character);
                 if (line == null) {
                     continue;
                 }
@@ -166,7 +178,14 @@ public final class HypixelScoreboard {
         MEHEvents.HYPIXEL_SCOREBOARD_REFRESH.invoker().onRefresh(this);
     }
 
-    public void onTick(ClientLevel level) {
+    /**
+     * Dispose of this scoreboard. This must be called before this object is destroyed.
+     */
+    public void dispose() {
+        LISTENING_SCOREBOARDS.remove(this);
+    }
+
+    private void onWorldTick(ClientLevel level) {
         if (autoRefreshInterval <= 0 || level == null) {
             return;
         }

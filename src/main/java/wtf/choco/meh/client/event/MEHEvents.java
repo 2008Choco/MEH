@@ -5,6 +5,9 @@ import net.fabricmc.fabric.api.event.EventFactory;
 
 import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
 
+/**
+ * Contains general-purpose events invoked by MEHEvents, not tied to any specific feature.
+ */
 public final class MEHEvents {
 
     /**

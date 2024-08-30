@@ -42,6 +42,10 @@ public final class MEHConfig implements ConfigData {
         return parkour_simulator.potion_overlay;
     }
 
+    public boolean isManualGGEnabled() {
+        return enabled_features.manual_gg;
+    }
+
     public boolean isAutoSwitchOnNewMessage() {
         return auto_switch_on_new_message;
     }
@@ -67,6 +71,9 @@ public final class MEHConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         private boolean chat_channels = true;
+
+        @ConfigEntry.Gui.Tooltip
+        private boolean manual_gg = true;
 
         @ConfigEntry.Gui.Tooltip
         private boolean parkour_simulator = true;
