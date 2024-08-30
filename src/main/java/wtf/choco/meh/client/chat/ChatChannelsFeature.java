@@ -38,17 +38,19 @@ public final class ChatChannelsFeature extends Feature {
     private static final Pattern PATTERN_MESSAGE = Pattern.compile("^(?<direction>From|To)(?:\\s\\[.+\\])?\\s(?<name>\\w+):");
 
     private final ChannelSelector channelSelector = new ChannelSelector();
-    private final MEHClient mod;
 
     public ChatChannelsFeature(MEHClient mod) {
-        this.mod = mod;
+        super(mod, MEHConfig::areChatChannelsEnabled);
 
         // Register configured known channels
         for (MEHConfig.KnownChannel channel : MEHClient.getConfig().getKnownChannels()) {
             ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), false);
             this.channelSelector.addChannel(chatChannel);
         }
+    }
 
+    @Override
+    protected void registerListeners() {
         ClientSendMessageEvents.ALLOW_CHAT.register(this::onAllowOutgoingChat);
         ClientReceiveMessageEvents.GAME.register(this::onReceiveChatMessage);
         ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
@@ -77,7 +79,7 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     private boolean onAllowOutgoingChat(String message) {
-        if (!mod.isConnectedToHypixel() || !isEnabled()) {
+        if (!isEnabled()) {
             return true;
         }
 
@@ -92,7 +94,7 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     private void onReceiveChatMessage(Component message, boolean actionBar) {
-        if (actionBar || !mod.isConnectedToHypixel() || !isEnabled()) {
+        if (actionBar || !isEnabled()) {
             return;
         }
 
@@ -141,7 +143,7 @@ public final class ChatChannelsFeature extends Feature {
 
     @SuppressWarnings("unused")
     private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
-        if (!mod.isConnectedToHypixel() || isWritingCommand(screen) || !isEnabled()) {
+        if (!isEnabled() || isWritingCommand(screen)) {
             return true;
         }
 
@@ -174,7 +176,7 @@ public final class ChatChannelsFeature extends Feature {
 
     @SuppressWarnings("unused")
     private void onRenderChatScreen(ChatScreen screen, GuiGraphics graphics, int screenX, int screenY, float delta) {
-        if (!mod.isConnectedToHypixel() || isWritingCommand(screen) || !isEnabled()) {
+        if (!isEnabled() || isWritingCommand(screen)) {
             return;
         }
 
@@ -199,7 +201,7 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     private void onClientTick(Minecraft client) {
-        if (!mod.isConnectedToHypixel() || !isEnabled()) {
+        if (!isEnabled()) {
             return;
         }
 
@@ -261,11 +263,6 @@ public final class ChatChannelsFeature extends Feature {
 
     public ChannelSelector getChannelSelector() {
         return channelSelector;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return MEHClient.getConfig().areChatChannelsEnabled();
     }
 
 }

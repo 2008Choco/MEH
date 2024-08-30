@@ -21,6 +21,8 @@ import org.spongepowered.include.com.google.common.base.Preconditions;
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
 import wtf.choco.meh.client.chat.ManualGGFeature;
 import wtf.choco.meh.client.config.MEHConfig;
+import wtf.choco.meh.client.feature.Feature;
+import wtf.choco.meh.client.feature.FeatureManager;
 import wtf.choco.meh.client.pksim.PKSim3Feature;
 import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
 
@@ -38,8 +40,7 @@ public final class MEHClient implements ClientModInitializer {
     private static MEHClient instance;
     private static ConfigHolder<MEHConfig> config;
 
-    private ChatChannelsFeature chatChannelsFeature;
-    private PKSim3Feature pkSimFeature;
+    private final FeatureManager featureManager = new FeatureManager(this);
 
     @Override
     public void onInitializeClient() {
@@ -62,10 +63,9 @@ public final class MEHClient implements ClientModInitializer {
             }
         });
 
-        this.chatChannelsFeature = new ChatChannelsFeature(this);
-        this.pkSimFeature = new PKSim3Feature(this);
-
-        new ManualGGFeature(this);
+        this.featureManager.addFeature(ChatChannelsFeature.class, ChatChannelsFeature::new);
+        this.featureManager.addFeature(ManualGGFeature.class, ManualGGFeature::new);
+        this.featureManager.addFeature(PKSim3Feature.class, PKSim3Feature::new);
 
         /*
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
@@ -76,6 +76,8 @@ public final class MEHClient implements ClientModInitializer {
             ));
         }
         */
+
+        this.featureManager.initializeFeatures();
     }
 
     public boolean isConnectedToHypixel() {
@@ -101,12 +103,8 @@ public final class MEHClient implements ClientModInitializer {
         return hypixelScoreboard;
     }
 
-    public ChatChannelsFeature getChatChannelsFeature() {
-        return chatChannelsFeature;
-    }
-
-    public PKSim3Feature getPKSimFeature() {
-        return pkSimFeature;
+    public <T extends Feature> T getFeature(Class<T> featureClass) {
+        return featureManager.getFeature(featureClass);
     }
 
     public static MEHClient getInstance() {

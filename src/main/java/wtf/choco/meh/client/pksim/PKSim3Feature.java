@@ -17,6 +17,7 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.chat.Component;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.MEHEvents;
 import wtf.choco.meh.client.event.PKSimEvents;
 import wtf.choco.meh.client.feature.Feature;
@@ -41,16 +42,20 @@ public final class PKSim3Feature extends Feature {
     private boolean pkSim = false;
     private boolean sentWelcomeMessage = false;
 
-    private final MEHClient mod;
     private final PKSimHUDOverlay hudOverlay;
+    private final TitleNotificationHandler titleNotificationHandler;
 
-    @SuppressWarnings("resource") // Minecraft#getInstance()
     public PKSim3Feature(MEHClient mod) {
-        this.mod = mod;
-
-        new TitleNotificationHandler(mod, this);
+        super(mod, MEHConfig::isParkourSimulatorEnabled);
 
         this.hudOverlay = new PKSimHUDOverlay(mod, this);
+        this.titleNotificationHandler = new TitleNotificationHandler(mod, this);
+    }
+
+    @Override
+    protected void registerListeners() {
+        this.titleNotificationHandler.registerListeners();
+
         HudRenderCallback.EVENT.register(hudOverlay::render);
         ClientTickEvents.END_CLIENT_TICK.register(hudOverlay::tick);
 
@@ -60,14 +65,16 @@ public final class PKSim3Feature extends Feature {
 
         // Debug event listeners
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            PKSimEvents.PARKOUR_COMPLETE.register(() -> Minecraft.getInstance().player.sendSystemMessage(Component.literal("Congratulations on completing a parkour!")));
-            PKSimEvents.EXPERIENCE_CHANGE.register((fromExperience, toExperience, fromRequiredExperience, toRequiredExperience, reason) -> Minecraft.getInstance().player.sendSystemMessage(
+            Minecraft minecraft = Minecraft.getInstance();
+
+            PKSimEvents.PARKOUR_COMPLETE.register(() -> minecraft.player.sendSystemMessage(Component.literal("Congratulations on completing a parkour!")));
+            PKSimEvents.EXPERIENCE_CHANGE.register((fromExperience, toExperience, fromRequiredExperience, toRequiredExperience, reason) -> minecraft.player.sendSystemMessage(
                 Component.literal("Your experience was changed from " + NumberFormat.getNumberInstance().format(fromExperience) + " to " + NumberFormat.getNumberInstance().format(toExperience) + "! Reason: " + reason.name()))
             );
-            PKSimEvents.LEVEL_CHANGE.register((fromLevel, toLevel, reason) -> Minecraft.getInstance().player.sendSystemMessage(
+            PKSimEvents.LEVEL_CHANGE.register((fromLevel, toLevel, reason) -> minecraft.player.sendSystemMessage(
                 Component.literal("Your level changed from " + fromLevel + " to " + toLevel + "! Reason: " + reason.name()))
             );
-            PKSimEvents.COIN_CHANGE.register((fromCoins, toCoins, reason) -> Minecraft.getInstance().player.sendSystemMessage(
+            PKSimEvents.COIN_CHANGE.register((fromCoins, toCoins, reason) -> minecraft.player.sendSystemMessage(
                 Component.literal("Your coins have changed from " + fromCoins + " to " + toCoins + "! Reason: " + reason.name())
             ));
         }
@@ -148,7 +155,7 @@ public final class PKSim3Feature extends Feature {
     // Just assume that you're always joining a new server when switching proxied servers and reset the data. It can be re-parsed
     @SuppressWarnings("unused")
     private void onJoinServer(ClientPacketListener handler, PacketSender sender, Minecraft client) {
-        if (!mod.isConnectedToHypixel() || !isEnabled()) {
+        if (!isEnabled()) {
             return;
         }
 
@@ -171,7 +178,7 @@ public final class PKSim3Feature extends Feature {
     }
 
     private void onScoreboardRefresh(HypixelScoreboard scoreboard) {
-        if (!mod.isConnectedToHypixel() || !isEnabled()) {
+        if (!isEnabled()) {
             return;
         }
 
@@ -239,7 +246,7 @@ public final class PKSim3Feature extends Feature {
     }
 
     private boolean onActionBar(Component message) {
-        if (!mod.isConnectedToHypixel() || !isEnabled() || !isOnPKSim3()) {
+        if (!isEnabled() || !isOnPKSim3()) {
             return true;
         }
 
@@ -258,11 +265,6 @@ public final class PKSim3Feature extends Feature {
 
     private boolean onChatMessage(Component message) {
         return true; // TODO: Hide unnecessary notifications (like level up notifications)
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return MEHClient.getConfig().isParkourSimulatorEnabled();
     }
 
 }

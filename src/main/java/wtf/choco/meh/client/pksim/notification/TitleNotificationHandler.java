@@ -32,7 +32,9 @@ public final class TitleNotificationHandler {
     public TitleNotificationHandler(MEHClient mod, PKSim3Feature feature) {
         this.mod = mod;
         this.feature = feature;
+    }
 
+    public void registerListeners() {
         ClientTitleEvents.TITLE_RENDER.register(this::onRenderTitle);
     }
 
