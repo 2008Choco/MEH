@@ -31,6 +31,10 @@ public final class MEHConfig implements ConfigData {
         return enabled_features.chat_channels;
     }
 
+    public boolean isManualGGEnabled() {
+        return enabled_features.manual_gg;
+    }
+
     public boolean isAutoSwitchOnNewMessage() {
         return auto_switch_on_new_message;
     }
@@ -56,6 +60,9 @@ public final class MEHConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         private boolean chat_channels = true;
+
+        @ConfigEntry.Gui.Tooltip
+        private boolean manual_gg = true;
 
     }
 

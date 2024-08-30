@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.spongepowered.include.com.google.common.base.Preconditions;
 
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
+import wtf.choco.meh.client.chat.ManualGGFeature;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
 
@@ -60,6 +61,7 @@ public final class MEHClient implements ClientModInitializer {
         });
 
         this.chatChannelsFeature = new ChatChannelsFeature(this);
+        new ManualGGFeature(this);
     }
 
     public boolean isConnectedToHypixel() {

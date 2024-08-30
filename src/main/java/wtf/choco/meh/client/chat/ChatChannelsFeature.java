@@ -26,7 +26,7 @@ import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
-public class ChatChannelsFeature implements Feature {
+public final class ChatChannelsFeature implements Feature {
 
     private static final int DEFAULT_CHAT_BOX_MAX_LENGTH = 256;
 
