@@ -7,27 +7,26 @@ import java.util.concurrent.TimeUnit;
 import net.minecraft.client.Minecraft;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.LWJGLEvents;
 import wtf.choco.meh.client.feature.Feature;
 
-public final class ManualGGFeature implements Feature {
+public final class ManualGGFeature extends Feature {
 
     private static final long GG_COOLDOWN = TimeUnit.SECONDS.toMillis(10);
 
     private long lastReleasedG = 0L;
     private long lastSaidGG = 0L;
 
-    private final MEHClient mod;
-
     public ManualGGFeature(MEHClient mod) {
-        this.mod = mod;
+        super(mod, MEHConfig::isManualGGEnabled);
 
         LWJGLEvents.KEY_STATE_CHANGE.register(this::onKeyStateChange);
     }
 
     @SuppressWarnings("unused")
     private boolean onKeyStateChange(int key, int scancode, int action, int mods) {
-        if (!mod.isConnectedToHypixel() || !isEnabled()) {
+        if (!isEnabled()) {
             return true;
         }
 
@@ -65,11 +64,6 @@ public final class ManualGGFeature implements Feature {
         this.lastReleasedG = 0L;
         this.lastSaidGG = now;
         return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return MEHClient.getConfig().isManualGGEnabled();
     }
 
 }
