@@ -20,7 +20,10 @@ public final class ManualGGFeature extends Feature {
 
     public ManualGGFeature(MEHClient mod) {
         super(mod, MEHConfig::isManualGGEnabled);
+    }
 
+    @Override
+    protected void registerListeners() {
         LWJGLEvents.KEY_STATE_CHANGE.register(this::onKeyStateChange);
     }
 

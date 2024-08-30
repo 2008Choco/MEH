@@ -47,7 +47,10 @@ public final class ChatChannelsFeature extends Feature {
             ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), false);
             this.channelSelector.addChannel(chatChannel);
         }
+    }
 
+    @Override
+    protected void registerListeners() {
         ClientSendMessageEvents.ALLOW_CHAT.register(this::onAllowOutgoingChat);
         ClientReceiveMessageEvents.GAME.register(this::onReceiveChatMessage);
         ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
