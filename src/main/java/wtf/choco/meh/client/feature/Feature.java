@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
+import wtf.choco.meh.client.server.HypixelServerState;
 
 /**
  * A base feature that can be added to the mod and individually enabled or disabled.
@@ -38,12 +39,12 @@ public abstract class Feature {
 
     /**
      * Check whether or not this feature enabled and that the client is currently connected to Hypixel
-     * (according to {@link MEHClient#isConnectedToHypixel()}).
+     * (according to {@link HypixelServerState#isConnectedToHypixel()}).
      *
      * @return true if enabled, false if not enabled or not connected to Hypixel
      */
     public final boolean isEnabled() {
-        return mod.isConnectedToHypixel() && featureEnabled.test(MEHClient.getConfig());
+        return mod.getHypixelServerState().isConnectedToHypixel() && featureEnabled.test(MEHClient.getConfig());
     }
 
     /**
