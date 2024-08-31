@@ -64,6 +64,7 @@ public final class HypixelScoreboard {
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private final Map<HypixelScoreboardLine, String> entries = new EnumMap<>(HypixelScoreboardLine.class);
+    private String title;
 
     public HypixelScoreboard() {
         LISTENING_SCOREBOARDS.add(this);
@@ -98,6 +99,28 @@ public final class HypixelScoreboard {
         }
 
         return text;
+    }
+
+    /**
+     * Get the title of the scoreboard.
+     * <p>
+     * The returned text will be formatted with legacy text as is done by Hypixel's scoreboard. If
+     * a stripped version of the text is required, use {@link ChatFormatting#stripFormatting(String)}.
+     *
+     * @return the title
+     */
+    @Nullable
+    public String getTitle() {
+        this.lock.readLock().lock();
+
+        String title;
+        try {
+            title = this.title;
+        } finally {
+            this.lock.readLock().unlock();
+        }
+
+        return title;
     }
 
     /**
@@ -149,6 +172,8 @@ public final class HypixelScoreboard {
             if (objective == null) {
                 return;
             }
+
+            this.title = objective.getDisplayName().getString();
 
             Collection<PlayerScoreEntry> scores = scoreboard.listPlayerScores(objective);
             for (PlayerScoreEntry score : scores) {
