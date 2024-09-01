@@ -20,16 +20,14 @@ public final class PKSimHUDOverlay {
 
     private final Map<PotionBuffType, PotionBuff> potionBuffs = new EnumMap<>(PotionBuffType.class);
 
-    private final MEHClient mod;
     private final PKSim3Feature feature;
 
-    public PKSimHUDOverlay(MEHClient mod, PKSim3Feature feature) {
-        this.mod = mod;
+    public PKSimHUDOverlay(PKSim3Feature feature) {
         this.feature = feature;
     }
 
     public void render(GuiGraphics graphics, @SuppressWarnings("unused") DeltaTracker delta) {
-        if (!mod.isConnectedToHypixel() || !feature.isOnPKSim3() || !feature.isEnabled()) {
+        if (!feature.isEnabled() || !feature.isOnPKSim3()) {
             return;
         }
 
@@ -77,7 +75,7 @@ public final class PKSimHUDOverlay {
     }
 
     public void tick(@SuppressWarnings("unused") Minecraft client) {
-        if (!mod.isConnectedToHypixel() || !feature.isOnPKSim3() || !feature.isEnabled()) {
+        if (!feature.isEnabled() || !feature.isOnPKSim3()) {
             return;
         }
 

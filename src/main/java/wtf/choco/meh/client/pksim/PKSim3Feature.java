@@ -48,8 +48,8 @@ public final class PKSim3Feature extends Feature {
     public PKSim3Feature(MEHClient mod) {
         super(mod, MEHConfig::isParkourSimulatorEnabled);
 
-        this.hudOverlay = new PKSimHUDOverlay(mod, this);
-        this.titleNotificationHandler = new TitleNotificationHandler(mod, this);
+        this.hudOverlay = new PKSimHUDOverlay(this);
+        this.titleNotificationHandler = new TitleNotificationHandler(this);
     }
 
     @Override
@@ -263,6 +263,7 @@ public final class PKSim3Feature extends Feature {
         return false;
     }
 
+    @SuppressWarnings("unused")
     private boolean onChatMessage(Component message) {
         return true; // TODO: Hide unnecessary notifications (like level up notifications)
     }

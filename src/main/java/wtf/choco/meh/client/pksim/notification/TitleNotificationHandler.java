@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 
 import org.jetbrains.annotations.Nullable;
 
-import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.event.ClientTitleEvents;
 import wtf.choco.meh.client.pksim.PKSim3Feature;
 
@@ -26,11 +25,9 @@ public final class TitleNotificationHandler {
 
     private final IntSet unhandleableHashes = new IntOpenHashSet();
 
-    private final MEHClient mod;
     private final PKSim3Feature feature;
 
-    public TitleNotificationHandler(MEHClient mod, PKSim3Feature feature) {
-        this.mod = mod;
+    public TitleNotificationHandler(PKSim3Feature feature) {
         this.feature = feature;
     }
 
@@ -40,7 +37,7 @@ public final class TitleNotificationHandler {
 
     @SuppressWarnings("unused")
     private boolean onRenderTitle(Component title, @Nullable Component subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks, int titleTicks) {
-        if (!mod.isConnectedToHypixel() || !feature.isEnabled() || !feature.isOnPKSim3()) {
+        if (!feature.isEnabled() || !feature.isOnPKSim3()) {
             return true;
         }
 
