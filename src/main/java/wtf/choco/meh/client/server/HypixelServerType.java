@@ -3,6 +3,8 @@ package wtf.choco.meh.client.server;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.network.chat.Component;
+
 public enum HypixelServerType {
 
     MAIN_LOBBY("HYPIXEL"),
@@ -20,8 +22,8 @@ public enum HypixelServerType {
     PROTOTYPE("PROTOTYPE"),
     SKYBLOCK("SKYBLOCK"),
     SKYWARS("SKYWARS"),
-    SMASH_HEROS("SMASH HEROES"),
-    SMP, // TODO: I don't actually know what this one is! :)
+    SMASH_HEROES("SMASH HEROES"),
+    SMP, // No scoreboard
     TNT_GAMES("THE TNT GAMES"),
     UHC("UHC CHAMPIONS"),
     WARLORDS("WARLORDS"),
@@ -40,6 +42,7 @@ public enum HypixelServerType {
         }
     }
 
+    private String translationKey;
     private final String scoreboardTitle;
 
     private HypixelServerType(String scoreboardTitle) {
@@ -53,6 +56,22 @@ public enum HypixelServerType {
 
     public String getScoreboardTitle() {
         return scoreboardTitle;
+    }
+
+    private String getOrCreateTranslationKey() {
+        if (translationKey == null) {
+            this.translationKey = "meh.hypixel.server." + name().toLowerCase();
+        }
+
+        return translationKey;
+    }
+
+    public String getTranslationKey() {
+        return getOrCreateTranslationKey();
+    }
+
+    public Component getDisplayName() {
+        return Component.translatable(getTranslationKey());
     }
 
     public static HypixelServerType getByScoreboardTitle(String scoreboardTitle) {
