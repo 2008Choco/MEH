@@ -5,34 +5,37 @@ import java.util.Map;
 
 public enum HypixelServerType {
 
-    // TODO: Define scoreboard titles
-    MAIN_LOBBY,
-    ARCADE,
-    BEDWARS,
-    BLITZ_SURVIVAL_GAMES,
-    BUILD_BATTLE,
-    CLASSIC_GAMES,
-    COPS_AND_CRIMS,
-    DUELS,
-    HOUSING,
-    MEGA_WALLS,
-    MURDER_MYSTERY,
-    PIT,
-    PROTOTYPE,
-    SKYBLOCK,
-    SKYWARS,
-    SMASH_HEROS,
-    SMP,
-    TNT_GAMES,
-    UHC,
-    WARLORDS,
-    WOOL_GAMES,
+    MAIN_LOBBY("HYPIXEL"),
+    ARCADE("ARCADE GAMES"),
+    BEDWARS("BED WARS"),
+    BLITZ_SURVIVAL_GAMES("BLITZ SG"),
+    BUILD_BATTLE("BUILD BATTLE"),
+    CLASSIC_GAMES("CLASSIC GAMES"),
+    COPS_AND_CRIMS("COPS AND CRIMS"),
+    DUELS("DUELS"),
+    HOUSING("HOUSING"),
+    MEGA_WALLS("MEGA WALLS"),
+    MURDER_MYSTERY("MURDER MYSTERY"),
+    PIT("THE HYPIXEL PIT"),
+    PROTOTYPE("PROTOTYPE"),
+    SKYBLOCK("SKYBLOCK"),
+    SKYWARS("SKYWARS"),
+    SMASH_HEROS("SMASH HEROES"),
+    SMP, // TODO: I don't actually know what this one is! :)
+    TNT_GAMES("THE TNT GAMES"),
+    UHC("UHC CHAMPIONS"),
+    WARLORDS("WARLORDS"),
+    WOOL_GAMES("WOOL GAMES"),
     UNKNOWN;
 
     private static final Map<String, HypixelServerType> BY_SCOREBOARD_TITLE = new HashMap<>();
 
     static {
         for (HypixelServerType type : values()) {
+            if (type.scoreboardTitle == null) {
+                continue;
+            }
+
             BY_SCOREBOARD_TITLE.put(type.scoreboardTitle.toUpperCase(), type);
         }
     }
