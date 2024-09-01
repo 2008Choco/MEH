@@ -45,6 +45,7 @@ public final class HypixelServerState {
     private void onDisconnectFromServer(ClientPacketListener handler, Minecraft minecraft) {
         this.connectedToHypixel = false;
         this.setHypixelScoreboard(null);
+        this.hypixelServerType = HypixelServerType.UNKNOWN;
     }
 
     private void onRefreshScoreboard(HypixelScoreboard scoreboard) {
