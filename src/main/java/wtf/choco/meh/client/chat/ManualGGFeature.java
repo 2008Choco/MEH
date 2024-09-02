@@ -40,7 +40,7 @@ public final class ManualGGFeature extends Feature {
         }
 
         // Listen for releases of the G key
-        if (key != InputConstants.KEY_G || action != InputConstants.RELEASE) {
+        if (key != InputConstants.KEY_G || action != InputConstants.PRESS) {
             return true;
         }
 
