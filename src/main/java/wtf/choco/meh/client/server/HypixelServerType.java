@@ -75,7 +75,7 @@ public enum HypixelServerType {
     }
 
     public static HypixelServerType getByScoreboardTitle(String scoreboardTitle) {
-        return BY_SCOREBOARD_TITLE.getOrDefault(scoreboardTitle.toUpperCase(), UNKNOWN);
+        return scoreboardTitle != null ? BY_SCOREBOARD_TITLE.getOrDefault(scoreboardTitle.toUpperCase(), UNKNOWN) : UNKNOWN;
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ServerData;
@@ -49,7 +50,8 @@ public final class HypixelServerState {
     }
 
     private void onRefreshScoreboard(HypixelScoreboard scoreboard) {
-        this.hypixelServerType = HypixelServerType.getByScoreboardTitle(scoreboard.getTitle());
+        String title = ChatFormatting.stripFormatting(scoreboard.getTitle());
+        this.hypixelServerType = HypixelServerType.getByScoreboardTitle(title);
     }
 
     public boolean isConnectedToHypixel() {
