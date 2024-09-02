@@ -28,6 +28,8 @@ import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
 public final class ChatChannelsFeature extends Feature {
 
+    static boolean dontSendToChannel = false;
+
     private static final int DEFAULT_CHAT_BOX_MAX_LENGTH = 256;
 
     /*
@@ -79,7 +81,7 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     private boolean onAllowOutgoingChat(String message) {
-        if (!isEnabled()) {
+        if (!isEnabled() || dontSendToChannel) {
             return true;
         }
 

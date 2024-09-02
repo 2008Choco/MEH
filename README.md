@@ -13,6 +13,11 @@ An extremely primitive chat channel management system. Create and use channels t
 - **Switch to Previous Channel:** Ctrl + Shift + Tab (with chat screen open)
 - **Delete Current Channel:** Ctrl + Minus (with chat screen open)
 
+### Manual GG
+A feature for those that feel "auto gg" are disingenuous or too robotic, this feature still allows you to write "gg" in chat after a game by simply pressing the 'G' key twice.
+
+Why? In order to send a "gg" normally, you need to open your chat (with 'T'), type "gg", then press Enter to send the message, which for right-handed people means taking your hand off of the mouse. This just seems like unnecessary gymnastics, so let's skip the 'T' and 'Enter' keys and type gg instead!
+
 ## Dependencies & Integration
 - Minecraft 1.21 (consequently, Java 21)
 - Fabric Loader (version 0.15.x or above)

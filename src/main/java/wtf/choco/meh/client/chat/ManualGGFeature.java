@@ -40,7 +40,7 @@ public final class ManualGGFeature extends Feature {
         }
 
         // Listen for releases of the G key
-        if (key != InputConstants.KEY_G || action != InputConstants.RELEASE) {
+        if (key != InputConstants.KEY_G || action != InputConstants.PRESS) {
             return true;
         }
 
@@ -63,7 +63,9 @@ public final class ManualGGFeature extends Feature {
             return true;
         }
 
+        ChatChannelsFeature.dontSendToChannel = true; // "gg" should always be sent to the global chat channel!
         minecraft.player.connection.sendChat("gg");
+        ChatChannelsFeature.dontSendToChannel = false;
         this.lastReleasedG = 0L;
         this.lastSaidGG = now;
         return true;
