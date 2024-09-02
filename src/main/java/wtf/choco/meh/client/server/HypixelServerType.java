@@ -1,10 +1,15 @@
 package wtf.choco.meh.client.server;
 
+import com.google.common.base.Preconditions;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.network.chat.Component;
 
+/**
+ * A type of server on the Hypixel network.
+ */
 public enum HypixelServerType {
 
     MAIN_LOBBY("HYPIXEL"),
@@ -54,7 +59,15 @@ public enum HypixelServerType {
         this(null);
     }
 
+    /**
+     * Get the (unformatted) title used on the scoreboard of this server type.
+     *
+     * @return the scoreboard title
+     *
+     * @throws IllegalStateException if this server type does not have a scoreboard title
+     */
     public String getScoreboardTitle() {
+        Preconditions.checkState(scoreboardTitle != null, "This server type does not have a scoreboard title!");
         return scoreboardTitle;
     }
 
@@ -66,14 +79,32 @@ public enum HypixelServerType {
         return translationKey;
     }
 
+    /**
+     * Get the translation key for this server type's display name.
+     *
+     * @return the translation key
+     */
     public String getTranslationKey() {
         return getOrCreateTranslationKey();
     }
 
+    /**
+     * Get the display name for this server type.
+     *
+     * @return the display name
+     */
     public Component getDisplayName() {
         return Component.translatable(getTranslationKey());
     }
 
+    /**
+     * Get a {@link HypixelServerType} from a scoreboard title. The passed scoreboard title is case
+     * insensitive, but is sensitive to formatting. The scoreboard title should be unformatted.
+     *
+     * @param scoreboardTitle the scoreboard title
+     *
+     * @return the associated server type, or {@link #UNKNOWN} if unknown
+     */
     public static HypixelServerType getByScoreboardTitle(String scoreboardTitle) {
         return scoreboardTitle != null ? BY_SCOREBOARD_TITLE.getOrDefault(scoreboardTitle.toUpperCase(), UNKNOWN) : UNKNOWN;
     }
