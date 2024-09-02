@@ -63,7 +63,9 @@ public final class ManualGGFeature extends Feature {
             return true;
         }
 
+        ChatChannelsFeature.dontSendToChannel = true; // "gg" should always be sent to the global chat channel!
         minecraft.player.connection.sendChat("gg");
+        ChatChannelsFeature.dontSendToChannel = false;
         this.lastReleasedG = 0L;
         this.lastSaidGG = now;
         return true;
