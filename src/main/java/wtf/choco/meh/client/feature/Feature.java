@@ -13,7 +13,7 @@ import wtf.choco.meh.client.server.HypixelServerState;
  */
 public abstract class Feature {
 
-    private boolean registeredEventHandlers = false;
+    private boolean initialized = false;
 
     private final MEHClient mod;
     private final Predicate<MEHConfig> featureEnabled;
@@ -50,11 +50,11 @@ public abstract class Feature {
     /**
      * Register all event handlers required by this feature.
      */
-    public final void registerEventHandlers() {
-        Preconditions.checkState(!registeredEventHandlers, "Already registered event handlers. Cannot register again!");
+    public final void initialize() {
+        Preconditions.checkState(!initialized, "Already initialized. Cannot initialize again!");
 
         this.registerListeners();
-        this.registeredEventHandlers = true;
+        this.initialized = true;
     }
 
     /**

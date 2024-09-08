@@ -66,7 +66,7 @@ public final class FeatureManager {
     public void initializeFeatures() {
         Preconditions.checkState(!frozen, "FeatureManager frozen");
 
-        this.features.values().forEach(Feature::registerListeners);
+        this.features.values().forEach(Feature::initialize);
         this.frozen = true;
     }
 
