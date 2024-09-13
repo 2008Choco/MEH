@@ -4,7 +4,8 @@
     "compatibilityLevel": "JAVA_17",
     "mixins": [
         "ChatScreenAccessor",
-        "KeyboardHandlerMixin"
+        "KeyboardHandlerMixin",
+        "KeyMappingAccessor"
     ],
     "injectors": {
         "defaultRequire": 1

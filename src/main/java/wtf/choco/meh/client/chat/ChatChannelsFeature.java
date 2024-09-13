@@ -3,7 +3,6 @@ package wtf.choco.meh.client.chat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -55,7 +54,6 @@ public final class ChatChannelsFeature extends Feature {
     protected void registerListeners() {
         ClientSendMessageEvents.ALLOW_CHAT.register(this::onAllowOutgoingChat);
         ClientReceiveMessageEvents.GAME.register(this::onReceiveChatMessage);
-        ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
         ChatChannelEvents.SWITCH.register((from, to, reason) -> {
             Minecraft client = Minecraft.getInstance();
             this.ensureChatEditBoxMaxLength(client.screen, to);
@@ -150,11 +148,11 @@ public final class ChatChannelsFeature extends Feature {
         }
 
         if (Screen.hasControlDown()) {
-            if (key == GLFW.GLFW_KEY_TAB) {
+            if (key == MEHKeybinds.getRawKey(MEHKeybinds.KEY_SWITCH_CHAT_CHANNEL)) {
                 boolean next = (modifiers & GLFW.GLFW_MOD_SHIFT) == 0;
                 this.switchChannel(next);
                 return false;
-            } else if (key == GLFW.GLFW_KEY_MINUS) {
+            } else if (key == MEHKeybinds.getRawKey(MEHKeybinds.KEY_DELETE_CURRENT_CHAT_CHANNEL)) {
                 ChannelSelector channelSelector = getChannelSelector();
                 ChatChannel selectedChannel = channelSelector.getSelectedChannel();
                 if (!selectedChannel.isRemovable()) {
@@ -200,20 +198,6 @@ public final class ChatChannelsFeature extends Feature {
 
     private void onRenderChatScreen(Screen screen, GuiGraphics graphics, int screenX, int screenY, float delta) { // Exists only as a way to target with method reference
         this.onRenderChatScreen((ChatScreen) screen, graphics, screenX, screenY, delta);
-    }
-
-    private void onClientTick(Minecraft client) {
-        if (!isEnabled()) {
-            return;
-        }
-
-        while (MEHKeybinds.KEY_SWITCH_CHANNEL.consumeClick()) {
-            ChatChannel channel = switchChannel(!Screen.hasShiftDown());
-            if (channel != null) {
-                Component message = Component.translatable("meh.channel.switch", channel.getDisplayName(true));
-                client.player.sendSystemMessage(message);
-            }
-        }
     }
 
     private boolean isWritingCommand(ChatScreen screen) {

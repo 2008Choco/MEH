@@ -1,5 +1,7 @@
 {
-    "key.meh.switch_chat_channel": "Switch Chat Channel (Hypixel)",
+    "key.categories.meh": "Miscellaneous Enhancements for Hypixel",
+    "key.meh.switch_chat_channel": "Switch Chat Channel (Ctrl + ...)",
+    "key.meh.delete_current_chat_channel": "Delete Chat Channel (Ctrl + ...)",
     "meh.channel.switch": "Chat channel switched to: %s.",
     "meh.channel.new.msg": "Creating new chat channel for %s.",
     "meh.channel.all.name": "All",
