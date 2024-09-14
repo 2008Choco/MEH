@@ -197,8 +197,18 @@ public final class EmoteSelectorWidget implements Renderable {
         }
 
         if (key == InputConstants.KEY_RETURN) {
-            ((ChatScreenAccessor) chatScreen).getInput().insertText(getSelectedEmote().getInputText());
-            this.returnFocusToChatBox();
+            boolean keepOpen = Screen.hasShiftDown();
+            String text = getSelectedEmote().getInputText();
+            if (keepOpen) {
+                text += " ";
+            }
+
+            ((ChatScreenAccessor) chatScreen).getInput().insertText(text);
+
+            if (!keepOpen) {
+                this.returnFocusToChatBox();
+            }
+
             return;
         }
 
