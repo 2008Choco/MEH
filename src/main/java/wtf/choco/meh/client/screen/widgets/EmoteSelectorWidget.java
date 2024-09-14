@@ -184,7 +184,7 @@ public final class EmoteSelectorWidget implements Renderable {
 
     @SuppressWarnings("unused")
     public void onKeyPress(int key, int scancode, int modifiers) {
-        if (key == InputConstants.KEY_ESCAPE || (Screen.hasControlDown() && key == MEHKeybinds.getRawKey(MEHKeybinds.KEY_OPEN_EMOTE_SELECTOR))) {
+        if (key == InputConstants.KEY_ESCAPE || (Screen.hasControlDown() && key == MEHKeybinds.KEY_EMOTE_SELECTOR)) {
             this.returnFocusToChatBox();
             return;
         }

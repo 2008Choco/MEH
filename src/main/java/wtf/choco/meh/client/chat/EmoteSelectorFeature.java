@@ -49,7 +49,7 @@ public final class EmoteSelectorFeature extends Feature {
             return true;
         }
 
-        if (Screen.hasControlDown() && key == MEHKeybinds.getRawKey(MEHKeybinds.KEY_OPEN_EMOTE_SELECTOR) && !emoteSelector.isFocused()) {
+        if (Screen.hasControlDown() && key == MEHKeybinds.KEY_EMOTE_SELECTOR && !emoteSelector.isFocused()) {
             this.emoteSelector.takeFocus(screen);
             return false;
         }

@@ -148,11 +148,11 @@ public final class ChatChannelsFeature extends Feature {
         }
 
         if (Screen.hasControlDown()) {
-            if (key == MEHKeybinds.getRawKey(MEHKeybinds.KEY_SWITCH_CHAT_CHANNEL)) {
+            if (key == MEHKeybinds.KEY_SWITCH_CHANNEL) {
                 boolean next = (modifiers & GLFW.GLFW_MOD_SHIFT) == 0;
                 this.switchChannel(next);
                 return false;
-            } else if (key == MEHKeybinds.getRawKey(MEHKeybinds.KEY_DELETE_CURRENT_CHAT_CHANNEL)) {
+            } else if (key == MEHKeybinds.KEY_DELETE_CHANNEL) {
                 ChannelSelector channelSelector = getChannelSelector();
                 ChatChannel selectedChannel = channelSelector.getSelectedChannel();
                 if (!selectedChannel.isRemovable()) {
