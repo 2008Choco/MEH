@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
+import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.ManualGGFeature;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.feature.Feature;
@@ -37,6 +38,7 @@ public final class MEHClient implements ClientModInitializer {
         config = AutoConfig.getConfigHolder(MEHConfig.class);
 
         this.featureManager.addFeature(ChatChannelsFeature.class, ChatChannelsFeature::new);
+        this.featureManager.addFeature(EmoteSelectorFeature.class, EmoteSelectorFeature::new);
         this.featureManager.addFeature(ManualGGFeature.class, ManualGGFeature::new);
 
         this.hypixelServerState.initialize();

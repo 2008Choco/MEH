@@ -27,6 +27,13 @@ public final class MEHKeybinds {
             CATEGORY_MEH
     ));
 
+    public static final KeyMapping KEY_OPEN_EMOTE_SELECTOR = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+            "key.meh.open_emote_selector",
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_E,
+            CATEGORY_MEH
+    ));
+
     private MEHKeybinds() { }
 
     public static void init() { }
