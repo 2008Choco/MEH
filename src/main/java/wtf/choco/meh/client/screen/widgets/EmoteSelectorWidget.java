@@ -110,6 +110,8 @@ public final class EmoteSelectorWidget implements Renderable {
         int dy = y + WIDGET_HEIGHT;
         int headerY = y - WIDGET_HEADER_HEIGHT;
 
+        minecraft.getProfiler().push("emoteSelectorWidget");
+
         graphics.fill(x, y, dx, dy, WIDGET_BACKGROUND_COLOR);
         graphics.fill(x, headerY, dx, y, WIDGET_HEADER_COLOR);
 
@@ -148,6 +150,8 @@ public final class EmoteSelectorWidget implements Renderable {
         }
 
         stack.popPose();
+
+        minecraft.getProfiler().pop();
     }
 
     private void renderEmoteCell(GuiGraphics graphics, PoseStack stack, ChatEmote emote, boolean selected) {
@@ -155,6 +159,7 @@ public final class EmoteSelectorWidget implements Renderable {
         graphics.fill(0, 0, CELL_SIZE, CELL_SIZE, color);
 
         Minecraft minecraft = Minecraft.getInstance();
+        minecraft.getProfiler().push("emoteCell");
         stack.pushPose();
         stack.translate(CELL_SIZE / 2, CELL_SIZE / 2, 0);
 
@@ -180,6 +185,8 @@ public final class EmoteSelectorWidget implements Renderable {
 
             stack.popPose();
         }
+
+        minecraft.getProfiler().pop();
     }
 
     @SuppressWarnings("unused")
