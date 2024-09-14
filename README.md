@@ -18,6 +18,17 @@ A feature for those that feel "auto gg" are disingenuous or too robotic, this fe
 
 Why? In order to send a "gg" normally, you need to open your chat (with 'T'), type "gg", then press Enter to send the message, which for right-handed people means taking your hand off of the mouse. This just seems like unnecessary gymnastics, so let's skip the 'T' and 'Enter' keys and type gg instead!
 
+### Emote Selector
+Hypixel's server has a server-sided text parser which will convert text such as "<3" or ":sloth:" into ASCII emotes and insert them into player chat messages. The only way to know what these emotes are is with the "/emotes" command, which is a bit out of the way and relies on the player's ability to remember these exact emote names or sequences.
+
+The emote selector lists all of Hypixel's server emotes and allows the user to navigate and select the desired emote using arrow keys, then inserting it into their message. The UI is clean and allows the user to see exactly what emote they're using before they use it.
+
+**Controls:**
+- **Open Emote Selector:** Ctrl + E (with chat screen open)
+- **Close Emote Selector:** Ctrl + E, or Escape
+- **Navigate Selected Emote:** Left, Up, Right, Down Arrows
+- **Insert Selected Emote:** Enter
+
 ## Dependencies & Integration
 - Minecraft 1.21 (consequently, Java 21)
 - Fabric Loader (version 0.15.x or above)
