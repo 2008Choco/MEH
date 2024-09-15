@@ -226,7 +226,7 @@ public final class EmoteSelectorWidget implements Renderable {
 
         if (selectedEmoteIndex < minEmoteIndex) {
             this.scrollOffset--;
-        } else if (selectedEmoteIndex > maxEmoteIndex) {
+        } else if (selectedEmoteIndex >= maxEmoteIndex) {
             this.scrollOffset++;
         }
     }
