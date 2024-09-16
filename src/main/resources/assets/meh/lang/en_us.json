@@ -65,6 +65,8 @@
     "text.autoconfig.meh.option.enabled_features.chat_channels.@Tooltip": "Organize your chat better with simple chat channels.",
     "text.autoconfig.meh.option.enabled_features.manual_gg": "Manual GG",
     "text.autoconfig.meh.option.enabled_features.manual_gg.@Tooltip": "Write \"gg\" in chat after pressing the G key twice.\nOpening chat is not necessary!",
+    "text.autoconfig.meh.option.enabled_features.emote_selector": "Emote Selector",
+    "text.autoconfig.meh.option.enabled_features.emote_selector.@Tooltip": "A visual selection widget for Hypixel's emote system.",
     "text.autoconfig.meh.option.auto_switch_on_new_message": "Auto Switch on New Message",
     "text.autoconfig.meh.option.auto_switch_on_new_message.@Tooltip": "When receiving a new private message, automatically switch to the newly created channel (if your chat is closed).",
     "text.autoconfig.meh.option.known_channels": "Known Channels",
