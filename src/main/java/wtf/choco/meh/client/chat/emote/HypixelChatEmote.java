@@ -16,7 +16,7 @@ public enum HypixelChatEmote implements ChatEmote {
     STAR(":star:", "✮", GOLD),
     YES(":yes:", "✔", GREEN),
     NO(":no:", "✖", RED),
-    JAVA(":java", "☕", AQUA),
+    JAVA(":java:", "☕", AQUA),
     ARROW(":arrow:", "➜", YELLOW),
     SHRUG(":shrug:", "¯\\_(ツ)_/¯", YELLOW),
     TABLE_FLIP(":tableflip:", literal("(╯°□°）╯").withStyle(RED)
