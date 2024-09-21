@@ -5,7 +5,6 @@
     "mixins": [
         "ChatScreenAccessor",
         "KeyboardHandlerMixin",
-        "KeyMappingAccessor",
         "ScreenAccessor"
     ],
     "injectors": {
