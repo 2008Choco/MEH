@@ -13,6 +13,7 @@ import wtf.choco.meh.client.chat.ChatChannelsFeature;
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.ManualGGFeature;
 import wtf.choco.meh.client.config.MEHConfig;
+import wtf.choco.meh.client.event.impl.ChatListener;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.feature.FeatureManager;
 import wtf.choco.meh.client.server.HypixelServerState;
@@ -36,6 +37,8 @@ public final class MEHClient implements ClientModInitializer {
 
         AutoConfig.register(MEHConfig.class, GsonConfigSerializer::new);
         config = AutoConfig.getConfigHolder(MEHConfig.class);
+
+        ChatListener.initialize();
 
         this.featureManager.addFeature(ChatChannelsFeature.class, ChatChannelsFeature::new);
         this.featureManager.addFeature(EmoteSelectorFeature.class, EmoteSelectorFeature::new);

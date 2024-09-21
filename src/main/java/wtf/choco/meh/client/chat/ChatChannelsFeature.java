@@ -1,13 +1,10 @@
 package wtf.choco.meh.client.chat;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.OptionalLong;
 
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -22,6 +19,7 @@ import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.MEHKeybinds;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.ChatChannelEvents;
+import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
@@ -30,13 +28,6 @@ public final class ChatChannelsFeature extends Feature {
     static boolean dontSendToChannel = false;
 
     private static final int DEFAULT_CHAT_BOX_MAX_LENGTH = 256;
-
-    /*
-     * From [ADMIN] 2008Choco:
-     * To [MVP++] Player:
-     * From UnrankedPlayer:
-     */
-    private static final Pattern PATTERN_MESSAGE = Pattern.compile("^(?<direction>From|To)(?:\\s\\[.+\\])?\\s(?<name>\\w+):");
 
     private final ChannelSelector channelSelector = new ChannelSelector();
 
@@ -53,7 +44,8 @@ public final class ChatChannelsFeature extends Feature {
     @Override
     protected void registerListeners() {
         ClientSendMessageEvents.ALLOW_CHAT.register(this::onAllowOutgoingChat);
-        ClientReceiveMessageEvents.GAME.register(this::onReceiveChatMessage);
+        HypixelServerEvents.PRIVATE_MESSAGE_RECEIVED.register(this::onPrivateMessageReceived);
+        HypixelServerEvents.PRIVATE_MESSAGE_SENT.register(this::onPrivateMessageSent);
         ChatChannelEvents.SWITCH.register((from, to, reason) -> {
             Minecraft client = Minecraft.getInstance();
             this.ensureChatEditBoxMaxLength(client.screen, to);
@@ -93,24 +85,14 @@ public final class ChatChannelsFeature extends Feature {
         return false;
     }
 
-    private void onReceiveChatMessage(Component message, boolean actionBar) {
-        if (actionBar || !isEnabled()) {
-            return;
-        }
-
-        String stringMessage = ChatFormatting.stripFormatting(message.getString());
-        Matcher matcher = PATTERN_MESSAGE.matcher(stringMessage);
-        if (!matcher.find()) {
+    @SuppressWarnings("unused") // rank, message, lastCommunicated
+    private void onPrivateMessage(String username, String rank, String message, OptionalLong lastCommunicated, ChatChannelEvents.Switch.Reason switchReason) {
+        if (!isEnabled()) {
             return;
         }
 
         Minecraft minecraft = Minecraft.getInstance();
-        String playerName = matcher.group("name");
-        if (playerName.equals(minecraft.player.getName().getString())) {
-            return;
-        }
-
-        if (channelSelector.exists(playerName)) {
+        if (username.equals(minecraft.player.getName().getString()) || channelSelector.exists(username)) {
             return;
         }
 
@@ -120,8 +102,8 @@ public final class ChatChannelsFeature extends Feature {
         int b = (int) (((random.nextFloat() / 2.0F) + 0.5F) * 0xFF);
         int randomColor = ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
 
-        Component channelDisplayName = Component.literal(playerName);
-        ChatChannel channel = new ChatChannel(playerName, channelDisplayName, randomColor, "msg " + playerName, true);
+        Component channelDisplayName = Component.literal(username);
+        ChatChannel channel = new ChatChannel(username, channelDisplayName, randomColor, "msg " + username, true);
 
         if (!ChatChannelEvents.CREATE.invoker().onCreateChatChannel(channel)) {
             return;
@@ -133,12 +115,20 @@ public final class ChatChannelsFeature extends Feature {
 
         // If the chat window isn't open, we'll automatically switch to the newly created channel
         if (MEHClient.getConfig().isAutoSwitchOnNewMessage() && !(minecraft.screen instanceof ChatScreen)) {
-            boolean incoming = matcher.group("direction").equals("From");
-            ChatChannelEvents.Switch.Reason reason = incoming ? ChatChannelEvents.Switch.Reason.AUTOMATIC_INCOMING : ChatChannelEvents.Switch.Reason.AUTOMATIC_OUTGOING;
-            if (ChatChannelEvents.SWITCH.invoker().onSwitchChatChannel(channelSelector.getSelectedChannel(), channel, reason)) {
-                this.channelSelector.selectChannel(newChannelIndex);
+            if (!ChatChannelEvents.SWITCH.invoker().onSwitchChatChannel(channelSelector.getSelectedChannel(), channel, switchReason)) {
+                return;
             }
+
+            this.channelSelector.selectChannel(newChannelIndex);
         }
+    }
+
+    private void onPrivateMessageReceived(String username, String rank, String message, OptionalLong lastCommunicated) {
+        this.onPrivateMessage(username, rank, message, lastCommunicated, ChatChannelEvents.Switch.Reason.AUTOMATIC_INCOMING);
+    }
+
+    private void onPrivateMessageSent(String username, String rank, String message, OptionalLong lastCommunicated) {
+        this.onPrivateMessage(username, rank, message, lastCommunicated, ChatChannelEvents.Switch.Reason.AUTOMATIC_OUTGOING);
     }
 
     @SuppressWarnings("unused")
