@@ -17,6 +17,10 @@ loom {
     }
 }
 
+fabricApi {
+    configureDataGeneration()
+}
+
 repositories {
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
@@ -56,4 +60,8 @@ jar {
     from("LICENSE") {
         rename { "${it}_${project.base.archivesName.get()}"}
     }
+}
+
+tasks.named("build") {
+    dependsOn("runDatagen")
 }

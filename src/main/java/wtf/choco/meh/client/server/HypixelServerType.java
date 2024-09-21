@@ -84,7 +84,7 @@ public enum HypixelServerType {
      *
      * @return the translation key
      */
-    public String getTranslationKey() {
+    public String getDescriptionKey() {
         return getOrCreateTranslationKey();
     }
 
@@ -94,7 +94,7 @@ public enum HypixelServerType {
      * @return the display name
      */
     public Component getDisplayName() {
-        return Component.translatable(getTranslationKey());
+        return Component.translatable(getDescriptionKey());
     }
 
     /**

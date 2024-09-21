@@ -9,10 +9,13 @@
     ],
     "license": "MIT",
     "icon": "assets/meh/icon.png",
-    "environment": "client",
+    "environment": "*",
     "entrypoints": {
         "client": [
             "wtf.choco.meh.client.MEHClient"
+        ],
+        "fabric-datagen": [
+            "wtf.choco.meh.datagen.MEHDataGenerator"
         ],
         "modmenu": [
             "wtf.choco.meh.client.config.MEHModMenuIntegration"
