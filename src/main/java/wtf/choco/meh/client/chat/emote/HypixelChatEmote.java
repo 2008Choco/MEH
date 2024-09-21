@@ -32,7 +32,7 @@ public enum HypixelChatEmote implements ChatEmote {
             .append(literal("_").withStyle(YELLOW))
             .append(literal("☉").withStyle(AQUA))
     ),
-    TYPING(":typing", literal("✎").withStyle(YELLOW)
+    TYPING(":typing:", literal("✎").withStyle(YELLOW)
             .append(literal("...").withStyle(GOLD))
     ),
     MATHS(":maths:", literal("√").withStyle(GREEN)
