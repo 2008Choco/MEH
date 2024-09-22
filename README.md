@@ -1,5 +1,5 @@
 # Miscellaneous Enhancements for Hypixel
-No seriously. Meh. This is a Fabric mod for Minecraft 1.21 that introduces some quality of life and convenience features when playing on the Hypixel server specifically. There's no true goal for this mod other than quality of life. This mod is maintained freely by [Choco](https://github.com/2008Choco) and includes features that just felt useful.
+No seriously. Meh. This is a Fabric mod for Minecraft 1.21.1 that introduces some quality of life and convenience features when playing on the Hypixel server specifically. There's no true goal for this mod other than quality of life. This mod is maintained freely by [Choco](https://github.com/2008Choco) and includes features that just felt useful.
 
 This project is licensed under the MIT license.
 
@@ -30,9 +30,9 @@ The emote selector lists all of Hypixel's server emotes and allows the user to n
 - **Insert Selected Emote:** Enter
 
 ## Dependencies & Integration
-- Minecraft 1.21 (consequently, Java 21)
-- Fabric Loader (version 0.15.x or above)
-- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) (version 0.100.x or above)
+- Minecraft 1.21.1 (consequently, Java 21)
+- Fabric Loader (version 0.16 or above)
+- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) (version 0.104.x or above)
 - [Cloth Config API](https://modrinth.com/mod/cloth-config/) (v15 and above)
 - _(Optional)_ [Mod Menu](https://modrinth.com/mod/modmenu/) (v11 and above)
   - Provides a configuration screen in the Mod Menu list
