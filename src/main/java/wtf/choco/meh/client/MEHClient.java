@@ -5,6 +5,7 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.ManualGGFeature;
+import wtf.choco.meh.client.command.ClientTestCommand;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.impl.ChatListener;
 import wtf.choco.meh.client.feature.Feature;
@@ -48,6 +50,8 @@ public final class MEHClient implements ClientModInitializer {
 
         this.hypixelServerState.initialize();
         this.featureManager.initializeFeatures();
+
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientTestCommand.register(dispatcher));
     }
 
     public HypixelServerState getHypixelServerState() {

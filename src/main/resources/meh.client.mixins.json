@@ -3,9 +3,11 @@
     "package": "wtf.choco.meh.client.mixin",
     "compatibilityLevel": "JAVA_17",
     "mixins": [
+        "AbstractContainerMenuMixin",
         "ChatScreenAccessor",
         "ItemOverridesMixin",
         "KeyboardHandlerMixin",
+        "MultiPlayerGameModeMixin",
         "ScreenAccessor"
     ],
     "injectors": {

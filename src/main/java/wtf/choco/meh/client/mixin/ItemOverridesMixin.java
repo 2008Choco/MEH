@@ -1,7 +1,6 @@
 package wtf.choco.meh.client.mixin;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.resources.model.BakedModel;
@@ -15,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.model.CustomModelOverrides;
 import wtf.choco.meh.client.model.ModelOverride;
 
@@ -36,11 +34,6 @@ public class ItemOverridesMixin {
 
             ModelManager modelManager = Minecraft.getInstance().getModelManager();
             BakedModel model = modelManager.getModel(override.getModelLocation());
-
-            // TODO: REMOVE
-            if (Screen.hasControlDown()) {
-                MEHClient.LOGGER.info(override.getModelLocation() + " for item " + itemStack.getItem() + " (found? " + model + ")");
-            }
 
             callback.setReturnValue(model != null ? model : modelManager.getMissingModel());
         }
