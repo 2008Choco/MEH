@@ -43,7 +43,7 @@ public abstract class Feature {
      *
      * @return true if enabled, false if not enabled or not connected to Hypixel
      */
-    public final boolean isEnabled() {
+    public boolean isEnabled() {
         return mod.getHypixelServerState().isConnectedToHypixel() && featureEnabled.test(MEHClient.getConfig());
     }
 

@@ -16,6 +16,7 @@ import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.impl.ChatListener;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.feature.FeatureManager;
+import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class MEHClient implements ClientModInitializer {
@@ -43,6 +44,7 @@ public final class MEHClient implements ClientModInitializer {
         this.featureManager.addFeature(ChatChannelsFeature.class, ChatChannelsFeature::new);
         this.featureManager.addFeature(EmoteSelectorFeature.class, EmoteSelectorFeature::new);
         this.featureManager.addFeature(ManualGGFeature.class, ManualGGFeature::new);
+        this.featureManager.addFeature(RetexturedFishingRodsFeature.class, RetexturedFishingRodsFeature::new);
 
         this.hypixelServerState.initialize();
         this.featureManager.initializeFeatures();

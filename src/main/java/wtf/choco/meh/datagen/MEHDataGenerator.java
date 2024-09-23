@@ -11,6 +11,7 @@ public final class MEHDataGenerator implements DataGeneratorEntrypoint {
         Pack pack = generator.createPack();
 
         pack.addProvider(MEHLanguageProvider::new);
+        pack.addProvider(MEHItemModelProvider::new);
     }
 
 }

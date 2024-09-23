@@ -39,6 +39,10 @@ public final class MEHConfig implements ConfigData {
         return enabled_features.emote_selector;
     }
 
+    public boolean isRetexturedFishingRodsEnabled() {
+        return enabled_features.main_lobby_fishing.retextured_fishing_rods;
+    }
+
     public boolean isAutoSwitchOnNewMessage() {
         return auto_switch_on_new_message;
     }
@@ -70,6 +74,9 @@ public final class MEHConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         private boolean manual_gg = true;
+
+        @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+        private MainLobbyFishing main_lobby_fishing = new MainLobbyFishing();
 
     }
 
@@ -110,6 +117,13 @@ public final class MEHConfig implements ConfigData {
         public String getCommandPrefix() {
             return command_prefix;
         }
+
+    }
+
+    public static final class MainLobbyFishing {
+
+        @ConfigEntry.Gui.Tooltip
+        private boolean retextured_fishing_rods = true;
 
     }
 

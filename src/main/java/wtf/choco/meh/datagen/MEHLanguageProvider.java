@@ -10,7 +10,7 @@ import wtf.choco.meh.client.MEHKeybinds;
 import wtf.choco.meh.client.chat.emote.HypixelChatEmote;
 import wtf.choco.meh.client.server.HypixelServerType;
 
-public class MEHLanguageProvider extends FabricLanguageProvider {
+class MEHLanguageProvider extends FabricLanguageProvider {
 
     protected MEHLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<Provider> registryLookup) {
         super(dataOutput, "en_us", registryLookup);
@@ -83,6 +83,8 @@ public class MEHLanguageProvider extends FabricLanguageProvider {
         this.addSetting(translation, "enabled_features.chat_channels", "Chat Channels", "Organize your chat better with simple chat channels.");
         this.addSetting(translation, "enabled_features.manual_gg", "Manual GG", "Write \"gg\" in chat after pressing the G key twice.\nOpening chat is not necessary!");
         this.addSetting(translation, "enabled_features.emote_selector", "Emote Selector", "A visual selection widget for Hypixel's emote system.");
+        this.addSetting(translation, "enabled_features.main_lobby_fishing", "Main Lobby Fishing");
+        this.addSetting(translation, "enabled_features.main_lobby_fishing.retextured_fishing_rods", "Retextured Fishing Rods", "Fishing rods used in main lobby fishing will use custom textures.");
         this.addSetting(translation, "auto_switch_on_new_message", "Auto Switch on New Message", "When receiving a new private message, automatically switch\nto the newly created channel (if your chat is closed).");
         this.addSetting(translation, "known_channels", "Known Channels", "A list of channels loaded into the client by default. Channels listed here are not removeable.");
         this.addSetting(translation, "KnownChannel", "Known Channel");

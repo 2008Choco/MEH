@@ -29,6 +29,17 @@ The emote selector lists all of Hypixel's server emotes and allows the user to n
 - **Navigate Selected Emote:** Left, Up, Right, Down Arrows
 - **Insert Selected Emote:** Enter
 
+### Main Lobby Fishing
+An assortment of enhancements to the main lobby fishing experience are made by this mod, including custom textures for the variety of fishing rods.
+
+![image](https://github.com/user-attachments/assets/3a919709-072d-4d96-9774-77bed5df51bd)
+
+> [!IMPORTANT]
+> This mod uses textures from the community-created [Fishers' Delight Resource Pack](https://hypixel.net/threads/5411511/) with permission from Apfelbastian! I do not claim copyright for ANY textures under the following directories:
+> - `src/main/resources/assets/meh/textures/item/fishing_rod/`
+>
+> Please download and use their resource pack if you enjoy main lobby fishing on Hypixel but aren't willing to use this mod :)
+
 ## Dependencies & Integration
 - Minecraft 1.21.1 (consequently, Java 21)
 - Fabric Loader (version 0.16 or above)
