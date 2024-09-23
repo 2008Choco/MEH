@@ -78,6 +78,7 @@ public class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(translation, HypixelServerType.WOOL_GAMES, "Wool Games");
         this.add(translation, HypixelServerType.UNKNOWN, "Unknown");
 
+        translation.add("text.autoconfig.meh.title", dataOutput.getModContainer().getMetadata().getName() + " Options");
         this.addSetting(translation, "enabled_features", "Enabled Features");
         this.addSetting(translation, "enabled_features.chat_channels", "Chat Channels", "Organize your chat better with simple chat channels.");
         this.addSetting(translation, "enabled_features.manual_gg", "Manual GG", "Write \"gg\" in chat after pressing the G key twice.\nOpening chat is not necessary!");
