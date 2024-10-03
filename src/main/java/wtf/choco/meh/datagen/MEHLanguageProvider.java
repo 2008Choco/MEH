@@ -8,6 +8,8 @@ import net.minecraft.core.HolderLookup.Provider;
 
 import wtf.choco.meh.client.MEHKeybinds;
 import wtf.choco.meh.client.chat.emote.HypixelChatEmote;
+import wtf.choco.meh.client.mnemonic.Mnemonic;
+import wtf.choco.meh.client.mnemonic.Mnemonics;
 import wtf.choco.meh.client.server.HypixelServerType;
 
 class MEHLanguageProvider extends FabricLanguageProvider {
@@ -78,6 +80,9 @@ class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(translation, HypixelServerType.WOOL_GAMES, "Wool Games");
         this.add(translation, HypixelServerType.UNKNOWN, "Unknown");
 
+        // Mnemonics
+        this.add(translation, Mnemonics.GG, "GG");
+
         translation.add("text.autoconfig.meh.title", dataOutput.getModContainer().getMetadata().getName() + " Options");
         this.addSetting(translation, "enabled_features", "Enabled Features");
         this.addSetting(translation, "enabled_features.chat_channels", "Chat Channels", "Organize your chat better with simple chat channels.");
@@ -105,6 +110,10 @@ class MEHLanguageProvider extends FabricLanguageProvider {
 
     private void add(TranslationBuilder translation, HypixelServerType server, String name) {
         translation.add(server.getDescriptionKey(), name);
+    }
+
+    private void add(TranslationBuilder translation, Mnemonic mnemonic, String name) {
+        translation.add(mnemonic.getDescriptionKey(), name);
     }
 
     private void addSetting(TranslationBuilder translation, String setting, String name) {

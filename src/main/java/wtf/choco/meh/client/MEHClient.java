@@ -20,7 +20,6 @@ import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.feature.FeatureManager;
 import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
 import wtf.choco.meh.client.mnemonic.MnemonicHandler;
-import wtf.choco.meh.client.mnemonic.Mnemonics;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class MEHClient implements ClientModInitializer {
@@ -41,9 +40,6 @@ public final class MEHClient implements ClientModInitializer {
         instance = this;
 
         MEHKeybinds.init();
-        MEHRegistries.init();
-
-        Mnemonics.bootstrap();
 
         AutoConfig.register(MEHConfig.class, GsonConfigSerializer::new);
         config = AutoConfig.getConfigHolder(MEHConfig.class);

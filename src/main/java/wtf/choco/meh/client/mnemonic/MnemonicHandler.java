@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 
-import wtf.choco.meh.client.MEHRegistries;
 import wtf.choco.meh.client.event.LWJGLEvents;
 import wtf.choco.meh.client.event.MEHEvents;
 
@@ -44,13 +43,13 @@ public final class MnemonicHandler {
         }
 
         // Apply a cooldown if necessary
-        if (lastSuccessfulMnemonic != null && lastSuccessfulMnemonicTimestamp + lastSuccessfulMnemonic.cooldownMillis() > now) {
+        if (lastSuccessfulMnemonic != null && lastSuccessfulMnemonicTimestamp + lastSuccessfulMnemonic.getCooldown() > now) {
             return true;
         }
 
         // If there's no stack yet, or if the last attempt at a mnemonic was too long ago, start from the beginning
         if (stack == null || difference > MNEMONIC_TIMEOUT_MILLIS) {
-            List<Mnemonic> possibleMnemonics = MEHRegistries.MNEMONIC.stream()
+            List<Mnemonic> possibleMnemonics = Mnemonics.stream()
                 .filter(mnemonic -> mnemonic.size() > 0)
                 .filter(mnemonic -> mnemonic.keycodeAt(0) == keycode)
                 .collect(Collectors.toCollection(ArrayList::new));
