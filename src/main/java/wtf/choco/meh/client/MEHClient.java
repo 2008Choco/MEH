@@ -19,6 +19,8 @@ import wtf.choco.meh.client.event.impl.ChatListener;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.feature.FeatureManager;
 import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
+import wtf.choco.meh.client.mnemonic.MnemonicHandler;
+import wtf.choco.meh.client.mnemonic.Mnemonics;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class MEHClient implements ClientModInitializer {
@@ -29,6 +31,8 @@ public final class MEHClient implements ClientModInitializer {
     private static MEHClient instance;
     private static ConfigHolder<MEHConfig> config;
 
+    private MnemonicHandler mnemonicHandler;
+
     private final HypixelServerState hypixelServerState = new HypixelServerState();
     private final FeatureManager featureManager = new FeatureManager(this);
 
@@ -37,9 +41,14 @@ public final class MEHClient implements ClientModInitializer {
         instance = this;
 
         MEHKeybinds.init();
+        MEHRegistries.init();
+
+        Mnemonics.bootstrap();
 
         AutoConfig.register(MEHConfig.class, GsonConfigSerializer::new);
         config = AutoConfig.getConfigHolder(MEHConfig.class);
+
+        this.mnemonicHandler = new MnemonicHandler();
 
         ChatListener.initialize();
 
@@ -52,6 +61,10 @@ public final class MEHClient implements ClientModInitializer {
         this.featureManager.initializeFeatures();
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientTestCommand.register(dispatcher));
+    }
+
+    public MnemonicHandler getMnemonicHandler() {
+        return mnemonicHandler;
     }
 
     public HypixelServerState getHypixelServerState() {
