@@ -13,10 +13,13 @@ An extremely primitive chat channel management system. Create and use channels t
 - **Switch to Previous Channel:** Ctrl + Shift + Tab (with chat screen open)
 - **Delete Current Channel:** Ctrl + Minus (with chat screen open)
 
-### Manual GG
-A feature for those that feel "auto gg" are disingenuous or too robotic, this feature still allows you to write "gg" in chat after a game by simply pressing the 'G' key twice.
+### Mnemonics
+Mnemonics are quick key sequences that perform some action. MEH provides some very simple mnemonics for commonly used messages while on Hypixel which, unlike auto-ggs or auto-gcs, makes sending these messages still feel genuine because they have to be manually performed. Chat mnemonics specifically alleviates the unnecessary movement of the left hand to press 'T' (to open chat) and the right hand from the mouse to press the 'Enter' key to send the message.
 
-Why? In order to send a "gg" normally, you need to open your chat (with 'T'), type "gg", then press Enter to send the message, which for right-handed people means taking your hand off of the mouse. This just seems like unnecessary gymnastics, so let's skip the 'T' and 'Enter' keys and type gg instead!
+The following mnemonics are supported by MEH:
+- **Good Game:** Writes "gg" in chat (keys: 'g', 'g', 10 second cooldown)
+- **Good Catch:** Writes "gc" in chat (keys: 'g', 'c', 10 second cooldown)
+  * Used by fishers to show good sportsmanship after a rare catch!
 
 ### Emote Selector
 Hypixel's server has a server-sided text parser which will convert text such as "<3" or ":sloth:" into ASCII emotes and insert them into player chat messages. The only way to know what these emotes are is with the "/emotes" command, which is a bit out of the way and relies on the player's ability to remember these exact emote names or sequences.
