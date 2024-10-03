@@ -31,8 +31,12 @@ public final class MEHConfig implements ConfigData {
         return enabled_features.chat_channels;
     }
 
-    public boolean isManualGGEnabled() {
-        return enabled_features.manual_gg;
+    public boolean isGGMnemonicEnabled() {
+        return enabled_features.mnemonics.gg;
+    }
+
+    public boolean isGCMnemonicEnabled() {
+        return enabled_features.mnemonics.gc;
     }
 
     public boolean isEmoteSelectorEnabled() {
@@ -73,7 +77,8 @@ public final class MEHConfig implements ConfigData {
         private boolean emote_selector = true;
 
         @ConfigEntry.Gui.Tooltip
-        private boolean manual_gg = true;
+        @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+        private Mnemonics mnemonics = new Mnemonics();
 
         @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
         private MainLobbyFishing main_lobby_fishing = new MainLobbyFishing();
@@ -117,6 +122,16 @@ public final class MEHConfig implements ConfigData {
         public String getCommandPrefix() {
             return command_prefix;
         }
+
+    }
+
+    public static final class Mnemonics {
+
+        @ConfigEntry.Gui.Tooltip
+        private boolean gg = true;
+
+        @ConfigEntry.Gui.Tooltip
+        private boolean gc = true;
 
     }
 

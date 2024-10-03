@@ -86,7 +86,9 @@ class MEHLanguageProvider extends FabricLanguageProvider {
         translation.add("text.autoconfig.meh.title", dataOutput.getModContainer().getMetadata().getName() + " Options");
         this.addSetting(translation, "enabled_features", "Enabled Features");
         this.addSetting(translation, "enabled_features.chat_channels", "Chat Channels", "Organize your chat better with simple chat channels.");
-        this.addSetting(translation, "enabled_features.manual_gg", "Manual GG", "Write \"gg\" in chat after pressing the G key twice.\nOpening chat is not necessary!");
+        this.addSetting(translation, "enabled_features.mnemonics", "Mnemonics", "Quick, short-hand key combinations that perform some action.");
+        this.addSetting(translation, "enabled_features.mnemonics.gg", "Good Game! (gg)", "Press 'g' and 'g' in quick succession to write \"gg\" in chat!");
+        this.addSetting(translation, "enabled_features.mnemonics.gc", "Good Catch! (gc)", "Press 'g' and 'c' in quick succession to write \"gc\" in chat!\nUsed by fishers to show good sportsmanship after a rare catch!");
         this.addSetting(translation, "enabled_features.emote_selector", "Emote Selector", "A visual selection widget for Hypixel's emote system.");
         this.addSetting(translation, "enabled_features.main_lobby_fishing", "Main Lobby Fishing");
         this.addSetting(translation, "enabled_features.main_lobby_fishing.retextured_fishing_rods", "Retextured Fishing Rods", "Fishing rods used in main lobby fishing will use custom textures.");

@@ -15,6 +15,7 @@ public final class Mnemonics {
     private static final Map<ResourceLocation, Mnemonic> BY_ID = new HashMap<>();
 
     public static final Mnemonic GG = create("gg", InputConstants.KEY_G, InputConstants.KEY_G);
+    public static final Mnemonic GC = create("gc", InputConstants.KEY_G, InputConstants.KEY_C);
 
     private Mnemonics() { }
 

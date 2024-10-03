@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
-import wtf.choco.meh.client.chat.ManualGGFeature;
+import wtf.choco.meh.client.chat.GCMnemonicFeature;
+import wtf.choco.meh.client.chat.GGMnemonicFeature;
 import wtf.choco.meh.client.command.ClientTestCommand;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.impl.ChatListener;
@@ -50,7 +51,8 @@ public final class MEHClient implements ClientModInitializer {
 
         this.featureManager.addFeature(ChatChannelsFeature.class, ChatChannelsFeature::new);
         this.featureManager.addFeature(EmoteSelectorFeature.class, EmoteSelectorFeature::new);
-        this.featureManager.addFeature(ManualGGFeature.class, ManualGGFeature::new);
+        this.featureManager.addFeature(GCMnemonicFeature.class, GCMnemonicFeature::new);
+        this.featureManager.addFeature(GGMnemonicFeature.class, GGMnemonicFeature::new);
         this.featureManager.addFeature(RetexturedFishingRodsFeature.class, RetexturedFishingRodsFeature::new);
 
         this.hypixelServerState.initialize();

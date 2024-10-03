@@ -10,12 +10,12 @@ import wtf.choco.meh.client.event.MEHEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mnemonic.Mnemonic;
 
-abstract class AbstractMnemonicChatFeature extends Feature {
+abstract class MnemonicChatFeature extends Feature {
 
     private final Mnemonic mnemonic;
     private final String message;
 
-    public AbstractMnemonicChatFeature(MEHClient mod, Predicate<MEHConfig> featureEnabled, Mnemonic mnemonic, String message) {
+    public MnemonicChatFeature(MEHClient mod, Predicate<MEHConfig> featureEnabled, Mnemonic mnemonic, String message) {
         super(mod, featureEnabled);
         this.mnemonic = mnemonic;
         this.message = message;
