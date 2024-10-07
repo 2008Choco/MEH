@@ -52,11 +52,11 @@ An assortment of enhancements to the main lobby fishing experience are made by t
   - Provides a configuration screen in the Mod Menu list
 
 ## Building/Distribution
-This project has no precompiled binaries and likely will not ever have any precompiled binaries or releases. If you'd like to use this mod, you will have to compile it yourself. This project makes use of Gradle and can be easily compiled with the following command run in the project's root directory:
+This project only has precompiled binaries through GitHub Actions. If you’d like to use this mod, you can download the precompiled binaries from the actions section. This project likely will not ever have any releases. However, if you prefer to compile it yourself, this project makes use of Gradle and can be easily compiled with the following command run in the project’s root directory:
 ```
 ./gradlew build
 ```
-A compiled .jar file can be found under the `build/libs/` directory and drag-and-dropped into the `<minecraft_install_dir>/mods/` directory.
+A compiled .jar file can be found under the `build/libs/` directory and drag-and-dropped into the `<minecraft_install_dir>/mods/` directory if you would like to ever use the version you compiled yourself.
 
 ## Contributing
 Contributions are welcome! Before contributing a new feature, however, please consult me first! You can either open an issue or contact me on Discord `@choco_dev`.
