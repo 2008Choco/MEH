@@ -60,5 +60,3 @@ A compiled .jar file can be found under the `build/libs/` directory and drag-and
 
 ## Contributing
 Contributions are welcome! Before contributing a new feature, however, please consult me first! You can either open an issue or contact me on Discord `@choco_dev`.
-
-Additionally, please note that this project makes use of data generators. If you're missing translations or other information, try running `./gradlew runDatagen` first. The `build` task will run the data generator automatically, so if you've built the project already, you shouldn't need to run it again unless you've edited the data generation.

@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/handheld_rod",
+    "textures": {
+        "layer0": "meh:item/fishing_rod/inaugural_ice_fishing_rod"
+    }
+}
