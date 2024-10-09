@@ -2,8 +2,8 @@
     "schemaVersion": 1,
     "id": "meh",
     "version": "${version}",
-    "name": "Miscellaneous Enhancements for Hypixel (MEH)",
-    "description": "A client-sided mod to enhance the Hypixel Minecraft server experience by adding a few miscellaneous additions.\n\nThis mod contains whatever feature that feels like it would be useful while playing on Hypixel without making the game feel overly modded for any reason. These are mostly convenience additions!",
+    "name": "MEH",
+    "description": "Miscellaneous Enhancements for Hypixel. Enhance the Hypixel experience with random quality of life additions.\n\nThis mod contains features that may be useful while playing on Hypixel without making the game feel overly modded for any reason.",
     "authors": [
         "Choco"
     ],

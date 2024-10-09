@@ -81,5 +81,5 @@
     "text.autoconfig.meh.option.enabled_features.mnemonics.gg.@Tooltip": "Press 'g' and 'g' in quick succession to write \"gg\" in chat!",
     "text.autoconfig.meh.option.known_channels": "Known Channels",
     "text.autoconfig.meh.option.known_channels.@Tooltip": "A list of channels loaded into the client by default. Channels listed here are not removeable.",
-    "text.autoconfig.meh.title": "Miscellaneous Enhancements for Hypixel (MEH) Options"
+    "text.autoconfig.meh.title": "MEH Options"
 }
