@@ -41,5 +41,10 @@
     },
     "suggests": {
         "modmenu": ">=11"
+    },
+    "custom": {
+        "modmenu": {
+            "update_checker": false
+        }
     }
 }
