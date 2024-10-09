@@ -7,6 +7,11 @@
     "authors": [
         "Choco"
     ],
+    "contact": {
+        "sources": "https://github.com/2008Choco/MEH",
+        "homepage": "https://github.com/2008Choco/MEH",
+        "issues": "https://github.com/2008Choco/MEH/issues"
+    },
     "license": "MIT",
     "icon": "assets/meh/icon.png",
     "environment": "*",
