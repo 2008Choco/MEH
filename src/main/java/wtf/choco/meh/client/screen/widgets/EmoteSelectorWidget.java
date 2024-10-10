@@ -25,6 +25,7 @@ public final class EmoteSelectorWidget implements Renderable {
 
     // Widget constants
     private static final int WIDGET_WIDTH = 98;
+    private static final int WIDGET_BOTTOM_OFFSET = 40; // Offset of the bottom of the widget from the bottom of the screen
     private static final int WIDGET_HEIGHT = 130;
     private static final int WIDGET_HEADER_HEIGHT = 16;
     private static final int WIDGET_BACKGROUND_COLOR = 0x80 << 24;
@@ -104,9 +105,9 @@ public final class EmoteSelectorWidget implements Renderable {
         List<ChatEmote> knownEmotes = getKnownEmotes();
         Minecraft minecraft = Minecraft.getInstance();
 
-        int x = getX(true); // TODO: Only dock to chat if necessary
+        int x = getX();
         int dx = x + WIDGET_WIDTH;
-        int y = getY(true) - WIDGET_HEIGHT; // TODO: Only dock to chat if necessary
+        int y = chatScreen.height - WIDGET_BOTTOM_OFFSET - WIDGET_HEIGHT;
         int dy = y + WIDGET_HEIGHT;
         int headerY = y - WIDGET_HEADER_HEIGHT;
 
@@ -266,15 +267,7 @@ public final class EmoteSelectorWidget implements Renderable {
         this.setFocused(false);
     }
 
-    private int getX(@SuppressWarnings("unused") boolean docked) {
-        return getMinimumX(); // TODO: Base x position on chat cursor position
-    }
-
-    private int getY(boolean docked) {
-        return chatScreen.height - (docked ? 40 : 18);
-    }
-
-    private static int getMinimumX() {
+    private int getX() {
         Minecraft minecraft = Minecraft.getInstance();
         return Mth.floor(ChatComponent.getWidth(minecraft.options.chatWidth().get())) + MINIMUM_X_PADDING;
     }
