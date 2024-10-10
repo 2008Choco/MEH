@@ -15,10 +15,10 @@ import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.Mth;
 
-import wtf.choco.meh.client.MEHKeybinds;
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.emote.ChatEmote;
 import wtf.choco.meh.client.chat.emote.HypixelChatEmote;
+import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
 public final class EmoteSelectorWidget implements Renderable {
@@ -191,7 +191,12 @@ public final class EmoteSelectorWidget implements Renderable {
 
     @SuppressWarnings("unused")
     public void onKeyPress(int key, int scancode, int modifiers) {
-        if (key == InputConstants.KEY_ESCAPE || (Screen.hasControlDown() && key == MEHKeybinds.KEY_EMOTE_SELECTOR)) {
+        if (key == InputConstants.KEY_ESCAPE) {
+            this.returnFocusToChatBox();
+            return;
+        }
+
+        if (!MEHKeybinds.isAmecsLoaded() && (Screen.hasControlDown() && key == MEHKeybinds.KEY_EMOTE_SELECTOR)) {
             this.returnFocusToChatBox();
             return;
         }
@@ -252,7 +257,7 @@ public final class EmoteSelectorWidget implements Renderable {
     }
 
     // Relinquish focus from this emote selector to the chat screen's edit box
-    private void returnFocusToChatBox() {
+    public void returnFocusToChatBox() {
         if (!focused || chatScreen == null) {
             return;
         }

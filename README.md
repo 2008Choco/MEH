@@ -50,6 +50,10 @@ An assortment of enhancements to the main lobby fishing experience are made by t
 - [Cloth Config API](https://modrinth.com/mod/cloth-config/) (v15 and above)
 - _(Optional)_ [Mod Menu](https://modrinth.com/mod/modmenu/) (v11 and above)
   - Provides a configuration screen in the Mod Menu list
+- _(Optional)_ [Amecs](https://www.curseforge.com/minecraft/mc-mods/amecs) or [Too Many Shortcuts](https://modrinth.com/mod/too-many-shortcuts)
+  - Allows various keys to be configurable (due to them using Ctrl and Shift modifiers)
+  - Amecs is not updated to 1.21.1, but if [this PR](https://github.com/Siphalor/amecs/pull/90) ever gets merged, it is preferred over Too Many Shortcuts
+  - It is highly advised to still prefix keybinds with Ctrl because the chat screen will type characters not prefixed with a modifier
 
 ## Building/Distribution
 This project only has precompiled binaries through GitHub Actions. If you’d like to use this mod, you can download the precompiled binaries from the actions section. This project likely will not ever have any releases. However, if you prefer to compile it yourself, this project makes use of Gradle and can be easily compiled with the following command run in the project’s root directory:

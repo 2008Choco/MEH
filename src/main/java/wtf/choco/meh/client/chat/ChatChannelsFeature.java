@@ -16,12 +16,13 @@ import net.minecraft.util.RandomSource;
 import org.lwjgl.glfw.GLFW;
 
 import wtf.choco.meh.client.MEHClient;
-import wtf.choco.meh.client.MEHKeybinds;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
+import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
+import wtf.choco.meh.client.util.SharedMixinValues;
 
 public final class ChatChannelsFeature extends Feature {
 
@@ -57,7 +58,10 @@ public final class ChatChannelsFeature extends Feature {
                 return;
             }
 
-            ScreenKeyboardEvents.allowKeyPress(screen).register(this::onKeyInChatScreen);
+            if (!MEHKeybinds.isAmecsLoaded()) {
+                ScreenKeyboardEvents.allowKeyPress(screen).register(this::onKeyInChatScreen);
+            }
+
             ScreenEvents.afterRender(screen).register(this::onRenderChatScreen);
         });
 
@@ -133,27 +137,12 @@ public final class ChatChannelsFeature extends Feature {
 
     @SuppressWarnings("unused")
     private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
-        if (!isEnabled() || isWritingCommand(screen)) {
-            return true;
-        }
-
         if (Screen.hasControlDown()) {
             if (key == MEHKeybinds.KEY_SWITCH_CHANNEL) {
                 boolean next = (modifiers & GLFW.GLFW_MOD_SHIFT) == 0;
-                this.switchChannel(next);
-                return false;
+                return !(next ? keybindSwitchChannelNext() : keybindSwitchChannelPrevious());
             } else if (key == MEHKeybinds.KEY_DELETE_CHANNEL) {
-                ChannelSelector channelSelector = getChannelSelector();
-                ChatChannel selectedChannel = channelSelector.getSelectedChannel();
-                if (!selectedChannel.isRemovable()) {
-                    return false;
-                }
-
-                if (ChatChannelEvents.DELETE.invoker().onDeleteChatChannel(selectedChannel)) {
-                    channelSelector.removeChannel(selectedChannel);
-                }
-
-                return false;
+                return !keybindDeleteChannel();
             }
         }
 
@@ -164,9 +153,59 @@ public final class ChatChannelsFeature extends Feature {
         return onKeyInChatScreen((ChatScreen) screen, key, keycode, scancode);
     }
 
+    public boolean keybindSwitchChannelNext() {
+        if (shouldProcessKeybind()) {
+            this.switchChannel(true);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean keybindSwitchChannelPrevious() {
+        if (shouldProcessKeybind()) {
+            this.switchChannel(false);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean keybindDeleteChannel() {
+        if (!shouldProcessKeybind()) {
+            return false;
+        }
+
+        ChannelSelector channelSelector = getChannelSelector();
+        ChatChannel selectedChannel = channelSelector.getSelectedChannel();
+        if (!selectedChannel.isRemovable()) {
+            return true;
+        }
+
+        if (ChatChannelEvents.DELETE.invoker().onDeleteChatChannel(selectedChannel)) {
+            channelSelector.removeChannel(selectedChannel);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean shouldProcessKeybind() {
+        if (!isEnabled()) {
+            return false;
+        }
+
+        Minecraft minecraft = Minecraft.getInstance();
+        if (!(minecraft.screen instanceof ChatScreen) || SharedMixinValues.isWritingCommand((ChatScreen) minecraft.screen)) {
+            return false;
+        }
+
+        return true;
+    }
+
     @SuppressWarnings("unused")
     private void onRenderChatScreen(ChatScreen screen, GuiGraphics graphics, int screenX, int screenY, float delta) {
-        if (!isEnabled() || isWritingCommand(screen)) {
+        if (!isEnabled() || SharedMixinValues.isWritingCommand(screen)) {
             return;
         }
 
@@ -188,11 +227,6 @@ public final class ChatChannelsFeature extends Feature {
 
     private void onRenderChatScreen(Screen screen, GuiGraphics graphics, int screenX, int screenY, float delta) { // Exists only as a way to target with method reference
         this.onRenderChatScreen((ChatScreen) screen, graphics, screenX, screenY, delta);
-    }
-
-    private boolean isWritingCommand(ChatScreen screen) {
-        String text = ((ChatScreenAccessor) screen).getInput().getValue();
-        return !text.isEmpty() && text.charAt(0) == '/';
     }
 
     private ChatChannel switchChannel(boolean next) {

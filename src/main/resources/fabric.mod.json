@@ -37,7 +37,9 @@
         "cloth-config": ">=15"
     },
     "suggests": {
-        "modmenu": ">=11"
+        "modmenu": ">=11",
+        "amecs": "*",
+        "too_many_shortcuts": "*"
     },
     "custom": {
         "modmenu": {
