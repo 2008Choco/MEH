@@ -12,4 +12,8 @@ public interface ChatFilterable {
         return null;
     }
 
+    public default boolean hasChatMessageFilter() {
+        return getChatMessageFilter() != null;
+    }
+
 }

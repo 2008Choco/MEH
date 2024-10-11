@@ -1,5 +1,6 @@
 package wtf.choco.meh.client.chat;
 
+import java.util.Objects;
 import java.util.OptionalLong;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
@@ -7,6 +8,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -31,6 +33,8 @@ public final class ChatChannelsFeature extends Feature {
 
     private static final int DEFAULT_CHAT_BOX_MAX_LENGTH = 256;
 
+    private boolean focused = false;
+
     private final ChannelSelector channelSelector = new ChannelSelector();
 
     public ChatChannelsFeature(MEHClient mod) {
@@ -48,11 +52,7 @@ public final class ChatChannelsFeature extends Feature {
         ClientSendMessageEvents.ALLOW_CHAT.register(this::onAllowOutgoingChat);
         HypixelServerEvents.PRIVATE_MESSAGE_RECEIVED.register(this::onPrivateMessageReceived);
         HypixelServerEvents.PRIVATE_MESSAGE_SENT.register(this::onPrivateMessageSent);
-        ChatChannelEvents.SWITCH.register((from, to, reason) -> {
-            Minecraft client = Minecraft.getInstance();
-            this.ensureChatEditBoxMaxLength(client.screen, to);
-            return true;
-        });
+        ChatChannelEvents.SWITCH.register(this::onChatChannelSwitch);
 
         ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (!(screen instanceof ChatScreen) || !isEnabled()) {
@@ -137,6 +137,21 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     @SuppressWarnings("unused")
+    private boolean onChatChannelSwitch(ChatChannel from, ChatChannel to, ChatChannelEvents.Switch.Reason reason) {
+        Minecraft client = Minecraft.getInstance();
+        this.ensureChatEditBoxMaxLength(client.screen, to);
+
+        ChatComponent chat = client.gui.getChat();
+        if (focused && !Objects.equals(from.getMessageFilter(), to.getMessageFilter())) {
+            chat.setChatMessageFilter(to.getMessageFilter());
+        } else if (!focused && chat.hasChatMessageFilter()) {
+            chat.setChatMessageFilter(null);
+        }
+
+        return true;
+    }
+
+    @SuppressWarnings("unused")
     private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
         if (Screen.hasControlDown()) {
             if (key == MEHKeybinds.KEY_SWITCH_CHANNEL) {
@@ -144,6 +159,8 @@ public final class ChatChannelsFeature extends Feature {
                 return !(next ? keybindSwitchChannelNext() : keybindSwitchChannelPrevious());
             } else if (key == MEHKeybinds.KEY_DELETE_CHANNEL) {
                 return !keybindDeleteChannel();
+            } else if (key == MEHKeybinds.KEY_TOGGLE_FOCUS_MODE) {
+                return !keybindToggleFocusMode();
             }
         }
 
@@ -189,6 +206,19 @@ public final class ChatChannelsFeature extends Feature {
         }
 
         return false;
+    }
+
+    public boolean keybindToggleFocusMode() {
+        if (!shouldProcessKeybind()) {
+            return false;
+        }
+
+        this.focused = !focused;
+
+        Minecraft minecraft = Minecraft.getInstance();
+        ChatChannel selectedChannel = getChannelSelector().getSelectedChannel();
+        minecraft.gui.getChat().setChatMessageFilter(focused ? selectedChannel.getMessageFilter() : null);
+        return true;
     }
 
     private boolean shouldProcessKeybind() {
