@@ -90,5 +90,7 @@
     "text.autoconfig.meh.option.enabled_features.mnemonics.gg.@Tooltip": "Press 'g' and 'g' in quick succession to write \"gg\" in chat!",
     "text.autoconfig.meh.option.known_channels": "Known Channels",
     "text.autoconfig.meh.option.known_channels.@Tooltip": "A list of channels loaded into the client by default. Channels listed here are not removeable.",
+    "text.autoconfig.meh.option.max_remembered_chat_history": "Max Remembered Chat History",
+    "text.autoconfig.meh.option.max_remembered_chat_history.@Tooltip": "The amount of chat messages Minecraft will remember.\nMore in-memory messages means more focused messages.\nHigher numbers consume more memory! Be careful!\nBy default, Minecraft remembers only 100 messages.",
     "text.autoconfig.meh.title": "MEH Options"
 }

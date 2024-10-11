@@ -20,14 +20,6 @@ import wtf.choco.meh.client.chat.filter.ChatMessageFilter;
 @Mixin(ChatComponent.class)
 public abstract class ChatComponentMixin implements ChatFilterable {
 
-    /*
-     * By default, 100 messages are rendered in the chat screen, but also 100 messages
-     * are kept in memory. We don't want to change how far back the player can scroll or
-     * how many messages can be rendered, but because we're allowing for filters, we
-     * should really increase the maximum amount of messages that the client remembers.
-     */
-    private static final int MAX_CHAT_HISTORY_OVERRIDE = 200;
-
     @Unique
     @Nullable
     private ChatMessageFilter messageFilter = null;
@@ -43,7 +35,7 @@ public abstract class ChatComponentMixin implements ChatFilterable {
     @SuppressWarnings("unused")
     @ModifyConstant(method = "addMessageToQueue(Lnet/minecraft/client/GuiMessage;)V", constant = @Constant(intValue = 100))
     private int modifyMaxChatHistory(int value) {
-        return MAX_CHAT_HISTORY_OVERRIDE;
+        return getMaxInMemoryChatHistory();
     }
 
     @Shadow
@@ -59,6 +51,16 @@ public abstract class ChatComponentMixin implements ChatFilterable {
     @Override
     public ChatMessageFilter getChatMessageFilter() {
         return messageFilter;
+    }
+
+    /*
+     * By default, 100 messages are rendered in the chat screen, but also 100 messages
+     * are kept in memory. We don't want to change how far back the player can scroll or
+     * how many messages can be rendered, but because we're allowing for filters, we
+     * should really increase the maximum amount of messages that the client remembers.
+     */
+    private static int getMaxInMemoryChatHistory() {
+        return MEHClient.getConfig().getMaxRememberedChatHistory();
     }
 
 }

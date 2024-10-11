@@ -21,6 +21,10 @@ public final class MEHConfig implements ConfigData {
     private boolean auto_switch_on_new_message = true;
 
     @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.BoundedDiscrete(min = 100, max = 1000)
+    private int max_remembered_chat_history = 250;
+
+    @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.RequiresRestart
     private List<KnownChannel> known_channels = Util.make(new ArrayList<>(), channels -> {
         channels.add(new KnownChannel("party", "Party", 0x84C5DB, "pc"));
@@ -49,6 +53,10 @@ public final class MEHConfig implements ConfigData {
 
     public boolean isAutoSwitchOnNewMessage() {
         return auto_switch_on_new_message;
+    }
+
+    public int getMaxRememberedChatHistory() {
+        return max_remembered_chat_history;
     }
 
     public List<KnownChannel> getKnownChannels() {
