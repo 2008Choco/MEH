@@ -1,5 +1,6 @@
 package wtf.choco.meh.client.chat;
 
+import java.util.Objects;
 import java.util.OptionalLong;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
@@ -16,7 +17,7 @@ import net.minecraft.util.RandomSource;
 import org.lwjgl.glfw.GLFW;
 
 import wtf.choco.meh.client.MEHClient;
-import wtf.choco.meh.client.chat.filter.ChatFilterable;
+import wtf.choco.meh.client.chat.filter.ChatMessageFilter;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
@@ -38,7 +39,7 @@ public final class ChatChannelsFeature extends Feature {
 
         // Register configured known channels
         for (MEHConfig.KnownChannel channel : MEHClient.getConfig().getKnownChannels()) {
-            ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), false);
+            ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), ChatChannelType.BUILT_IN, null);
             this.channelSelector.addChannel(chatChannel);
         }
     }
@@ -53,11 +54,10 @@ public final class ChatChannelsFeature extends Feature {
             this.ensureChatEditBoxMaxLength(client.screen, to);
 
             // TODO START: REMOVE, ONLY FOR TESTING
-            ChatFilterable chat = client.gui.getChat();
-            if (to.getId().equals("all")) {
-                chat.setChatMessageFilter(null);
-            } else if (chat.getChatMessageFilter() == null) {
-                chat.setChatMessageFilter(message -> message.content().getString().contains("."));
+            ChatMessageFilter fromFilter = from.getMessageFilter();
+            ChatMessageFilter toFilter = to.getMessageFilter();
+            if (!Objects.equals(fromFilter, toFilter)) {
+                client.gui.getChat().setChatMessageFilter(toFilter);
             }
             // TODO END: REMOVE, ONLY FOR TESTING
 
@@ -118,7 +118,7 @@ public final class ChatChannelsFeature extends Feature {
         int randomColor = ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
 
         Component channelDisplayName = Component.literal(username);
-        ChatChannel channel = new ChatChannel(username, channelDisplayName, randomColor, "msg " + username, true);
+        ChatChannel channel = new ChatChannel(username, channelDisplayName, randomColor, "msg " + username, ChatChannelType.PRIVATE_MESSAGE, ChatMessageFilter.privateMessage(username));
 
         if (!ChatChannelEvents.CREATE.invoker().onCreateChatChannel(channel)) {
             return;

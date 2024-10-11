@@ -18,7 +18,7 @@ public final class ChannelSelector {
     }
 
     private void registerDefaultChannel(String id, int color, String commandPrefix) {
-        this.addChannel(new ChatChannel(id, color, commandPrefix, false));
+        this.addChannel(new ChatChannel(id, color, commandPrefix, ChatChannelType.GLOBAL, null));
     }
 
     public int addChannel(ChatChannel channel) {

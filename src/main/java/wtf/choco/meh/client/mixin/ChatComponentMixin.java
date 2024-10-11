@@ -43,7 +43,6 @@ public abstract class ChatComponentMixin implements ChatFilterable {
 
     @Override
     public void setChatMessageFilter(@Nullable ChatMessageFilter filter) {
-        MEHClient.LOGGER.info("Updated chat filter to " + filter);
         this.messageFilter = filter;
         this.rescaleChat();
     }
