@@ -1,6 +1,5 @@
 package wtf.choco.meh.client.chat;
 
-import java.util.Objects;
 import java.util.OptionalLong;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
@@ -52,15 +51,6 @@ public final class ChatChannelsFeature extends Feature {
         ChatChannelEvents.SWITCH.register((from, to, reason) -> {
             Minecraft client = Minecraft.getInstance();
             this.ensureChatEditBoxMaxLength(client.screen, to);
-
-            // TODO START: REMOVE, ONLY FOR TESTING
-            ChatMessageFilter fromFilter = from.getMessageFilter();
-            ChatMessageFilter toFilter = to.getMessageFilter();
-            if (!Objects.equals(fromFilter, toFilter)) {
-                client.gui.getChat().setChatMessageFilter(toFilter);
-            }
-            // TODO END: REMOVE, ONLY FOR TESTING
-
             return true;
         });
 
