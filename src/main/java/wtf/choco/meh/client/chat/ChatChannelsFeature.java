@@ -16,6 +16,7 @@ import net.minecraft.util.RandomSource;
 import org.lwjgl.glfw.GLFW;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.chat.filter.ChatFilterable;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
@@ -50,6 +51,16 @@ public final class ChatChannelsFeature extends Feature {
         ChatChannelEvents.SWITCH.register((from, to, reason) -> {
             Minecraft client = Minecraft.getInstance();
             this.ensureChatEditBoxMaxLength(client.screen, to);
+
+            // TODO START: REMOVE, ONLY FOR TESTING
+            ChatFilterable chat = client.gui.getChat();
+            if (to.getId().equals("all")) {
+                chat.setChatMessageFilter(null);
+            } else if (chat.getChatMessageFilter() == null) {
+                chat.setChatMessageFilter(message -> message.content().getString().contains("."));
+            }
+            // TODO END: REMOVE, ONLY FOR TESTING
+
             return true;
         });
 
