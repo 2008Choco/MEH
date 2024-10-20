@@ -18,7 +18,7 @@ public final class ChannelSelector {
     }
 
     private void registerDefaultChannel(String id, int color, String commandPrefix) {
-        this.addChannel(new ChatChannel(id, color, commandPrefix, false));
+        this.addChannel(new ChatChannel(id, color, commandPrefix, ChatChannelType.GLOBAL, null));
     }
 
     public int addChannel(ChatChannel channel) {
@@ -73,7 +73,7 @@ public final class ChannelSelector {
     public ChatChannel getPreviousChannel() {
         int index = selectedChannelIndex - 1;
         if (index < 0) {
-            index += (channels.size() - 1);
+            index += channels.size();
         }
 
         return channels.get(index);

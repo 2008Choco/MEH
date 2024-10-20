@@ -42,6 +42,11 @@
         "too_many_shortcuts": "*"
     },
     "custom": {
+        "loom:injected_interfaces": {
+            "net/minecraft/client/gui/components/ChatComponent": [
+                "wtf/choco/meh/client/chat/filter/ChatFilterable"
+            ]
+        },
         "modmenu": {
             "update_checker": false
         }

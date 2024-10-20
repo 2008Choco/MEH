@@ -6,27 +6,16 @@ import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 
 import java.util.OptionalLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
+import wtf.choco.meh.client.chat.extractor.ChatExtractors;
+import wtf.choco.meh.client.chat.extractor.PrivateMessageData;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 
 public final class ChatListener {
-
-    private static final String FROM = "From", TO = "To";
-
-    /*
-     * (direction) (?rank) (name): (message)
-     *
-     * From [ADMIN] 2008Choco: message
-     * To [MVP++] Player: message
-     * From UnrankedPlayer: message
-     */
-    private static final Pattern PATTERN_MESSAGE = Pattern.compile("^(?<direction>" + FROM + "|" + TO + ")(?:\\s\\[(?<rank>.+)\\])?\\s(?<username>\\w+):\\s*(?<message>.+)$");
 
     private static final Object2LongMap<String> LAST_COMMUNICATED = new Object2LongOpenHashMap<>();
 
@@ -47,26 +36,23 @@ public final class ChatListener {
             return;
         }
 
-        Matcher matcher = PATTERN_MESSAGE.matcher(ChatFormatting.stripFormatting(message.getString()));
-        if (!matcher.matches()) {
-            return;
-        }
+        ChatExtractors.PRIVATE_MESSAGE.extract(ChatFormatting.stripFormatting(message.getString())).ifPresent(data -> {
+            PrivateMessageData.Direction direction = data.direction();
+            String rank = data.rank();
+            String username = data.username();
+            String messageString = data.message();
 
-        String direction = matcher.group("direction");
-        String rank = matcher.group("rank");
-        String username = matcher.group("username");
-        String messageString = matcher.group("message");
+            long lastCommunicatedTimestamp = LAST_COMMUNICATED.getLong(username);
+            OptionalLong lastCommunicated = lastCommunicatedTimestamp > 0 ? OptionalLong.of(lastCommunicatedTimestamp) : OptionalLong.empty();
 
-        long lastCommunicatedTimestamp = LAST_COMMUNICATED.getLong(username);
-        OptionalLong lastCommunicated = lastCommunicatedTimestamp > 0 ? OptionalLong.of(lastCommunicatedTimestamp) : OptionalLong.empty();
+            if (direction == PrivateMessageData.Direction.INCOMING) {
+                HypixelServerEvents.PRIVATE_MESSAGE_RECEIVED.invoker().onReceived(username, rank, messageString, lastCommunicated);
+            } else if (direction == PrivateMessageData.Direction.OUTGOING) {
+                HypixelServerEvents.PRIVATE_MESSAGE_SENT.invoker().onSent(username, rank, messageString, lastCommunicated);
+            }
 
-        if (FROM.equals(direction)) {
-            HypixelServerEvents.PRIVATE_MESSAGE_RECEIVED.invoker().onReceived(username, rank, messageString, lastCommunicated);
-        } else if (TO.equals(direction)) {
-            HypixelServerEvents.PRIVATE_MESSAGE_SENT.invoker().onSent(username, rank, messageString, lastCommunicated);
-        }
-
-        LAST_COMMUNICATED.put(username, System.currentTimeMillis());
+            LAST_COMMUNICATED.put(username, System.currentTimeMillis());
+        });
     }
 
 }

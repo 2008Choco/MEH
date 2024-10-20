@@ -6,10 +6,14 @@ import java.util.List;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
+import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 
 import net.minecraft.Util;
 
+import org.jetbrains.annotations.Nullable;
+
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.chat.filter.ChatMessageFilter;
 
 @Config(name = MEHClient.MOD_ID)
 public final class MEHConfig implements ConfigData {
@@ -21,10 +25,14 @@ public final class MEHConfig implements ConfigData {
     private boolean auto_switch_on_new_message = true;
 
     @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.BoundedDiscrete(min = 100, max = 1000)
+    private int max_remembered_chat_history = 250;
+
+    @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.RequiresRestart
     private List<KnownChannel> known_channels = Util.make(new ArrayList<>(), channels -> {
-        channels.add(new KnownChannel("party", "Party", 0x84C5DB, "pc"));
-        channels.add(new KnownChannel("guild", "Guild", 0xEB3A09, "gc"));
+        channels.add(new KnownChannel("party", "Party", 0x84C5DB, "pc", FilterType.STARTS_WITH, "Party >"));
+        channels.add(new KnownChannel("guild", "Guild", 0xEB3A09, "gc", FilterType.STARTS_WITH, "Guild >"));
     });
 
     public boolean areChatChannelsEnabled() {
@@ -49,6 +57,10 @@ public final class MEHConfig implements ConfigData {
 
     public boolean isAutoSwitchOnNewMessage() {
         return auto_switch_on_new_message;
+    }
+
+    public int getMaxRememberedChatHistory() {
+        return max_remembered_chat_history;
     }
 
     public List<KnownChannel> getKnownChannels() {
@@ -87,24 +99,33 @@ public final class MEHConfig implements ConfigData {
 
     public static final class KnownChannel {
 
+        @ConfigEntry.Gui.RequiresRestart
         private String id;
+        @ConfigEntry.Gui.RequiresRestart
         private String name;
 
         @ConfigEntry.ColorPicker
+        @ConfigEntry.Gui.RequiresRestart
         private int color;
 
         @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
         private String command_prefix;
 
-        public KnownChannel(String id, String name, int color, String commandPrefix) {
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.CollapsibleObject
+        private FocusFilter focus_filter;
+
+        KnownChannel(String id, String name, int color, String commandPrefix, FilterType filterType, String filter) {
             this.id = id;
             this.name = name;
             this.color = color;
             this.command_prefix = commandPrefix;
+            this.focus_filter = new FocusFilter(filterType, filter);
         }
 
-        public KnownChannel() {
-            this("unknown", "Unknown", 0, "");
+        KnownChannel() {
+            this("unknown", "Unknown", 0, "", FilterType.STARTS_WITH, "");
         }
 
         public String getId() {
@@ -121,6 +142,45 @@ public final class MEHConfig implements ConfigData {
 
         public String getCommandPrefix() {
             return command_prefix;
+        }
+
+        public FocusFilter getFocusFilter() {
+            return focus_filter;
+        }
+
+    }
+
+    public static final class FocusFilter {
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
+        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
+        private FilterType filter_type;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
+        private String filter;
+
+        FocusFilter(FilterType filterType, String filter) {
+            this.filter_type = filterType;
+            this.filter = filter;
+        }
+
+        @Nullable
+        public ChatMessageFilter toChatMessageFilter() {
+            if (filter == null || filter.isEmpty()) {
+                return null;
+            }
+
+            if (filter_type == FilterType.REGEX) {
+                return ChatMessageFilter.regex(filter, false);
+            } else if (filter_type == FilterType.REGEX_EXACT) {
+                return ChatMessageFilter.regex(filter, true);
+            } else if (filter_type == FilterType.STARTS_WITH) {
+                return ChatMessageFilter.startsWith(filter);
+            }
+
+            throw new UnsupportedOperationException("Unknown filter implementation for FilterType." + filter_type.name());
         }
 
     }

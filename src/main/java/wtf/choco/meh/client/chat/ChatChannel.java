@@ -7,6 +7,8 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.include.com.google.common.base.Preconditions;
 
+import wtf.choco.meh.client.chat.filter.ChatMessageFilter;
+
 public final class ChatChannel {
 
     private final String id;
@@ -14,9 +16,10 @@ public final class ChatChannel {
     private Component coloredDisplayName;
     private int color;
     private final String commandPrefix;
-    private boolean removable = true;
+    private final ChatChannelType type;
+    private final ChatMessageFilter messageFilter;
 
-    public ChatChannel(String id, Component displayName, int color, @Nullable String commandPrefix, boolean removable) {
+    public ChatChannel(String id, Component displayName, int color, @Nullable String commandPrefix, ChatChannelType type, ChatMessageFilter messageFilter) {
         Preconditions.checkArgument(commandPrefix == null || commandPrefix.length() >= 1, "commandPrefix cannot be empty");
 
         this.id = id;
@@ -24,11 +27,12 @@ public final class ChatChannel {
         this.coloredDisplayName = displayName.copy().withColor(color);
         this.color = color;
         this.commandPrefix = sanitizeCommandPrefix(commandPrefix);
-        this.removable = removable;
+        this.type = type;
+        this.messageFilter = messageFilter;
     }
 
-    public ChatChannel(String id, int color, @Nullable String commandPrefix, boolean removable) {
-        this(id, Component.translatable("meh.channel." + id + ".name"), color, commandPrefix, removable);
+    public ChatChannel(String id, int color, @Nullable String commandPrefix, ChatChannelType type, ChatMessageFilter filter) {
+        this(id, Component.translatable("meh.channel." + id + ".name"), color, commandPrefix, type, filter);
     }
 
     public String getId() {
@@ -65,8 +69,16 @@ public final class ChatChannel {
         return commandPrefix;
     }
 
+    public ChatChannelType getType() {
+        return type;
+    }
+
     public boolean isRemovable() {
-        return removable;
+        return type.isRemovable();
+    }
+
+    public ChatMessageFilter getMessageFilter() {
+        return messageFilter;
     }
 
     private String sanitizeCommandPrefix(String prefix) {

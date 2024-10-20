@@ -1,5 +1,6 @@
 package wtf.choco.meh.client.chat;
 
+import java.util.Objects;
 import java.util.OptionalLong;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
@@ -7,15 +8,18 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 
 import org.lwjgl.glfw.GLFW;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.chat.filter.ChatMessageFilter;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
@@ -28,7 +32,19 @@ public final class ChatChannelsFeature extends Feature {
 
     static boolean dontSendToChannel = false;
 
+    private static final ResourceLocation TEXTURE_FOCUS = ResourceLocation.tryBuild(MEHClient.MOD_ID, "textures/gui/screen/focus.png");
+
     private static final int DEFAULT_CHAT_BOX_MAX_LENGTH = 256;
+
+    private static final int CHANNEL_TAG_ALPHA = (0x60 << 24);
+    private static final int CHANNEL_TAG_X = 2;
+    private static final int CHANNEL_TAG_Y_OFFSET = 28;
+    private static final int CHANNEL_NAME_X = CHANNEL_TAG_X + 2;
+    private static final int CHANNEL_NAME_Y_OFFSET = CHANNEL_TAG_Y_OFFSET - 2;
+    private static final int FOCUS_ICON_PADDING = 6;
+    private static final int FOCUS_ICON_SIZE = 12;
+
+    private boolean focused = false;
 
     private final ChannelSelector channelSelector = new ChannelSelector();
 
@@ -37,7 +53,7 @@ public final class ChatChannelsFeature extends Feature {
 
         // Register configured known channels
         for (MEHConfig.KnownChannel channel : MEHClient.getConfig().getKnownChannels()) {
-            ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), false);
+            ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), ChatChannelType.BUILT_IN, channel.getFocusFilter().toChatMessageFilter());
             this.channelSelector.addChannel(chatChannel);
         }
     }
@@ -47,11 +63,7 @@ public final class ChatChannelsFeature extends Feature {
         ClientSendMessageEvents.ALLOW_CHAT.register(this::onAllowOutgoingChat);
         HypixelServerEvents.PRIVATE_MESSAGE_RECEIVED.register(this::onPrivateMessageReceived);
         HypixelServerEvents.PRIVATE_MESSAGE_SENT.register(this::onPrivateMessageSent);
-        ChatChannelEvents.SWITCH.register((from, to, reason) -> {
-            Minecraft client = Minecraft.getInstance();
-            this.ensureChatEditBoxMaxLength(client.screen, to);
-            return true;
-        });
+        ChatChannelEvents.SWITCH.register(this::onChatChannelSwitch);
 
         ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (!(screen instanceof ChatScreen) || !isEnabled()) {
@@ -107,7 +119,7 @@ public final class ChatChannelsFeature extends Feature {
         int randomColor = ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
 
         Component channelDisplayName = Component.literal(username);
-        ChatChannel channel = new ChatChannel(username, channelDisplayName, randomColor, "msg " + username, true);
+        ChatChannel channel = new ChatChannel(username, channelDisplayName, randomColor, "msg " + username, ChatChannelType.PRIVATE_MESSAGE, ChatMessageFilter.privateMessage(username));
 
         if (!ChatChannelEvents.CREATE.invoker().onCreateChatChannel(channel)) {
             return;
@@ -136,6 +148,21 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     @SuppressWarnings("unused")
+    private boolean onChatChannelSwitch(ChatChannel from, ChatChannel to, ChatChannelEvents.Switch.Reason reason) {
+        Minecraft client = Minecraft.getInstance();
+        this.ensureChatEditBoxMaxLength(client.screen, to);
+
+        ChatComponent chat = client.gui.getChat();
+        if (focused && !Objects.equals(from.getMessageFilter(), to.getMessageFilter())) {
+            chat.setChatMessageFilter(to.getMessageFilter());
+        } else if (!focused && chat.hasChatMessageFilter()) {
+            chat.setChatMessageFilter(null);
+        }
+
+        return true;
+    }
+
+    @SuppressWarnings("unused")
     private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
         if (Screen.hasControlDown()) {
             if (key == MEHKeybinds.KEY_SWITCH_CHANNEL) {
@@ -143,6 +170,8 @@ public final class ChatChannelsFeature extends Feature {
                 return !(next ? keybindSwitchChannelNext() : keybindSwitchChannelPrevious());
             } else if (key == MEHKeybinds.KEY_DELETE_CHANNEL) {
                 return !keybindDeleteChannel();
+            } else if (key == MEHKeybinds.KEY_TOGGLE_FOCUS_MODE) {
+                return !keybindToggleFocusMode();
             }
         }
 
@@ -190,6 +219,19 @@ public final class ChatChannelsFeature extends Feature {
         return false;
     }
 
+    public boolean keybindToggleFocusMode() {
+        if (!shouldProcessKeybind()) {
+            return false;
+        }
+
+        this.focused = !focused;
+
+        Minecraft minecraft = Minecraft.getInstance();
+        ChatChannel selectedChannel = getChannelSelector().getSelectedChannel();
+        minecraft.gui.getChat().setChatMessageFilter(focused ? selectedChannel.getMessageFilter() : null);
+        return true;
+    }
+
     private boolean shouldProcessKeybind() {
         if (!isEnabled()) {
             return false;
@@ -204,7 +246,7 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     @SuppressWarnings("unused")
-    private void onRenderChatScreen(ChatScreen screen, GuiGraphics graphics, int screenX, int screenY, float delta) {
+    private void onRenderChatScreen(ChatScreen screen, GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         if (!isEnabled() || SharedMixinValues.isWritingCommand(screen)) {
             return;
         }
@@ -217,16 +259,33 @@ public final class ChatChannelsFeature extends Feature {
         Minecraft minecraft = Minecraft.getInstance();
         ChatChannel channel = channelSelector.getSelectedChannel();
         Component displayName = channel.getDisplayName();
-        int height = screen.height;
-        int width = minecraft.font.width(displayName) + 7;
-        int backgroundColor = (0x60 << 24) | channel.getColor();
 
-        graphics.fill(2, height - 28, width - 2, height - 16, backgroundColor);
-        graphics.drawString(minecraft.font, displayName, 4, height - 26, 0xFFFFFF);
+        final int channelTagY = screen.height - CHANNEL_TAG_Y_OFFSET;
+        final int channelTagHeight = minecraft.font.lineHeight + 3;
+
+        final int textWidth = minecraft.font.width(displayName);
+        final int channelNameY = screen.height - CHANNEL_NAME_Y_OFFSET;
+        final int backgroundColor = channel.getColor() | CHANNEL_TAG_ALPHA;
+
+        graphics.fill(CHANNEL_TAG_X, channelTagY, CHANNEL_TAG_X + textWidth + 3, channelTagY + channelTagHeight, backgroundColor);
+        graphics.drawString(minecraft.font, displayName, CHANNEL_NAME_X, channelNameY, 0xFFFFFF);
+
+        if (focused) {
+            final int x = CHANNEL_TAG_X + textWidth + FOCUS_ICON_PADDING;
+            final int y = channelTagY;
+
+            // (texture, x, y, u, v, width, height, textureWidth, textureHeight)
+            graphics.blit(TEXTURE_FOCUS, x, y, 0, 0, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE);
+
+            if (mouseX >= x && mouseX <= x + FOCUS_ICON_SIZE && mouseY >= y && mouseY <= y + FOCUS_ICON_SIZE) {
+                Component keybind = MEHKeybinds.isAmecsLoaded() ? MEHKeybinds.TOGGLE_FOCUS_MODE.getTranslatedKeyMessage() : Component.literal("Control + F");
+                graphics.renderTooltip(minecraft.font, Component.translatable("meh.channel.focus.tooltip", keybind), mouseX, mouseY + 8);
+            }
+        }
     }
 
-    private void onRenderChatScreen(Screen screen, GuiGraphics graphics, int screenX, int screenY, float delta) { // Exists only as a way to target with method reference
-        this.onRenderChatScreen((ChatScreen) screen, graphics, screenX, screenY, delta);
+    private void onRenderChatScreen(Screen screen, GuiGraphics graphics, int mouseX, int mouseY, float delta) { // Exists only as a way to target with method reference
+        this.onRenderChatScreen((ChatScreen) screen, graphics, mouseX, mouseY, delta);
     }
 
     private ChatChannel switchChannel(boolean next) {

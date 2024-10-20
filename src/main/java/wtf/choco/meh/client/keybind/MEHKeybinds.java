@@ -25,11 +25,13 @@ public final class MEHKeybinds {
     public static final int KEY_SWITCH_CHANNEL = InputConstants.KEY_TAB;
     public static final int KEY_DELETE_CHANNEL = InputConstants.KEY_MINUS;
     public static final int KEY_EMOTE_SELECTOR = InputConstants.KEY_E;
+    public static final int KEY_TOGGLE_FOCUS_MODE = InputConstants.KEY_F;
 
     public static final KeyMapping SWITCH_CHANNEL;
     public static final KeyMapping SWITCH_CHANNEL_PREVIOUS;
     public static final KeyMapping DELETE_CHANNEL;
     public static final KeyMapping EMOTE_SELECTOR;
+    public static final KeyMapping TOGGLE_FOCUS_MODE;
 
     private static final Supplier<Boolean> AMECS_LOADED = Suppliers.memoize(() -> {
         FabricLoader loader = FabricLoader.getInstance();
@@ -41,6 +43,7 @@ public final class MEHKeybinds {
         SWITCH_CHANNEL_PREVIOUS = registerPriorityKeybind("switch_channel_previous", InputConstants.Type.KEYSYM, KEY_SWITCH_CHANNEL, true, true, chatChannelKeybind(ChatChannelsFeature::keybindSwitchChannelPrevious));
         DELETE_CHANNEL = registerPriorityKeybind("delete_channel", InputConstants.Type.KEYSYM, KEY_DELETE_CHANNEL, true, chatChannelKeybind(ChatChannelsFeature::keybindDeleteChannel));
         EMOTE_SELECTOR = registerPriorityKeybind("emote_selector", InputConstants.Type.KEYSYM, KEY_EMOTE_SELECTOR, true, emoteSelectorKeybind(EmoteSelectorFeature::keybindOnToggleEmoteSelector));
+        TOGGLE_FOCUS_MODE = registerPriorityKeybind("toggle_focus_mode", InputConstants.Type.KEYSYM, KEY_TOGGLE_FOCUS_MODE, true, chatChannelKeybind(ChatChannelsFeature::keybindToggleFocusMode));
     }
 
     private MEHKeybinds() { }

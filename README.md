@@ -12,6 +12,7 @@ An extremely primitive chat channel management system. Create and use channels t
 - **Switch to Next Channel:** Ctrl + Tab (with chat screen open)
 - **Switch to Previous Channel:** Ctrl + Shift + Tab (with chat screen open)
 - **Delete Current Channel:** Ctrl + Minus (with chat screen open)
+- **Toggle Focus Mode:** Ctrl + F (with chat screen open)
 
 ### Mnemonics
 Mnemonics are quick key sequences that perform some action. MEH provides some very simple mnemonics for commonly used messages while on Hypixel which, unlike auto-ggs or auto-gcs, makes sending these messages still feel genuine because they have to be manually performed. Chat mnemonics specifically alleviates the unnecessary movement of the left hand to press 'T' (to open chat) and the right hand from the mouse to press the 'Enter' key to send the message.
