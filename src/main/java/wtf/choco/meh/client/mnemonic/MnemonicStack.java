@@ -26,7 +26,9 @@ final class MnemonicStack {
     }
 
     /**
-     * @param keycode
+     * Push a key to the mnemonic stack.
+     *
+     * @param keycode the keycode that was pressed
      * @return true if the keycode push resulted in one or more possible mnemonics, or false if
      * no more mnemonics are possible
      */
@@ -46,6 +48,11 @@ final class MnemonicStack {
         return true;
     }
 
+    /**
+     * Get the {@link Mnemonic} currently represented on the stack.
+     *
+     * @return the current mnemonic, or null if none
+     */
     @Nullable
     Mnemonic get() {
         if (possibleMnemonics.size() != 1) {

@@ -11,6 +11,10 @@ import net.minecraft.client.Minecraft;
 import wtf.choco.meh.client.event.LWJGLEvents;
 import wtf.choco.meh.client.event.MEHEvents;
 
+/**
+ * Represents a handler capable of managing and keeping track of active mnemonics and performing
+ * them if the client is successful in typing one.
+ */
 public final class MnemonicHandler {
 
     private static final long MNEMONIC_KEY_PRESS_WAIT_PERIOD_MILLIS = 50;

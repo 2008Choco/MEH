@@ -6,7 +6,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.include.com.google.common.base.Preconditions;
 
+/**
+ * Data extracted from a Hypixel private message.
+ *
+ * @param direction the direction of the private message
+ * @param rank the rank of the user with whom the client is communicating, or null if none
+ * @param username the username of the user with whom the client is communicating
+ * @param message the plain text message sent in the private message
+ *
+ * @see ChatExtractors#PRIVATE_MESSAGE
+ */
 public final record PrivateMessageData(Direction direction, @Nullable String rank, String username, String message) {
 
     /*
@@ -18,7 +29,17 @@ public final record PrivateMessageData(Direction direction, @Nullable String ran
      */
     static final Pattern PATTERN = Pattern.compile("^(?<direction>" + Direction.INCOMING.text + "|" + Direction.OUTGOING.text + ")(?:\\s\\[(?<rank>.+)\\])?\\s(?<username>\\w+):\\s*(?<message>.+)$");
 
+    /**
+     * Construct a {@link PrivateMessageData} instance from a RegEx {@link Matcher} that has
+     * already successfully matched against a string.
+     *
+     * @param matcher the matched matcher instance from which to extract data
+     *
+     * @return the message data object containing all relevant data from the matcher
+     */
     static PrivateMessageData fromMatcher(Matcher matcher) {
+        Preconditions.checkArgument(matcher.hasMatch(), "Expected matcher to already have matched");
+
         Direction direction = Direction.fromText(matcher.group("direction"));
         String rank = matcher.group("rank");
         String username = matcher.group("username");
@@ -27,9 +48,19 @@ public final record PrivateMessageData(Direction direction, @Nullable String ran
         return new PrivateMessageData(direction, rank, username, message);
     }
 
+    /**
+     * A direction in which a private message may travel.
+     */
     public static enum Direction {
 
+        /**
+         * The message is incoming, sent from another user.
+         */
         INCOMING("From"),
+
+        /**
+         * The message is outgoing, sent to another user.
+         */
         OUTGOING("To");
 
         private static final Map<String, Direction> FROM_TEXT = new HashMap<>();

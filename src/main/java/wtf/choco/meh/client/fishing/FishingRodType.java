@@ -51,6 +51,14 @@ public enum FishingRodType {
         );
     }
 
+    /**
+     * Check whether or not the given display name {@link Component} matches the expected display
+     * name of this fishing rod type.
+     *
+     * @param displayName the item display name to compare against
+     *
+     * @return true if the display name matches this fishing rod type, false otherwise
+     */
     public boolean matchesDisplayName(Component displayName) {
         boolean dev = FabricLoader.getInstance().isDevelopmentEnvironment();
 
