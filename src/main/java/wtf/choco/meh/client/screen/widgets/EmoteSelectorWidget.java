@@ -14,6 +14,8 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.Mth;
+import net.minecraft.util.profiling.Profiler;
+import net.minecraft.util.profiling.ProfilerFiller;
 
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.emote.ChatEmote;
@@ -111,7 +113,8 @@ public final class EmoteSelectorWidget implements Renderable {
         int dy = y + WIDGET_HEIGHT;
         int headerY = y - WIDGET_HEADER_HEIGHT;
 
-        minecraft.getProfiler().push("emoteSelectorWidget");
+        ProfilerFiller profiler = Profiler.get();
+        profiler.push("emoteSelectorWidget");
 
         graphics.fill(x, y, dx, dy, WIDGET_BACKGROUND_COLOR);
         graphics.fill(x, headerY, dx, y, WIDGET_HEADER_COLOR);
@@ -152,7 +155,7 @@ public final class EmoteSelectorWidget implements Renderable {
 
         stack.popPose();
 
-        minecraft.getProfiler().pop();
+        profiler.pop();
     }
 
     private void renderEmoteCell(GuiGraphics graphics, PoseStack stack, ChatEmote emote, boolean selected) {
@@ -160,7 +163,8 @@ public final class EmoteSelectorWidget implements Renderable {
         graphics.fill(0, 0, CELL_SIZE, CELL_SIZE, color);
 
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getProfiler().push("emoteCell");
+        ProfilerFiller profiler = Profiler.get();
+        profiler.push("emoteCell");
         stack.pushPose();
         stack.translate(CELL_SIZE / 2, CELL_SIZE / 2, 0);
 
@@ -187,7 +191,7 @@ public final class EmoteSelectorWidget implements Renderable {
             stack.popPose();
         }
 
-        minecraft.getProfiler().pop();
+        profiler.pop();
     }
 
     @SuppressWarnings("unused")

@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'fabric-loom' version '1.8-SNAPSHOT'
 }
 
 version = project.mod_version
@@ -33,7 +33,7 @@ dependencies {
     modApi ("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") { // Cloth Version found at https://linkie.shedaniel.dev/dependencies
         exclude(group: "net.fabricmc.fabric-api")
     }
-    modApi "com.terraformersmc:modmenu:11.0.2"
+    modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
     modApi "de.siphalor:amecsapi-1.20:1.5.6+mc1.20.2" // Amecs API provided by "too many shortcuts": https://github.com/wyatt-herkamp/too-many-shortcuts
 }
 

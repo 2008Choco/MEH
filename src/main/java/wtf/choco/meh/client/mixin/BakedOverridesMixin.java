@@ -2,7 +2,7 @@ package wtf.choco.meh.client.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.BakedOverrides;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,16 +17,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import wtf.choco.meh.client.model.CustomModelOverrides;
 import wtf.choco.meh.client.model.ModelOverride;
 
-@Mixin(ItemOverrides.class)
-public class ItemOverridesMixin {
+@Mixin(BakedOverrides.class)
+public class BakedOverridesMixin {
 
     @Inject(
-        method = "resolve(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/entity/LivingEntity;I)Lnet/minecraft/client/resources/model/BakedModel;",
+        method = "findOverride(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/entity/LivingEntity;I)Lnet/minecraft/client/resources/model/BakedModel;",
         at = @At("HEAD"),
         cancellable = true
     )
     @SuppressWarnings("unused")
-    public void onResolve(BakedModel originalModel, ItemStack itemStack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int contextData, CallbackInfoReturnable<BakedModel> callback) {
+    public void onFindOverride(ItemStack itemStack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int contextData, CallbackInfoReturnable<BakedModel> callback) {
         for (ModelOverride override : CustomModelOverrides.get(itemStack.getItem())) {
             if (!override.shouldOverride(itemStack, level, entity)) {
                 continue;

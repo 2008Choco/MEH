@@ -12,6 +12,7 @@ import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -127,7 +128,7 @@ public final class ChatChannelsFeature extends Feature {
 
         int newChannelIndex = channelSelector.addChannel(channel);
 
-        minecraft.player.sendSystemMessage(Component.translatable("meh.channel.new.msg", channel.getDisplayName(true)));
+        minecraft.player.displayClientMessage(Component.translatable("meh.channel.new.msg", channel.getDisplayName(true)), false);
 
         // If the chat window isn't open, we'll automatically switch to the newly created channel
         if (MEHClient.getConfig().isAutoSwitchOnNewMessage() && !(minecraft.screen instanceof ChatScreen)) {
@@ -274,8 +275,8 @@ public final class ChatChannelsFeature extends Feature {
             final int x = CHANNEL_TAG_X + textWidth + FOCUS_ICON_PADDING;
             final int y = channelTagY;
 
-            // (texture, x, y, u, v, width, height, textureWidth, textureHeight)
-            graphics.blit(TEXTURE_FOCUS, x, y, 0, 0, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE);
+            // (renderType, texture, x, y, u, v, width, height, textureWidth, textureHeight)
+            graphics.blit(RenderType::guiTextured, TEXTURE_FOCUS, x, y, 0, 0, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE);
 
             if (mouseX >= x && mouseX <= x + FOCUS_ICON_SIZE && mouseY >= y && mouseY <= y + FOCUS_ICON_SIZE) {
                 Component keybind = MEHKeybinds.isAmecsLoaded() ? MEHKeybinds.TOGGLE_FOCUS_MODE.getTranslatedKeyMessage() : Component.literal("Control + F");

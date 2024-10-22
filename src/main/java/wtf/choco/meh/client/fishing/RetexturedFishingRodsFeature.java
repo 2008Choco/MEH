@@ -22,7 +22,7 @@ public final class RetexturedFishingRodsFeature extends Feature implements Model
     }
 
     @Override
-    public void onInitializeModelLoader(Context context) {
+    public void initialize(Context context) {
         for (FishingRodType type : FishingRodType.values()) {
             context.addModels(type.getModelLocation(), type.getCastModelLocation());
             this.registerFishingRodModelOverride(type);

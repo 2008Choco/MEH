@@ -34,7 +34,7 @@ public final class ClientTestCommand {
             }
 
             itemStack.getComponents().forEach(component -> {
-                player.sendSystemMessage(Component.literal(component.type().toString()).append(": ").append(component.value().toString()));
+                player.displayClientMessage(Component.literal(component.type().toString()).append(": ").append(component.value().toString()), false);
             });
 
             return false;

@@ -4,9 +4,9 @@
     "compatibilityLevel": "JAVA_17",
     "mixins": [
         "AbstractContainerMenuMixin",
+        "BakedOverridesMixin",
         "ChatComponentMixin",
         "ChatScreenAccessor",
-        "ItemOverridesMixin",
         "KeyboardHandlerMixin",
         "MultiPlayerGameModeMixin",
         "ScreenAccessor"
