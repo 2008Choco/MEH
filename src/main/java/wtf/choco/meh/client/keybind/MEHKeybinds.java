@@ -7,10 +7,8 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.resources.ResourceLocation;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -54,6 +52,7 @@ public final class MEHKeybinds {
         return AMECS_LOADED.get();
     }
 
+    @SuppressWarnings("unused")
     @Nullable
     private static KeyMapping registerPriorityKeybind(String keyId, InputConstants.Type type, int key, boolean control, boolean shift, BooleanSupplier onPress) {
         if (!isAmecsLoaded()) {
@@ -61,10 +60,13 @@ public final class MEHKeybinds {
         }
 
         try {
+            /*
             ResourceLocation mappingId = ResourceLocation.tryBuild(MEHClient.MOD_ID, keyId);
             KeyMapping keybind = AmecsHook.createAmecsKeybinding(mappingId, type, key, CATEGORY_MEH, control, shift, onPress);
             KeyBindingHelper.registerKeyBinding(keybind);
             return keybind;
+            */
+            return null;
         } catch (NoClassDefFoundError e) {
             MEHClient.LOGGER.warn("Tried to register keybind (" + keyId + ") via Amecs API, but Amecs classes were not found?");
             return null;
