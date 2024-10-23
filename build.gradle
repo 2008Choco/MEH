@@ -1,9 +1,10 @@
 plugins {
     id 'fabric-loom' version '1.8-SNAPSHOT'
+    id 'com.palantir.git-version' version '3.1.0'
 }
 
-version = project.mod_version
 group = project.maven_group
+version = "0.0.1-SNAPSHOT"
 
 base {
     archivesName = project.archives_base_name
@@ -38,10 +39,14 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", project.version
+    outputs.upToDateWhen { false } // Always process resource properties
+
+    def details = versionDetails()
+    def archiveVersion = "${details.gitHash}-${details.branchName}"
+    inputs.property "version", archiveVersion
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand "version": archiveVersion
     }
 }
 
