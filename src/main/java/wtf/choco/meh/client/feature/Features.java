@@ -14,6 +14,7 @@ import wtf.choco.meh.client.chat.GGMnemonicFeature;
 import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
 import wtf.choco.meh.client.game.housing.HousingAutoDisableFlightFeature;
 import wtf.choco.meh.client.game.housing.HousingAutoNightVisionFeature;
+import wtf.choco.meh.client.game.murdermystery.RetexturedKnivesFeature;
 import wtf.choco.meh.client.party.PartyManagerFeature;
 import wtf.choco.meh.client.registry.MEHRegistries;
 
@@ -27,6 +28,7 @@ public final class Features {
     public static final GGMnemonicFeature MNEMONIC_GG = register("mnemonic_gg", GGMnemonicFeature::new);
     public static final PartyManagerFeature PARTY_MANAGER = register("party_manager", PartyManagerFeature::new);
     public static final RetexturedFishingRodsFeature RETEXTURED_FISHING_RODS = register("retextured_fishing_rods", RetexturedFishingRodsFeature::new);
+    public static final RetexturedKnivesFeature RETEXTURED_KNIVES = register("retextured_knives", RetexturedKnivesFeature::new);
 
     private Features() { }
 

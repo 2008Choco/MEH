@@ -20,7 +20,7 @@ final class FishingRodModelOverride implements DynamicModelOverride {
 
     @Override
     public boolean shouldOverride(ItemStack itemStack, @Nullable Level level, @Nullable LivingEntity entity) {
-        return Features.RETEXTURED_FISHING_RODS.isEnabled() && fishingRodType.matchesDisplayName(itemStack.getHoverName());
+        return Features.RETEXTURED_FISHING_RODS.isEnabled() && fishingRodType.test(itemStack.getHoverName());
     }
 
     @Override
