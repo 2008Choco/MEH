@@ -37,6 +37,10 @@ public final class MEHConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
+    private ConfigMurderMystery murder_mystery = new ConfigMurderMystery();
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
     private ConfigPartyManager party_manager = new ConfigPartyManager();
 
     public int getMaxRememberedChatHistory() {
@@ -61,6 +65,10 @@ public final class MEHConfig implements ConfigData {
 
     public ConfigMnemonics getMnemonicsConfig() {
         return mnemonics;
+    }
+
+    public ConfigMurderMystery getMurderMysteryConfig() {
+        return murder_mystery;
     }
 
     public ConfigPartyManager getPartyManager() {

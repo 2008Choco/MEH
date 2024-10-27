@@ -8,6 +8,7 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 
 import wtf.choco.meh.client.fishing.FishingRodType;
+import wtf.choco.meh.client.game.murdermystery.KnifeType;
 
 public final class MEHItemModelProvider extends FabricModelProvider {
 
@@ -23,6 +24,14 @@ public final class MEHItemModelProvider extends FabricModelProvider {
         for (FishingRodType type : FishingRodType.values()) {
             this.generateItemModel(generator, type);
         }
+
+        for (KnifeType type : KnifeType.values()) {
+            if (!type.shouldRetexture()) {
+                continue;
+            }
+
+            this.generateItemModel(generator, type);
+        }
     }
 
     private void generateItemModel(ItemModelGenerators generator, FishingRodType type) {
@@ -30,6 +39,10 @@ public final class MEHItemModelProvider extends FabricModelProvider {
         // But we can generate the individual model files, which is at least something!
         ModelTemplates.FLAT_HANDHELD_ROD_ITEM.create(type.getModelLocation(), TextureMapping.layer0(type.getTextureLocation()), generator.modelOutput);
         ModelTemplates.FLAT_HANDHELD_ROD_ITEM.create(type.getCastModelLocation(), TextureMapping.layer0(type.getCastTextureLocation()), generator.modelOutput);
+    }
+
+    private void generateItemModel(ItemModelGenerators generator, KnifeType type) {
+        ModelTemplates.FLAT_HANDHELD_ITEM.create(type.getModelLocation(), TextureMapping.layer0(type.getTextureLocation()), generator.modelOutput);
     }
 
 }

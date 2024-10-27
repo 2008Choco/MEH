@@ -165,6 +165,8 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
             "Used by fishers to show good sportsmanship after a rare catch!"
         );
         this.addOption(builder, "mnemonics.gg", "Good Game! (gg)", "Press 'g' and 'g' in quick succession to write \"gg\" in chat!");
+        this.addOption(builder, "murder_mystery", "Murder Mystery", "Enhancements to Hypixel's Murder Mystery minigame.");
+        this.addOption(builder, "murder_mystery.retextured_murderer_knives", "Retextured Murderer Knives", "The cosmetic murderer knives will use custom textures.");
         this.addOption(builder, "party_manager", "Party Manager", "Options to customize the appearance and behavior of Party Manager features.");
         this.addOption(builder, "party_manager.enabled", "Enabled");
         this.addOption(builder, "party_manager.party_list_position", "Party List Position");
