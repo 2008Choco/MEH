@@ -1,17 +1,20 @@
 package wtf.choco.meh.client.fishing;
 
-import net.fabricmc.loader.api.FabricLoader;
+import java.util.function.Predicate;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.util.Components;
+
+import static wtf.choco.meh.client.util.Components.emptyNonItalic;
 
 /**
  * A type of fishing rod used in main lobby fishing on Hypixel.
  */
-public enum FishingRodType {
+public enum FishingRodType implements Predicate<Component> {
 
     /*
      * Alternate display names are used for situations where the display name differs in different environments,
@@ -52,28 +55,9 @@ public enum FishingRodType {
         );
     }
 
-    /**
-     * Check whether or not the given display name {@link Component} matches the expected display
-     * name of this fishing rod type.
-     *
-     * @param displayName the item display name to compare against
-     *
-     * @return true if the display name matches this fishing rod type, false otherwise
-     */
-    public boolean matchesDisplayName(Component displayName) {
-        boolean dev = FabricLoader.getInstance().isDevelopmentEnvironment();
-
-        for (Component rodDisplayName : displayNames) {
-            /*
-             * It's difficult to get coloured items in single player "vanilla", so we're going
-             * to just ignore colour codes when in a development environment as a quick band-aid patch.
-             */
-            if ((dev && displayName.getString().equals(rodDisplayName.getString())) || rodDisplayName.equals(displayName)) {
-                return true;
-            }
-        }
-
-        return false;
+    @Override
+    public boolean test(Component displayName) {
+        return Components.anyMatch(displayNames, displayName);
     }
 
     /**
@@ -139,10 +123,6 @@ public enum FishingRodType {
         }
 
         return castTextureLocation;
-    }
-
-    private static MutableComponent emptyNonItalic() {
-        return Component.empty().withStyle(style -> style.withItalic(false));
     }
 
 }
