@@ -27,7 +27,7 @@ public final record PrivateMessageData(Direction direction, @Nullable String ran
      * To [MVP++] Player: message
      * From UnrankedPlayer: message
      */
-    static final Pattern PATTERN = Pattern.compile("^(?<direction>" + Direction.INCOMING.text + "|" + Direction.OUTGOING.text + ")(?:\\s\\[(?<rank>.+)\\])?\\s(?<username>\\w+):\\s*(?<message>.+)$");
+    static final Pattern PATTERN = Pattern.compile("^(?<direction>" + Direction.INCOMING.text + "|" + Direction.OUTGOING.text + ")(?:\\s\\[(?<rank>[\\w+]+)\\])?\\s(?<username>\\w+):\\s*(?<message>.+)$");
 
     /**
      * Construct a {@link PrivateMessageData} instance from a RegEx {@link Matcher} that has
