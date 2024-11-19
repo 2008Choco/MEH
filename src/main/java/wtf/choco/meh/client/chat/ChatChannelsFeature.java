@@ -120,7 +120,7 @@ public final class ChatChannelsFeature extends Feature {
         int randomColor = ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
 
         Component channelDisplayName = Component.literal(username);
-        ChatChannel channel = new ChatChannel(username, channelDisplayName, randomColor, "msg " + username, ChatChannelType.PRIVATE_MESSAGE, ChatMessageFilter.privateMessage(username));
+        ChatChannel channel = new ChatChannel(username, channelDisplayName, randomColor, "w " + username, ChatChannelType.PRIVATE_MESSAGE, ChatMessageFilter.privateMessage(username));
 
         if (!ChatChannelEvents.CREATE.invoker().onCreateChatChannel(channel)) {
             return;
