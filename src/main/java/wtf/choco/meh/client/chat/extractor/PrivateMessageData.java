@@ -1,12 +1,13 @@
 package wtf.choco.meh.client.chat.extractor;
 
+import com.google.common.base.Preconditions;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.include.com.google.common.base.Preconditions;
 
 /**
  * Data extracted from a Hypixel private message.
@@ -27,7 +28,7 @@ public final record PrivateMessageData(Direction direction, @Nullable String ran
      * To [MVP++] Player: message
      * From UnrankedPlayer: message
      */
-    static final Pattern PATTERN = Pattern.compile("^(?<direction>" + Direction.INCOMING.text + "|" + Direction.OUTGOING.text + ")(?:\\s\\[(?<rank>[\\w+]+)\\])?\\s(?<username>\\w+):\\s*(?<message>.+)$");
+    static final Pattern PATTERN = Pattern.compile("^" + Direction.toMatchString("direction") + " (?:\\[(?<rank>[\\w+]+)\\] )?(?<username>\\w+): (?<message>.+)");
 
     /**
      * Construct a {@link PrivateMessageData} instance from a RegEx {@link Matcher} that has
@@ -51,7 +52,7 @@ public final record PrivateMessageData(Direction direction, @Nullable String ran
     /**
      * A direction in which a private message may travel.
      */
-    public static enum Direction {
+    public static enum Direction implements RegExUtil.Matchable {
 
         /**
          * The message is incoming, sent from another user.
@@ -77,8 +78,17 @@ public final record PrivateMessageData(Direction direction, @Nullable String ran
             this.text = text;
         }
 
+        @Override
+        public String getMatchText() {
+            return text;
+        }
+
         private static Direction fromText(String text) {
             return FROM_TEXT.getOrDefault(text, INCOMING);
+        }
+
+        private static String toMatchString(String groupName) {
+            return RegExUtil.toMatchString(Direction.class, groupName);
         }
 
     }
