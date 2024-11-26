@@ -51,6 +51,9 @@ An assortment of enhancements to the main lobby fishing experience are made by t
 - [Cloth Config API](https://modrinth.com/mod/cloth-config/) (v15 and above)
 - _(Optional)_ [Mod Menu](https://modrinth.com/mod/modmenu/) (v11 and above)
   - Provides a configuration screen in the Mod Menu list
+- _(Optional)_ [Hypixel Mod API](https://modrinth.com/mod/hypixel-mod-api) (v1.0.1 and above)
+  - Provides more accurate information about the client's current state
+  - If not installed, MEH will do its best, but some features may not work as described
 - ~~_(Optional)_ [Amecs](https://www.curseforge.com/minecraft/mc-mods/amecs) or [Too Many Shortcuts](https://modrinth.com/mod/too-many-shortcuts)~~
   - ~~Allows various keys to be configurable (due to them using Ctrl and Shift modifiers)~~
   - ~~Amecs is not updated to 1.21.1, but if [this PR](https://github.com/Siphalor/amecs/pull/90) ever gets merged, it is preferred over Too Many Shortcuts~~
