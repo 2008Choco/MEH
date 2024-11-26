@@ -6,9 +6,6 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +16,6 @@ import wtf.choco.meh.client.chat.GCMnemonicFeature;
 import wtf.choco.meh.client.chat.GGMnemonicFeature;
 import wtf.choco.meh.client.command.ClientTestCommand;
 import wtf.choco.meh.client.config.MEHConfig;
-import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.event.impl.ChatListener;
 import wtf.choco.meh.client.feature.AutoDisableHousingFlightFeature;
 import wtf.choco.meh.client.feature.Feature;
@@ -66,27 +62,6 @@ public final class MEHClient implements ClientModInitializer {
         MEHKeybinds.init();
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientTestCommand.register(dispatcher));
-
-        HypixelServerEvents.SERVER_LOCATION_CHANGE.register((serverType, lobby, fromServerType, fromLobby) -> {
-            Minecraft minecraft = Minecraft.getInstance();
-            MutableComponent message = Component.literal("Connected to ").append(serverType.getDisplayName());
-            if (lobby) {
-                message = message.append(" (lobby)");
-            }
-
-            if (fromServerType != null) {
-                message.append(". Last connected to ").append(fromServerType.getDisplayName());
-                if (fromLobby) {
-                    message.append(" (lobby)");
-                }
-            }
-
-            if (hypixelServerState != null) {
-                message.append(". Environment: " + hypixelServerState.getServerLocationProvider().getEnvironment());
-            }
-
-            minecraft.player.displayClientMessage(message.append("."), false);
-        });
     }
 
     public MnemonicHandler getMnemonicHandler() {
