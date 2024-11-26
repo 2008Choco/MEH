@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ServerData;
@@ -15,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.include.com.google.common.base.Preconditions;
 
-import wtf.choco.meh.client.event.MEHEvents;
 import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
 
 /**
@@ -28,7 +26,7 @@ public final class HypixelServerState {
 
     private boolean connectedToHypixel = false;
     private HypixelScoreboard scoreboard = null;
-    private HypixelServerType serverType = HypixelServerType.UNKNOWN;
+    private ServerLocationProvider serverLocationProvider;
 
     /**
      * Initialize this instance and register listeners required for it to function.
@@ -36,7 +34,12 @@ public final class HypixelServerState {
     public void initialize() {
         ClientPlayConnectionEvents.JOIN.register(this::onJoinServer);
         ClientPlayConnectionEvents.DISCONNECT.register(this::onDisconnectFromServer);
-        MEHEvents.HYPIXEL_SCOREBOARD_REFRESH.register(this::onRefreshScoreboard);
+
+        if (FabricLoader.getInstance().isModLoaded("hypixel-mod-api")) {
+            this.serverLocationProvider = new HypixelServerLocationProvider();
+        } else {
+            this.serverLocationProvider = new HypixelScoreboardServerLocationProvider(this);
+        }
     }
 
     @SuppressWarnings("unused")
@@ -52,12 +55,6 @@ public final class HypixelServerState {
     private void onDisconnectFromServer(ClientPacketListener handler, Minecraft minecraft) {
         this.connectedToHypixel = false;
         this.setScoreboard(null);
-        this.serverType = HypixelServerType.UNKNOWN;
-    }
-
-    private void onRefreshScoreboard(HypixelScoreboard scoreboard) {
-        String title = ChatFormatting.stripFormatting(scoreboard.getTitle());
-        this.serverType = HypixelServerType.getByScoreboardTitle(title);
     }
 
     /**
@@ -98,13 +95,16 @@ public final class HypixelServerState {
     }
 
     /**
-     * Get the {@link HypixelServerType} to which the client is currently connected.
+     * Get the {@link ServerLocationProvider} to get information about what type of server the client is
+     * currently connected to (if connected to Hypixel).
      *
-     * @return the current server type, or {@link HypixelServerType#UNKNOWN} if unknown or not connected
-     * to Hypixel
+     * @return the server location provider
+     *
+     * @throws IllegalStateException if not connected to Hypixel
      */
-    public HypixelServerType getServerType() {
-        return serverType;
+    public ServerLocationProvider getServerLocationProvider() {
+        Preconditions.checkState(connectedToHypixel, "Cannot get the server location provider while not connected to Hypixel");
+        return serverLocationProvider;
     }
 
 }

@@ -7,10 +7,28 @@ import net.fabricmc.fabric.api.event.EventFactory;
 
 import org.jetbrains.annotations.Nullable;
 
+import wtf.choco.meh.client.server.HypixelServerType;
+
 /**
  * Contains events related to in-game situations on the Hypixel server.
  */
 public final class HypixelServerEvents {
+
+    /**
+     * Callback for when the client is aware of a Hypixel server type change.
+     * <p>
+     * This event is not a replacement for the client connection events. This event <strong>WILL</strong>
+     * be called much later once the client has established which Hypixel server type was joined. This
+     * should be used only to check what type of server the client joined into, not whether or not they
+     * joined a Hypixel server at all.
+     */
+    public static final Event<LocationServerChange> SERVER_LOCATION_CHANGE = EventFactory.createArrayBacked(LocationServerChange.class,
+            listeners -> (serverType, lobby, fromServerType, fromLobby) -> {
+                for (LocationServerChange event : listeners) {
+                    event.onLocationChange(serverType, lobby, fromServerType, fromLobby);
+                }
+            }
+    );
 
     /**
      * Callback for when a private message has been received by the client.
@@ -35,6 +53,23 @@ public final class HypixelServerEvents {
     );
 
     private HypixelServerEvents() { }
+
+    @FunctionalInterface
+    public interface LocationServerChange {
+
+        /**
+         * Called when the client is aware of a Hypixel server type change.
+         *
+         * @param serverType the server type that the client is now connected to
+         * @param lobby whether or not the connected server is a lobby
+         * @param fromServerType the server type that the client was last connected to, or null if either that
+         * could not be determined reliably enough
+         * @param fromLobby whether or not the previous server type was a lobby. If {@code fromServerType} is
+         * null, this value will likely also be false and should probably be ignored
+         */
+        public void onLocationChange(HypixelServerType serverType, boolean lobby, @Nullable HypixelServerType fromServerType, boolean fromLobby);
+
+    }
 
     /**
      * Contains events related to Hypixel's private messaging system.

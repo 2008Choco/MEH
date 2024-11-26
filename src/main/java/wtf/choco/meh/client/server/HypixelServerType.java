@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 public enum HypixelServerType {
 
     MAIN_LOBBY("HYPIXEL"),
+    TOURNAMENT_LOBBY("TOURNAMENT HALL"),
     ARCADE("ARCADE GAMES"),
     BEDWARS("BED WARS"),
     BLITZ_SURVIVAL_GAMES("BLITZ SG"),
@@ -23,14 +24,21 @@ public enum HypixelServerType {
     HOUSING("HOUSING"),
     MEGA_WALLS("MEGA WALLS"),
     MURDER_MYSTERY("MURDER MYSTERY"),
+    PAINTBALL("PAINTBALL"), // TODO: Verify
     PIT("THE HYPIXEL PIT"),
     PROTOTYPE("PROTOTYPE"),
+    QUAKECRAFT("QUAKECRAFT"), // TODO: Verify
+    REPLAY("REPLAY"),
     SKYBLOCK("SKYBLOCK"),
     SKYWARS("SKYWARS"),
     SMASH_HEROES("SMASH HEROES"),
     SMP, // No scoreboard
+    SPEED_UHC("SPEED UHC"), // TODO: Verify
     TNT_GAMES("THE TNT GAMES"),
+    TURBO_KART_RACERS("TURBO KART RACERS"), // TODO: Verify
     UHC("UHC CHAMPIONS"),
+    VAMPIREZ("VAMPIREZ"), // TODO: Verify
+    WALLS("WALLS"), // TODO: Verify
     WARLORDS("WARLORDS"),
     WOOL_GAMES("WOOL GAMES"),
     UNKNOWN;

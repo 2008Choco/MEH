@@ -1,5 +1,7 @@
 package wtf.choco.meh.client.fishing;
 
+import java.util.Optional;
+
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.Items;
@@ -41,8 +43,14 @@ public final class RetexturedFishingRodsFeature extends Feature implements Model
             return false;
         }
 
-        // Should only render while in the main lobby (unless in a dev environment)
-        return FabricLoader.getInstance().isDevelopmentEnvironment() || getMod().getHypixelServerState().getServerType() == HypixelServerType.MAIN_LOBBY;
+        // Always render in a development environment
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            return true;
+        }
+
+        // Otherwise, only render in the main lobby
+        Optional<HypixelServerType> serverType = getMod().getHypixelServerState().getServerLocationProvider().getServerType();
+        return serverType.isPresent() && serverType.get() == HypixelServerType.MAIN_LOBBY;
     }
 
 }

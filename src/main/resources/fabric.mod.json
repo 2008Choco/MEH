@@ -37,7 +37,8 @@
         "cloth-config": ">=15"
     },
     "suggests": {
-        "modmenu": ">=11"
+        "modmenu": ">=11",
+        "hypixel-mod-api": ">=1.0.1"
     },
     "custom": {
         "loom:injected_interfaces": {
