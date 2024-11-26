@@ -55,6 +55,10 @@ public final class MEHConfig implements ConfigData {
         return enabled_features.main_lobby_fishing.retextured_fishing_rods;
     }
 
+    public boolean isAutoDisableHousingFlightEnabled() {
+        return enabled_features.auto_disable_housing_flight;
+    }
+
     public boolean isAutoSwitchOnNewMessage() {
         return auto_switch_on_new_message;
     }
@@ -94,6 +98,9 @@ public final class MEHConfig implements ConfigData {
 
         @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
         private MainLobbyFishing main_lobby_fishing = new MainLobbyFishing();
+
+        @ConfigEntry.Gui.Tooltip
+        private boolean auto_disable_housing_flight = false;
 
     }
 

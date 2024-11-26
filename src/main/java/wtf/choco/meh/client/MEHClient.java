@@ -21,6 +21,7 @@ import wtf.choco.meh.client.command.ClientTestCommand;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.event.impl.ChatListener;
+import wtf.choco.meh.client.feature.AutoDisableHousingFlightFeature;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.feature.FeatureManager;
 import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
@@ -52,6 +53,7 @@ public final class MEHClient implements ClientModInitializer {
 
         ChatListener.initialize();
 
+        this.featureManager.addFeature(AutoDisableHousingFlightFeature.class, AutoDisableHousingFlightFeature::new);
         this.featureManager.addFeature(ChatChannelsFeature.class, ChatChannelsFeature::new);
         this.featureManager.addFeature(EmoteSelectorFeature.class, EmoteSelectorFeature::new);
         this.featureManager.addFeature(GCMnemonicFeature.class, GCMnemonicFeature::new);
