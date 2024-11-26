@@ -22,9 +22,9 @@ public final class HypixelServerEvents {
      * should be used only to check what type of server the client joined into, not whether or not they
      * joined a Hypixel server at all.
      */
-    public static final Event<LocationServerChange> SERVER_LOCATION_CHANGE = EventFactory.createArrayBacked(LocationServerChange.class,
+    public static final Event<ServerLocationChange> SERVER_LOCATION_CHANGE = EventFactory.createArrayBacked(ServerLocationChange.class,
             listeners -> (serverType, lobby, fromServerType, fromLobby) -> {
-                for (LocationServerChange event : listeners) {
+                for (ServerLocationChange event : listeners) {
                     event.onLocationChange(serverType, lobby, fromServerType, fromLobby);
                 }
             }
@@ -55,7 +55,7 @@ public final class HypixelServerEvents {
     private HypixelServerEvents() { }
 
     @FunctionalInterface
-    public interface LocationServerChange {
+    public interface ServerLocationChange {
 
         /**
          * Called when the client is aware of a Hypixel server type change.
