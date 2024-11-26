@@ -85,7 +85,7 @@ public final class HypixelScoreboard {
      */
     @Nullable
     public String getLine(int lineNumber) {
-        HypixelScoreboardLine line = HypixelScoreboardLine.getByLineNumber(lineNumber);
+        HypixelScoreboardLine line = HypixelScoreboardLine.getByLineNumber(getMaxLine() - lineNumber + 1);
         if (line == null) {
             throw new IllegalArgumentException("No line exists for line number " + lineNumber);
         }
