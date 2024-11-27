@@ -1,9 +1,10 @@
 # Miscellaneous Enhancements for Hypixel (MEH)
 No seriously. Meh. This is a Fabric mod for Minecraft 1.21.2 and 1.21.3 that introduces some quality of life and convenience features when playing on the Hypixel server specifically. There's no true goal for this mod other than quality of life. This mod is maintained freely by [Choco](https://github.com/2008Choco) and includes features that just felt useful.
 
-Some features rely on Hypixel's chat messages due to Hypixel not sending packets to clients for specific events occurring. As a consequence, some of MEH's features only support Hypixel's English language. There are no plans to expand this support to other languages.
-
 This project is licensed under the MIT license.
+
+> [!NOTE]
+> Some features rely on Hypixel's chat messages due to Hypixel not sending packets to clients for specific events occurring. As a consequence, some of MEH's features only support Hypixel's English language. There are no plans to expand this support to other languages.
 
 ## Current Features
 
