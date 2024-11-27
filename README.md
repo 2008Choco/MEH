@@ -1,6 +1,8 @@
 # Miscellaneous Enhancements for Hypixel (MEH)
 No seriously. Meh. This is a Fabric mod for Minecraft 1.21.2 and 1.21.3 that introduces some quality of life and convenience features when playing on the Hypixel server specifically. There's no true goal for this mod other than quality of life. This mod is maintained freely by [Choco](https://github.com/2008Choco) and includes features that just felt useful.
 
+Some features rely on Hypixel's chat messages due to Hypixel not sending packets to clients for specific events occurring. As a consequence, some of MEH's features only support Hypixel's English language. There are no plans to expand this support to other languages.
+
 This project is licensed under the MIT license.
 
 ## Current Features
@@ -43,6 +45,11 @@ An assortment of enhancements to the main lobby fishing experience are made by t
 > - `src/main/resources/assets/meh/textures/item/fishing_rod/`
 >
 > Please download and use their resource pack if you enjoy main lobby fishing on Hypixel but aren't willing to use this mod :)
+
+### Auto-Disable Housing Flight
+Those with permission, when joining a Housing, will have their flight automatically enabled. This can be problematic for houses with parkours in which flight will cancel a run. Often you have to run `/fly` when joining _every single house_ to ensure you don't accidentally fly while doing a parkour. This feature will automatically run the `/fly` command when joining a Housing.
+
+This feature is disabled by default because its usefulness is limited.
 
 ## Dependencies & Integration
 - Minecraft 1.21.1 (consequently, Java 21)
