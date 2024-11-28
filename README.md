@@ -52,6 +52,12 @@ Those with permission, when joining a Housing, will have their flight automatica
 
 This feature is disabled by default because its usefulness is limited.
 
+### Party List
+When joining a party, it can often feel overwhelming to know who your party mates are without frequently checking Hypixel's party list command (`/pl`). MEH will poll the server for party information and outline the list of players in your party in one of the top corners of the screen so you always know who's in your party and what role they have. Everything is handled automatically. It will automatically recognize you've joined a party, and automatically recognize when you've left (or if it has disbanded).
+
+> [!NOTE]
+> This feature requires Hypixel Mod API to be installed. See Dependencies & Integration for more information!
+
 ## Dependencies & Integration
 - Minecraft 1.21.1 (consequently, Java 21)
 - Fabric Loader (version 0.16 or above)
