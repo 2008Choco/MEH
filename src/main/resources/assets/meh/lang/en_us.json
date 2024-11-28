@@ -71,6 +71,8 @@
     "meh.hypixel.server.unknown": "Unknown",
     "meh.hypixel.server.warlords": "Warlords",
     "meh.hypixel.server.wool_games": "Wool Games",
+    "meh.party_manager.list.position.top_left": "Top Left",
+    "meh.party_manager.list.position.top_right": "Top Right",
     "mnemonic.meh.gg": "GG",
     "text.autoconfig.meh.option.KnownChannel": "Known Channel",
     "text.autoconfig.meh.option.KnownChannel.color": "Channel Color",
@@ -102,9 +104,14 @@
     "text.autoconfig.meh.option.enabled_features.mnemonics.gc.@Tooltip": "Press 'g' and 'c' in quick succession to write \"gc\" in chat!\nUsed by fishers to show good sportsmanship after a rare catch!",
     "text.autoconfig.meh.option.enabled_features.mnemonics.gg": "Good Game! (gg)",
     "text.autoconfig.meh.option.enabled_features.mnemonics.gg.@Tooltip": "Press 'g' and 'g' in quick succession to write \"gg\" in chat!",
+    "text.autoconfig.meh.option.enabled_features.party_manager": "Party Manager",
+    "text.autoconfig.meh.option.enabled_features.party_manager.@Tooltip": "A party management feature.",
     "text.autoconfig.meh.option.known_channels": "Known Channels",
     "text.autoconfig.meh.option.known_channels.@Tooltip": "A list of channels loaded into the client by default. Channels listed here are not removeable.",
     "text.autoconfig.meh.option.max_remembered_chat_history": "Max Remembered Chat History",
     "text.autoconfig.meh.option.max_remembered_chat_history.@Tooltip": "The amount of chat messages Minecraft will remember.\nMore in-memory messages means more focused messages.\nHigher numbers consume more memory! Be careful!\nBy default, Minecraft remembers only 100 messages.",
+    "text.autoconfig.meh.option.party_manager": "Party Manager",
+    "text.autoconfig.meh.option.party_manager.@Tooltip": "Options to customize the appearance and behavior of Party Manager features.",
+    "text.autoconfig.meh.option.party_manager.party_list_position": "Party List Position",
     "text.autoconfig.meh.title": "MEH Options"
 }

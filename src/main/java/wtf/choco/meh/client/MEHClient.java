@@ -23,6 +23,7 @@ import wtf.choco.meh.client.feature.FeatureManager;
 import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mnemonic.MnemonicHandler;
+import wtf.choco.meh.client.party.PartyManagerFeature;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class MEHClient implements ClientModInitializer {
@@ -54,6 +55,7 @@ public final class MEHClient implements ClientModInitializer {
         this.featureManager.addFeature(EmoteSelectorFeature.class, EmoteSelectorFeature::new);
         this.featureManager.addFeature(GCMnemonicFeature.class, GCMnemonicFeature::new);
         this.featureManager.addFeature(GGMnemonicFeature.class, GGMnemonicFeature::new);
+        this.featureManager.addFeature(PartyManagerFeature.class, PartyManagerFeature::new);
         this.featureManager.addFeature(RetexturedFishingRodsFeature.class, RetexturedFishingRodsFeature::new);
 
         this.hypixelServerState.initialize();

@@ -52,6 +52,105 @@ public final class HypixelServerEvents {
             }
     );
 
+    /**
+     * Callback for when a party disbands.
+     */
+    public static final Event<PartyEvent.Disband> PARTY_DISBAND = EventFactory.createArrayBacked(PartyEvent.Disband.class,
+            listeners -> (disbanderRank, disbanderUsername) -> {
+                for (PartyEvent.Disband event : listeners) {
+                    event.onDisband(disbanderRank, disbanderUsername);
+                }
+            }
+    );
+
+    /**
+     * Callback for when the client joins another user's party.
+     */
+    public static final Event<PartyEvent.PartyJoin> PARTY_JOIN = EventFactory.createArrayBacked(PartyEvent.PartyJoin.class,
+            listeners -> (rank, username) -> {
+                for (PartyEvent.PartyJoin event : listeners) {
+                    event.onJoin(rank, username);
+                }
+            }
+    );
+
+    /**
+     * Callback for when the client is kicked from the party by a party moderator.
+     */
+    public static final Event<PartyEvent.PartyKicked> PARTY_KICKED = EventFactory.createArrayBacked(PartyEvent.PartyKicked.class,
+            listeners -> (rank, username) -> {
+                for (PartyEvent.PartyKicked event : listeners) {
+                    event.onKicked(rank, username);
+                }
+            }
+    );
+
+    /**
+     * Callback for when a member joins the party.
+     */
+    public static final Event<PartyEvent.MemberJoin> PARTY_MEMBER_JOIN = EventFactory.createArrayBacked(PartyEvent.MemberJoin.class,
+            listeners -> (rank, username) -> {
+                for (PartyEvent.MemberJoin event : listeners) {
+                    event.onJoin(rank, username);
+                }
+            }
+    );
+
+    /**
+     * Callback for when a member leaves the party.
+     */
+    public static final Event<PartyEvent.MemberLeave> PARTY_MEMBER_LEAVE = EventFactory.createArrayBacked(PartyEvent.MemberLeave.class,
+            listeners -> (rank, username, kicked) -> {
+                for (PartyEvent.MemberLeave event : listeners) {
+                    event.onLeave(rank, username, kicked);
+                }
+            }
+    );
+
+    /**
+     * Callback for when a member is invited to the party.
+     */
+    public static final Event<PartyEvent.MemberInvite> PARTY_MEMBER_INVITE = EventFactory.createArrayBacked(PartyEvent.MemberInvite.class,
+            listeners -> (rank, username, inviterRank, inviterUsername) -> {
+                for (PartyEvent.MemberInvite event : listeners) {
+                    event.onInvite(rank, username, inviterRank, inviterUsername);
+                }
+            }
+    );
+
+    /**
+     * Callback for when the party is transferred to another player.
+     */
+    public static final Event<PartyEvent.Transfer> PARTY_TRANSFER = EventFactory.createArrayBacked(PartyEvent.Transfer.class,
+            listeners -> (rank, username, transferrerRank, transferrerUsername) -> {
+                for (PartyEvent.Transfer event : listeners) {
+                    event.onTransfer(rank, username, transferrerRank, transferrerUsername);
+                }
+            }
+    );
+
+    /**
+     * Callback for when a party member is promoted to a new role.
+     */
+    public static final Event<PartyEvent.MemberPromote> PARTY_MEMBER_PROMOTE = EventFactory.createArrayBacked(PartyEvent.MemberPromote.class,
+            listeners -> (rank, username, promoterRank, promoterUsername, role) -> {
+                for (PartyEvent.MemberPromote event : listeners) {
+                    event.onPromote(rank, username, promoterRank, promoterUsername, role);
+                }
+            }
+    );
+
+    /**
+     * Callback for when a party member is demoted to a new role.
+     */
+    public static final Event<PartyEvent.MemberDemote> PARTY_MEMBER_DEMOTE = EventFactory.createArrayBacked(PartyEvent.MemberDemote.class,
+            listeners -> (rank, username, demoterRank, demoterUsername, role) -> {
+                for (PartyEvent.MemberDemote event : listeners) {
+                    event.onDemote(rank, username, demoterRank, demoterUsername, role);
+                }
+            }
+    );
+
     private HypixelServerEvents() { }
 
     @FunctionalInterface
@@ -107,6 +206,143 @@ public final class HypixelServerEvents {
              * an empty optional if this target has not been communicated with this session
              */
             public void onSent(String targetUsername, @Nullable String targetRank, String message, OptionalLong lastCommunicated);
+
+        }
+
+    }
+
+    /**
+     * Contains events related to Hypixel's party system.
+     */
+    public final class PartyEvent {
+
+        @FunctionalInterface
+        public interface Disband {
+
+            /**
+             * Called when a party is disbanded either due to the party being empty, or it being
+             * disbanded manually by its leader.
+             *
+             * @param disbanderRank the rank of the user that disbanded the party, or null if none
+             * @param disbanderUsername the username of the user that disbanded the party, or null
+             * if the party disbanded due to it being empty
+             */
+            public void onDisband(@Nullable String disbanderRank, @Nullable String disbanderUsername);
+
+        }
+
+        @FunctionalInterface
+        public interface PartyJoin {
+
+            /**
+             * Called when you join another member's party.
+             *
+             * @param partyLeaderRank the rank of the party leader, or null if none
+             * @param partyLeaderUsername the username of the party leader
+             */
+            public void onJoin(@Nullable String partyLeaderRank, @Nullable String partyLeaderUsername);
+
+        }
+
+        @FunctionalInterface
+        public interface PartyKicked {
+
+            /**
+             * Called when the client is kicked from the party by a party moderator.
+             *
+             * @param kickerRank the rank of the party member that kicked the client, or null if none
+             * @param kickerUsername the username of the party member that kicked the client
+             */
+            public void onKicked(@Nullable String kickerRank, @Nullable String kickerUsername);
+
+        }
+
+        @FunctionalInterface
+        public interface MemberJoin {
+
+            /**
+             * Called when a member joins the party.
+             *
+             * @param rank the rank of the user joining the party, or null if none
+             * @param username the username of the user joining the party
+             */
+            public void onJoin(@Nullable String rank, String username);
+
+        }
+
+        @FunctionalInterface
+        public interface MemberLeave {
+
+            /**
+             * Called when a member leaves the party, whether voluntary or by a kick.
+             *
+             * @param rank the rank of the user leaving the party, or null if none
+             * @param username the username of the user leaving the party
+             * @param kicked true if kicked, false if left voluntarily
+             */
+            public void onLeave(@Nullable String rank, String username, boolean kicked);
+
+        }
+
+        @FunctionalInterface
+        public interface MemberInvite {
+
+            /**
+             * Called when a member is invited to join the party.
+             *
+             * @param rank the rank of the user being invited to the party, or null if none
+             * @param username the username of the user being invited to the party
+             * @param inviterRank the rank of the user that sent the invitation, or null if none
+             * @param inviterUsername the username of the user that sent the invitation
+             */
+            public void onInvite(@Nullable String rank, String username, @Nullable String inviterRank, String inviterUsername);
+
+        }
+
+        @FunctionalInterface
+        public interface Transfer {
+
+            /**
+             * Called when the party is transferred to another party member.
+             *
+             * @param rank the rank of the new party leader, or null if none
+             * @param username the username of the the new party leader
+             * @param transferrerRank the rank of the user that initiated the transfer, or null if none
+             * @param transferrerUsername the username of the user that initiated the transfer
+             */
+            public void onTransfer(@Nullable String rank, String username, @Nullable String transferrerRank, String transferrerUsername);
+
+        }
+
+        @FunctionalInterface
+        public interface MemberPromote {
+
+            /**
+             * Called when a party member is promoted.
+             *
+             * @param rank the rank of the promoted user, or null if none
+             * @param username the username of the promoted user
+             * @param promoterRank the rank of the user that promoted the target, or null if none
+             * @param promoterUsername the username of the user that promoted the target
+             * @param role the user's new role
+             */
+            public void onPromote(@Nullable String rank, String username, @Nullable String promoterRank, String promoterUsername, String role);
+
+        }
+
+        @FunctionalInterface
+        public interface MemberDemote {
+
+            /**
+             * Called when a party member is demoted.
+             *
+             * @param rank the rank of the demoted user, or null if none
+             * @param username the username of the demoted user
+             * @param demoterRank the rank of the user that demoted the target, or null if none
+             * @param demoterUsername the username of the user that demoted the target
+             * @param role the user's new role
+             */
+            public void onDemote(@Nullable String rank, String username, @Nullable String demoterRank, String demoterUsername, String role);
 
         }
 

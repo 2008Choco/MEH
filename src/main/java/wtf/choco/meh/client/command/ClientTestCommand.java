@@ -14,7 +14,10 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
+import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.event.ContainerEvents;
+import wtf.choco.meh.client.party.PartyManagerFeature;
+import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class ClientTestCommand {
 
@@ -26,6 +29,7 @@ public final class ClientTestCommand {
         dispatcher.register(ClientCommandManager.literal("mehtest")
             .then(ClientCommandManager.literal("dumpitem").executes(ClientTestCommand::dumpItem))
             .then(ClientCommandManager.literal("dumpinventory").executes(ClientTestCommand::dumpInventory))
+            .then(ClientCommandManager.literal("refreshparty").executes(ClientTestCommand::refreshParty))
         );
 
         ContainerEvents.PICKUP_ITEM.register((menu, player, slot, itemStack) -> {
@@ -75,6 +79,33 @@ public final class ClientTestCommand {
                 .append(".")
             );
         }
+
+        return 1;
+    }
+
+    private static int refreshParty(CommandContext<FabricClientCommandSource> context) {
+        HypixelServerState serverState = MEHClient.getInstance().getHypixelServerState();
+        if (!serverState.isConnectedToHypixel()) {
+            context.getSource().sendError(Component.literal("You are not connected to Hypixel!").withStyle(ChatFormatting.RED));
+            return 0;
+        }
+
+        PartyManagerFeature partyManager = MEHClient.getInstance().getFeature(PartyManagerFeature.class);
+        if (!partyManager.isEnabled()) {
+            context.getSource().sendError(Component.literal("The party manager feature is currently disabled. Can't query for party.").withStyle(ChatFormatting.RED));
+            return 0;
+        }
+
+        context.getSource().sendFeedback(Component.literal("Refreshing your party..."));
+        partyManager.refreshParty().whenComplete((ignore, e) -> {
+            if (e != null) {
+                context.getSource().sendError(Component.literal("Couldn't fetch party data. Check client logs for more information!").withStyle(ChatFormatting.RED));
+                e.printStackTrace();
+                return;
+            }
+
+            context.getSource().sendFeedback(Component.literal("Done!").withStyle(ChatFormatting.GREEN));
+        });
 
         return 1;
     }

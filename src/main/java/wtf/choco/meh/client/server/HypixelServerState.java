@@ -14,6 +14,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.include.com.google.common.base.Preconditions;
 
+import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.party.FabricTestPartyService;
+import wtf.choco.meh.client.party.HypixelPartyService;
+import wtf.choco.meh.client.party.NoopPartyService;
+import wtf.choco.meh.client.party.PartyService;
 import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
 
 /**
@@ -27,6 +32,7 @@ public final class HypixelServerState {
     private boolean connectedToHypixel = false;
     private HypixelScoreboard scoreboard = null;
     private ServerLocationProvider serverLocationProvider;
+    private PartyService partyService;
 
     /**
      * Initialize this instance and register listeners required for it to function.
@@ -35,10 +41,22 @@ public final class HypixelServerState {
         ClientPlayConnectionEvents.JOIN.register(this::onJoinServer);
         ClientPlayConnectionEvents.DISCONNECT.register(this::onDisconnectFromServer);
 
-        if (FabricLoader.getInstance().isModLoaded("hypixel-mod-api")) {
+        boolean hypixelModAPI = FabricLoader.getInstance().isModLoaded("hypixel-mod-api");
+        if (hypixelModAPI) {
             this.serverLocationProvider = new HypixelServerLocationProvider();
         } else {
             this.serverLocationProvider = new HypixelScoreboardServerLocationProvider(this);
+        }
+
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            this.partyService = new FabricTestPartyService();
+            MEHClient.LOGGER.info("In a Fabric development environment. Using the Fabric Test party service.");
+        } else if (hypixelModAPI) {
+            this.partyService = new HypixelPartyService();
+            MEHClient.LOGGER.info("Found official Hypixel Mod API! Using Hypixel's mod communication channel to query party status.");
+        } else {
+            this.partyService = new NoopPartyService();
+            MEHClient.LOGGER.info("Couldn't find official Hypixel Mod API! Can't query party status.");
         }
     }
 
@@ -105,6 +123,15 @@ public final class HypixelServerState {
     public ServerLocationProvider getServerLocationProvider() {
         Preconditions.checkState(connectedToHypixel, "Cannot get the server location provider while not connected to Hypixel");
         return serverLocationProvider;
+    }
+
+    /**
+     * Get the {@link PartyService}.
+     *
+     * @return the party service
+     */
+    public PartyService getPartyService() {
+        return partyService;
     }
 
 }

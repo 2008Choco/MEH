@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.filter.ChatMessageFilter;
+import wtf.choco.meh.client.screen.widgets.PartyListWidget;
 
 @Config(name = MEHClient.MOD_ID)
 public final class MEHConfig implements ConfigData {
@@ -27,6 +28,10 @@ public final class MEHConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.BoundedDiscrete(min = 100, max = 1000)
     private int max_remembered_chat_history = 250;
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    private PartyManager party_manager = new PartyManager();
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.RequiresRestart
@@ -55,6 +60,10 @@ public final class MEHConfig implements ConfigData {
         return enabled_features.main_lobby_fishing.retextured_fishing_rods;
     }
 
+    public boolean isPartyManagerEnabled() {
+        return enabled_features.party_manager;
+    }
+
     public boolean isAutoDisableHousingFlightEnabled() {
         return enabled_features.auto_disable_housing_flight;
     }
@@ -65,6 +74,10 @@ public final class MEHConfig implements ConfigData {
 
     public int getMaxRememberedChatHistory() {
         return max_remembered_chat_history;
+    }
+
+    public PartyManager getPartyManager() {
+        return party_manager;
     }
 
     public List<KnownChannel> getKnownChannels() {
@@ -101,6 +114,9 @@ public final class MEHConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         private boolean auto_disable_housing_flight = false;
+
+        @ConfigEntry.Gui.Tooltip
+        private boolean party_manager = true;
 
     }
 
@@ -206,6 +222,17 @@ public final class MEHConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         private boolean retextured_fishing_rods = true;
+
+    }
+
+    public static final class PartyManager {
+
+        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
+        private PartyListWidget.Position party_list_position = PartyListWidget.Position.TOP_LEFT;
+
+        public PartyListWidget.Position getPartyListPosition() {
+            return party_list_position;
+        }
 
     }
 
