@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import org.jetbrains.annotations.Nullable;
 
+import static wtf.choco.meh.client.chat.extractor.RegExUtil.userMatchString;
+
 /**
  * Data extracted from a Hypixel private message.
  *
@@ -28,7 +30,7 @@ public final record PrivateMessageData(Direction direction, @Nullable String ran
      * To [MVP++] Player: message
      * From UnrankedPlayer: message
      */
-    static final Pattern PATTERN = Pattern.compile("^" + Direction.toMatchString("direction") + " (?:\\[(?<rank>[\\w+]+)\\] )?(?<username>\\w+): (?<message>.+)");
+    static final Pattern PATTERN = Pattern.compile("^" + Direction.toMatchString("direction") + " " + userMatchString() + ": (?<message>.+)");
 
     /**
      * Construct a {@link PrivateMessageData} instance from a RegEx {@link Matcher} that has

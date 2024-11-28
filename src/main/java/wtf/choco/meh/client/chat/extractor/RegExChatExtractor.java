@@ -5,13 +5,17 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class RegExChatExtractor<R> implements ChatExtractor<R> {
+class RegExChatExtractor<R> extends RegExChatMatcher implements ChatExtractor<R> {
 
-    private final Pattern pattern;
     private final Function<Matcher, R> resultExtractor;
 
     RegExChatExtractor(Pattern pattern, Function<Matcher, R> resultExtractor) {
-        this.pattern = pattern;
+        super(pattern);
+        this.resultExtractor = resultExtractor;
+    }
+
+    RegExChatExtractor(String regexPattern, Function<Matcher, R> resultExtractor) {
+        super(regexPattern);
         this.resultExtractor = resultExtractor;
     }
 
