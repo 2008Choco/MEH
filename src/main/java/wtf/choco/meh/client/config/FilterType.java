@@ -37,7 +37,7 @@ public enum FilterType implements Translatable {
     @NotNull
     @Override
     public String getKey() {
-        return "meh.channel.focus.type." + name().toLowerCase();
+        return "meh.channel.focus.filter_type." + name().toLowerCase();
     }
 
 }

@@ -1,6 +1,7 @@
 package wtf.choco.meh.client.fishing;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.loader.api.FabricLoader;
@@ -15,7 +16,7 @@ import wtf.choco.meh.client.server.HypixelServerType;
 public final class RetexturedFishingRodsFeature extends Feature implements ModelLoadingPlugin {
 
     public RetexturedFishingRodsFeature(MEHClient mod) {
-        super(mod, MEHConfig::isRetexturedFishingRodsEnabled);
+        super(mod, (Predicate<MEHConfig>) config -> config.getMainLobbyFishingConfig().isRetexturedFishingRodsEnabled());
     }
 
     @Override

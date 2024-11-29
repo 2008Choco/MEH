@@ -21,6 +21,7 @@ import org.lwjgl.glfw.GLFW;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.filter.ChatMessageFilter;
+import wtf.choco.meh.client.config.KnownChannel;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
@@ -50,10 +51,10 @@ public final class ChatChannelsFeature extends Feature {
     private final ChannelSelector channelSelector = new ChannelSelector();
 
     public ChatChannelsFeature(MEHClient mod) {
-        super(mod, MEHConfig::areChatChannelsEnabled);
+        super(mod, MEHConfig::getChatChannelsConfig);
 
         // Register configured known channels
-        for (MEHConfig.KnownChannel channel : MEHClient.getConfig().getKnownChannels()) {
+        for (KnownChannel channel : MEHClient.getConfig().getChatChannelsConfig().getKnownChannels()) {
             ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), ChatChannelType.BUILT_IN, channel.getFocusFilter().toChatMessageFilter());
             this.channelSelector.addChannel(chatChannel);
         }
@@ -131,7 +132,7 @@ public final class ChatChannelsFeature extends Feature {
         minecraft.player.displayClientMessage(Component.translatable("meh.channel.new.msg", channel.getDisplayName(true)), false);
 
         // If the chat window isn't open, we'll automatically switch to the newly created channel
-        if (MEHClient.getConfig().isAutoSwitchOnNewMessage() && !(minecraft.screen instanceof ChatScreen)) {
+        if (MEHClient.getConfig().getChatChannelsConfig().isAutoSwitchOnNewMessage() && !(minecraft.screen instanceof ChatScreen)) {
             if (!ChatChannelEvents.SWITCH.invoker().onSwitchChatChannel(channelSelector.getSelectedChannel(), channel, switchReason)) {
                 return;
             }

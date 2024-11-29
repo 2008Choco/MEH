@@ -2,9 +2,11 @@ package wtf.choco.meh.client.feature;
 
 import com.google.common.base.Preconditions;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.config.Enableable;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.server.HypixelServerState;
 
@@ -26,6 +28,15 @@ public abstract class Feature {
     public Feature(MEHClient mod, Predicate<MEHConfig> featureEnabled) {
         this.mod = mod;
         this.featureEnabled = featureEnabled;
+    }
+
+    /**
+     * @param mod the client mod instance
+     * @param featureEnabled a predicate to check whether or not this feature is enabled. Generally this
+     * should be a method reference to a MEHConfig getter
+     */
+    public Feature(MEHClient mod, Function<MEHConfig, Enableable> featureEnabled) {
+        this(mod, (Predicate<MEHConfig>) config -> featureEnabled.apply(config).isEnabled());
     }
 
     /**

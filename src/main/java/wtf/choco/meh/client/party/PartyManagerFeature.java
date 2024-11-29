@@ -21,7 +21,7 @@ public final class PartyManagerFeature extends Feature {
     private final PartyListWidget partyList;
 
     public PartyManagerFeature(MEHClient mod) {
-        super(mod, MEHConfig::isPartyManagerEnabled);
+        super(mod, MEHConfig::getPartyManager);
 
         this.partyList = new PartyListWidget(this);
     }

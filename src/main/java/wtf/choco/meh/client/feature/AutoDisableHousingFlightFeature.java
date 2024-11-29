@@ -12,7 +12,7 @@ import wtf.choco.meh.client.server.HypixelServerType;
 public final class AutoDisableHousingFlightFeature extends Feature {
 
     public AutoDisableHousingFlightFeature(MEHClient mod) {
-        super(mod, MEHConfig::isAutoDisableHousingFlightEnabled);
+        super(mod, MEHConfig::getAutoDisableHousingFlightConfig);
     }
 
     @Override
