@@ -26,10 +26,17 @@ public final class AutoDisableHousingFlightFeature extends Feature {
             return;
         }
 
-        if (serverType == HypixelServerType.HOUSING && !lobby) {
-            Minecraft minecraft = Minecraft.getInstance();
-            minecraft.player.connection.sendCommand("fly");
+        if (serverType != HypixelServerType.HOUSING || lobby) {
+            return;
         }
+
+        // Don't turn off flight if the player is already flying
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player.getAbilities().flying) {
+            return;
+        }
+
+        minecraft.player.connection.sendCommand("fly");
     }
 
 }
