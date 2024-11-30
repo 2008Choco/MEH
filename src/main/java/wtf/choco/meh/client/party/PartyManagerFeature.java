@@ -50,9 +50,10 @@ public final class PartyManagerFeature extends Feature {
 
     public CompletableFuture<Void> refreshParty() {
         if (partyRefreshFuture == null) {
-            this.partyRefreshFuture = getMod().getHypixelServerState().getPartyService().getCurrentParty().thenAccept(party -> {
+            this.partyRefreshFuture = getMod().getHypixelServerState().getPartyService().getCurrentParty().handle((party, e) -> {
                 this.party = party;
                 this.partyRefreshFuture = null;
+                return null;
             });
         }
 
