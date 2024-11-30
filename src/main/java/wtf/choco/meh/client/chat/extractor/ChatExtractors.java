@@ -18,6 +18,11 @@ public final class ChatExtractors {
     public static final ChatMatcher PARTY_DISBAND_EMPTY = new StringChatMatcher("The party was disbanded because all invites expired and the party was empty.");
 
     /**
+     * Match against a Hypixel party disband due to the party leader leaving.
+     */
+    public static final ChatMatcher PARTY_DISBAND_LEADER_DISCONNECTED = new StringChatMatcher("The party was disbanded because the party leader disconnected.");
+
+    /**
      * Match against a Hypixel party disband due to user action.
      *
      * @see UserData

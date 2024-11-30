@@ -56,9 +56,9 @@ public final class HypixelServerEvents {
      * Callback for when a party disbands.
      */
     public static final Event<PartyEvent.Disband> PARTY_DISBAND = EventFactory.createArrayBacked(PartyEvent.Disband.class,
-            listeners -> (disbanderRank, disbanderUsername) -> {
+            listeners -> (disbanderRank, disbanderUsername, reason) -> {
                 for (PartyEvent.Disband event : listeners) {
-                    event.onDisband(disbanderRank, disbanderUsername);
+                    event.onDisband(disbanderRank, disbanderUsername, reason);
                 }
             }
     );
@@ -220,14 +220,33 @@ public final class HypixelServerEvents {
         public interface Disband {
 
             /**
-             * Called when a party is disbanded either due to the party being empty, or it being
-             * disbanded manually by its leader.
+             * Called when a party is disbanded.
              *
              * @param disbanderRank the rank of the user that disbanded the party, or null if none
              * @param disbanderUsername the username of the user that disbanded the party, or null
-             * if the party disbanded due to it being empty
+             * if a player did not disband it
+             * @param reason the reason for the disband
              */
-            public void onDisband(@Nullable String disbanderRank, @Nullable String disbanderUsername);
+            public void onDisband(@Nullable String disbanderRank, @Nullable String disbanderUsername, Reason reason);
+
+            public enum Reason {
+
+                /**
+                 * The party was disbanded because there were no more members.
+                 */
+                EMPTY_PARTY,
+
+                /**
+                 * The party was disbanded because the leader disbanded it manually.
+                 */
+                LEADER_DISBANDED,
+
+                /**
+                 * The party was disbanded because the leader disconnected from the network.
+                 */
+                LEADER_DISCONNECTED;
+
+            }
 
         }
 

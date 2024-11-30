@@ -32,7 +32,7 @@ public final class PartyManagerFeature extends Feature {
             layers[0].add(this::renderPartyList);
         });
 
-        HypixelServerEvents.PARTY_DISBAND.register((disbanderRank, disbanderUsername) -> refreshParty());
+        HypixelServerEvents.PARTY_DISBAND.register((disbanderRank, disbanderUsername, reason) -> refreshParty());
         HypixelServerEvents.PARTY_MEMBER_DEMOTE.register((rank, username, demoterRank, demoterUsername, role) -> refreshParty());
         HypixelServerEvents.PARTY_MEMBER_JOIN.register((rank, username) -> refreshParty());
         HypixelServerEvents.PARTY_MEMBER_LEAVE.register((rank, username, kicked) -> refreshParty());

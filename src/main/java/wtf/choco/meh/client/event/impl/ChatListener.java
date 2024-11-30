@@ -30,7 +30,8 @@ public final class ChatListener {
     // Generally speaking, keep in order of most performant then most frequent
     // To be honest, the client can probably parse these strings of text pretty quick... but short circuit as best as possible
     private static final List<ChatHandler> CHAT_HANDLERS = List.of(
-            new MatcherHandler(ChatExtractors.PARTY_DISBAND_EMPTY, ChatListener::handlePartyDisband),
+            new MatcherHandler(ChatExtractors.PARTY_DISBAND_EMPTY, ChatListener::handlePartyDisbandEmpty),
+            new MatcherHandler(ChatExtractors.PARTY_DISBAND_LEADER_DISCONNECTED, ChatListener::handlePartyDisbandDisconnected),
             new ExtractorHandler<>(ChatExtractors.PRIVATE_MESSAGE, ChatListener::handlePrivateMessage),
             new ExtractorHandler<>(ChatExtractors.PARTY_DISBAND, ChatListener::handlePartyDisband),
             new ExtractorHandler<>(ChatExtractors.PARTY_JOIN_SELF, ChatListener::handlePartyJoinSelf),
@@ -68,12 +69,16 @@ public final class ChatListener {
         }
     }
 
-    private static void handlePartyDisband() {
-        HypixelServerEvents.PARTY_DISBAND.invoker().onDisband(null, null);
+    private static void handlePartyDisbandEmpty() {
+        HypixelServerEvents.PARTY_DISBAND.invoker().onDisband(null, null, HypixelServerEvents.PartyEvent.Disband.Reason.EMPTY_PARTY);
+    }
+
+    private static void handlePartyDisbandDisconnected() {
+        HypixelServerEvents.PARTY_DISBAND.invoker().onDisband(null, null, HypixelServerEvents.PartyEvent.Disband.Reason.LEADER_DISCONNECTED);
     }
 
     private static void handlePartyDisband(UserData userData) {
-        HypixelServerEvents.PARTY_DISBAND.invoker().onDisband(userData.rank(), userData.username());
+        HypixelServerEvents.PARTY_DISBAND.invoker().onDisband(userData.rank(), userData.username(), HypixelServerEvents.PartyEvent.Disband.Reason.LEADER_DISBANDED);
     }
 
     private static void handlePrivateMessage(PrivateMessageData data) {
