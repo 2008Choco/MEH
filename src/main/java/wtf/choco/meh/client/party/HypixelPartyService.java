@@ -27,7 +27,9 @@ public final class HypixelPartyService implements PartyService {
         CompletableFuture<Party> future = new CompletableFuture<>();
         this.activePartyQuery = future;
         HypixelModAPI.getInstance().sendPacket(new ServerboundPartyInfoPacket());
-        return future.orTimeout(5, TimeUnit.SECONDS);
+        return future.orTimeout(5, TimeUnit.SECONDS).whenComplete((party, e) -> {
+            this.activePartyQuery = null;
+        });
     }
 
     private void handleIncomingPartyInfo(ClientboundPartyInfoPacket packet) {
@@ -45,12 +47,9 @@ public final class HypixelPartyService implements PartyService {
                 } else {
                     this.activePartyQuery.complete(party);
                 }
-
-                this.activePartyQuery = null;
             });
         } else {
             this.activePartyQuery.complete(null);
-            this.activePartyQuery = null;
         }
     }
 
