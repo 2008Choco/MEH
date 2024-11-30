@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import net.hypixel.modapi.HypixelModAPI;
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket;
@@ -26,7 +27,7 @@ public final class HypixelPartyService implements PartyService {
         CompletableFuture<Party> future = new CompletableFuture<>();
         this.activePartyQuery = future;
         HypixelModAPI.getInstance().sendPacket(new ServerboundPartyInfoPacket());
-        return future;
+        return future.orTimeout(5, TimeUnit.SECONDS);
     }
 
     private void handleIncomingPartyInfo(ClientboundPartyInfoPacket packet) {

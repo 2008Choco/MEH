@@ -42,6 +42,12 @@ public final class PartyManagerFeature extends Feature {
         HypixelServerEvents.PARTY_TRANSFER.register((rank, username, transferrerRank, transferrerUsername) -> refreshParty());
     }
 
+    public boolean deleteCachedParty() {
+        boolean deleted = (party != null);
+        this.party = null;
+        return deleted;
+    }
+
     public CompletableFuture<Void> refreshParty() {
         if (partyRefreshFuture == null) {
             this.partyRefreshFuture = getMod().getHypixelServerState().getPartyService().getCurrentParty().thenAccept(party -> {

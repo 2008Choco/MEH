@@ -29,7 +29,10 @@ public final class ClientTestCommand {
         dispatcher.register(ClientCommandManager.literal("mehtest")
             .then(ClientCommandManager.literal("dumpitem").executes(ClientTestCommand::dumpItem))
             .then(ClientCommandManager.literal("dumpinventory").executes(ClientTestCommand::dumpInventory))
-            .then(ClientCommandManager.literal("refreshparty").executes(ClientTestCommand::refreshParty))
+            .then(ClientCommandManager.literal("party")
+                .then(ClientCommandManager.literal("refresh").executes(ClientTestCommand::refreshParty))
+                .then(ClientCommandManager.literal("delete").executes(ClientTestCommand::deleteParty))
+            )
         );
 
         ContainerEvents.PICKUP_ITEM.register((menu, player, slot, itemStack) -> {
@@ -106,6 +109,28 @@ public final class ClientTestCommand {
 
             context.getSource().sendFeedback(Component.literal("Done!").withStyle(ChatFormatting.GREEN));
         });
+
+        return 1;
+    }
+
+    private static int deleteParty(CommandContext<FabricClientCommandSource> context) {
+        HypixelServerState serverState = MEHClient.getInstance().getHypixelServerState();
+        if (!serverState.isConnectedToHypixel()) {
+            context.getSource().sendError(Component.literal("You are not connected to Hypixel!").withStyle(ChatFormatting.RED));
+            return 0;
+        }
+
+        PartyManagerFeature partyManager = MEHClient.getInstance().getFeature(PartyManagerFeature.class);
+        if (!partyManager.isEnabled()) {
+            context.getSource().sendError(Component.literal("The party manager feature is currently disabled. Can't delete party.").withStyle(ChatFormatting.RED));
+            return 0;
+        }
+
+        if (partyManager.deleteCachedParty()) {
+            context.getSource().sendFeedback(Component.literal("Local party cache successfully deleted.").withStyle(ChatFormatting.GREEN));
+        } else {
+            context.getSource().sendFeedback(Component.literal("No party in the local cache.").withStyle(ChatFormatting.RED));
+        }
 
         return 1;
     }
