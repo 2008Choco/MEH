@@ -42,7 +42,8 @@ public final class ChatListener {
             new ExtractorHandler<>(ChatExtractors.PARTY_LEAVE_OTHER, ChatListener::handlePartyMemberLeave),
             new ExtractorHandler<>(ChatExtractors.PARTY_INVITE, ChatListener::handlePartyInvite),
             new ExtractorHandler<>(ChatExtractors.PARTY_TRANSFER, ChatListener::handlePartyTransfer),
-            new ExtractorHandler<>(ChatExtractors.PARTY_ROLE_CHANGE, ChatListener::handlePartyRoleChange)
+            new ExtractorHandler<>(ChatExtractors.PARTY_ROLE_CHANGE, ChatListener::handlePartyRoleChange),
+            new ExtractorHandler<>(ChatExtractors.PARTY_YOINK, ChatListener::handleYoink)
     );
 
     private static boolean initialized = false;
@@ -149,6 +150,10 @@ public final class ChatListener {
         } else if (action == PartyRoleChangeData.Action.DEMOTED) {
             HypixelServerEvents.PARTY_MEMBER_DEMOTE.invoker().onDemote(targetRank, targetUsername, rank, username, role);
         }
+    }
+
+    private static void handleYoink(BiUserData data) {
+        HypixelServerEvents.PARTY_MEMBER_YOINK.invoker().onYoink(data.targetRank(), data.targetUsername(), data.rank(), data.username());
     }
 
     private static interface ChatHandler {
