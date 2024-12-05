@@ -65,11 +65,16 @@ public final class ChatExtractors {
     public static final ChatExtractor<UserData> PARTY_KICKED_SELF = new RegExChatExtractor<>(UserData.PATTERN_PARTY_KICKED_SELF, UserData::fromMatcher);
 
     /**
-     * Match against and extract data from a Hypixel party leave.
+     * Match against and extract data from a Hypixel party leave by another user.
      *
      * @see UserData
      */
-    public static final ChatExtractor<UserData> PARTY_LEAVE = new RegExChatExtractor<>(UserData.PATTERN_PARTY_LEAVE, UserData::fromMatcher);
+    public static final ChatExtractor<UserData> PARTY_LEAVE_OTHER = new RegExChatExtractor<>(UserData.PATTERN_PARTY_LEAVE_OTHER, UserData::fromMatcher);
+
+    /**
+     * Match against a Hypixel party leave by the client.
+     */
+    public static final ChatMatcher PARTY_LEAVE_SELF = new StringChatMatcher("You left the party.");
 
     /**
      * Match against and extract data from a Hypixel party role promotion or demotion.

@@ -18,9 +18,9 @@ import static wtf.choco.meh.client.chat.extractor.RegExUtil.userMatchString;
 public record UserData(@Nullable String rank, String username) {
 
     static final Pattern PATTERN_PARTY_DISBAND = Pattern.compile("^" + userMatchString() + " has disbanded the party!");
-    static final Pattern PATTERN_PARTY_JOIN_SELF = Pattern.compile("^You have joined " + userMatchString() + "'s* party!$");
     static final Pattern PATTERN_PARTY_JOIN_OTHER = Pattern.compile("^" + userMatchString() + " joined the party.$");
-    static final Pattern PATTERN_PARTY_LEAVE = Pattern.compile("^" + userMatchString() + " has left the party.$");
+    static final Pattern PATTERN_PARTY_JOIN_SELF = Pattern.compile("^You have joined " + userMatchString() + "'s* party!$");
+    static final Pattern PATTERN_PARTY_LEAVE_OTHER = Pattern.compile("^" + userMatchString() + " has left the party.$");
     static final Pattern PATTERN_PARTY_KICKED_OTHER = Pattern.compile("^" + userMatchString() + " has been removed from the party.$");
     static final Pattern PATTERN_PARTY_KICKED_SELF = Pattern.compile("^You have been kicked from the party by " + userMatchString() + "$");
 

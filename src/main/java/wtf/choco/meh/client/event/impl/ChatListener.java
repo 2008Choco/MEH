@@ -32,13 +32,14 @@ public final class ChatListener {
     private static final List<ChatHandler> CHAT_HANDLERS = List.of(
             new MatcherHandler(ChatExtractors.PARTY_DISBAND_EMPTY, ChatListener::handlePartyDisbandEmpty),
             new MatcherHandler(ChatExtractors.PARTY_DISBAND_LEADER_DISCONNECTED, ChatListener::handlePartyDisbandDisconnected),
+            new MatcherHandler(ChatExtractors.PARTY_LEAVE_SELF, ChatListener::handlePartyLeave),
             new ExtractorHandler<>(ChatExtractors.PRIVATE_MESSAGE, ChatListener::handlePrivateMessage),
             new ExtractorHandler<>(ChatExtractors.PARTY_DISBAND, ChatListener::handlePartyDisband),
             new ExtractorHandler<>(ChatExtractors.PARTY_JOIN_SELF, ChatListener::handlePartyJoinSelf),
             new ExtractorHandler<>(ChatExtractors.PARTY_JOIN_OTHER, ChatListener::handlePartyJoinOther),
-            new ExtractorHandler<>(ChatExtractors.PARTY_KICK_OTHER, ChatListener::handlePartyKick),
+            new ExtractorHandler<>(ChatExtractors.PARTY_KICK_OTHER, ChatListener::handlePartyMemberKick),
             new ExtractorHandler<>(ChatExtractors.PARTY_KICKED_SELF, ChatListener::handlePartyKicked),
-            new ExtractorHandler<>(ChatExtractors.PARTY_LEAVE, ChatListener::handlePartyLeave),
+            new ExtractorHandler<>(ChatExtractors.PARTY_LEAVE_OTHER, ChatListener::handlePartyMemberLeave),
             new ExtractorHandler<>(ChatExtractors.PARTY_INVITE, ChatListener::handlePartyInvite),
             new ExtractorHandler<>(ChatExtractors.PARTY_TRANSFER, ChatListener::handlePartyTransfer),
             new ExtractorHandler<>(ChatExtractors.PARTY_ROLE_CHANGE, ChatListener::handlePartyRoleChange)
@@ -107,15 +108,19 @@ public final class ChatListener {
         HypixelServerEvents.PARTY_MEMBER_JOIN.invoker().onJoin(data.rank(), data.username());
     }
 
-    private static void handlePartyLeave(UserData data) {
-        handlePartyRemoval(data, false);
+    private static void handlePartyLeave() {
+        HypixelServerEvents.PARTY_LEAVE.invoker().onLeave();
     }
 
-    private static void handlePartyKick(UserData data) {
-        handlePartyRemoval(data, true);
+    private static void handlePartyMemberLeave(UserData data) {
+        handlePartyMemberRemoval(data, false);
     }
 
-    private static void handlePartyRemoval(UserData data, boolean kicked) {
+    private static void handlePartyMemberKick(UserData data) {
+        handlePartyMemberRemoval(data, true);
+    }
+
+    private static void handlePartyMemberRemoval(UserData data, boolean kicked) {
         HypixelServerEvents.PARTY_MEMBER_LEAVE.invoker().onLeave(data.rank(), data.username(), kicked);
     }
 

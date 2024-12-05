@@ -75,6 +75,17 @@ public final class HypixelServerEvents {
     );
 
     /**
+     * Callback for when the client leaves another user's party.
+     */
+    public static final Event<PartyEvent.PartyLeave> PARTY_LEAVE = EventFactory.createArrayBacked(PartyEvent.PartyLeave.class,
+            listeners -> () -> {
+                for (PartyEvent.PartyLeave event : listeners) {
+                    event.onLeave();
+                }
+            }
+    );
+
+    /**
      * Callback for when the client is kicked from the party by a party moderator.
      */
     public static final Event<PartyEvent.PartyKicked> PARTY_KICKED = EventFactory.createArrayBacked(PartyEvent.PartyKicked.class,
@@ -260,6 +271,16 @@ public final class HypixelServerEvents {
              * @param partyLeaderUsername the username of the party leader
              */
             public void onJoin(@Nullable String partyLeaderRank, @Nullable String partyLeaderUsername);
+
+        }
+
+        @FunctionalInterface
+        public interface PartyLeave {
+
+            /**
+             * Called when you leave another member's party.
+             */
+            public void onLeave();
 
         }
 
