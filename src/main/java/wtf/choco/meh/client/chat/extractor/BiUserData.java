@@ -22,6 +22,7 @@ public record BiUserData(@Nullable String rank, String username, @Nullable Strin
 
     static final Pattern PATTERN_PARTY_INVITE = Pattern.compile("^" + userMatchString() + " invited " + userMatchString("target") + " to the party! They have \\d+ seconds to accept.$");
     static final Pattern PATTERN_PARTY_TRANSFER = Pattern.compile("^The party was transferred to " + userMatchString("target") + " by " + userMatchString() + "$");
+    static final Pattern PATTERN_PARTY_MEMBER_YOINK = Pattern.compile("^" + userMatchString("target") + " was yoinked into the party by " + userMatchString() + "$");
 
     /**
      * Construct a {@link BiUserData} instance from a RegEx {@link Matcher} that has already

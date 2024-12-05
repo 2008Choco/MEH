@@ -37,6 +37,7 @@ public final class PartyManagerFeature extends Feature {
         HypixelServerEvents.PARTY_MEMBER_JOIN.register((rank, username) -> refreshParty());
         HypixelServerEvents.PARTY_MEMBER_LEAVE.register((rank, username, kicked) -> refreshParty());
         HypixelServerEvents.PARTY_MEMBER_PROMOTE.register((rank, username, promoterRank, promoterUsername, role) -> refreshParty());
+        HypixelServerEvents.PARTY_MEMBER_YOINK.register((rank, username, yoinkerRank, yoinkerUsername) -> refreshParty());
         HypixelServerEvents.PARTY_JOIN.register((partyLeaderRank, partyLeaderUsername) -> refreshParty());
         HypixelServerEvents.PARTY_KICKED.register((kickerRank, kickerUsername) -> refreshParty());
         HypixelServerEvents.PARTY_LEAVE.register(this::refreshParty);

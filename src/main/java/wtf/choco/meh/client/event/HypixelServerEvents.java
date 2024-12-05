@@ -130,6 +130,17 @@ public final class HypixelServerEvents {
     );
 
     /**
+     * Callback for when a member is yoinked into the party.
+     */
+    public static final Event<PartyEvent.MemberYoink> PARTY_MEMBER_YOINK = EventFactory.createArrayBacked(PartyEvent.MemberYoink.class,
+            listeners -> (rank, username, yoinkerRank, yoinkerUsername) -> {
+                for (PartyEvent.MemberYoink event : listeners) {
+                    event.onYoink(rank, username, yoinkerRank, yoinkerUsername);
+                }
+            }
+    );
+
+    /**
      * Callback for when the party is transferred to another player.
      */
     public static final Event<PartyEvent.Transfer> PARTY_TRANSFER = EventFactory.createArrayBacked(PartyEvent.Transfer.class,
@@ -336,6 +347,21 @@ public final class HypixelServerEvents {
              * @param inviterUsername the username of the user that sent the invitation
              */
             public void onInvite(@Nullable String rank, String username, @Nullable String inviterRank, String inviterUsername);
+
+        }
+
+        @FunctionalInterface
+        public interface MemberYoink {
+
+            /**
+             * Called when a member gets yoinked into the party (admin feature!)
+             *
+             * @param rank the rank of the user being yoinked, or null if none
+             * @param username the username of the user being yoinked
+             * @param yoinkerRank the rank of the user that yoinked the player, or null if none
+             * @param yoinkerUsername the username of the user that yoinked the player
+             */
+            public void onYoink(@Nullable String rank, String username, @Nullable String yoinkerRank, @Nullable String yoinkerUsername);
 
         }
 

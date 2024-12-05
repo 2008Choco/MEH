@@ -90,6 +90,13 @@ public final class ChatExtractors {
      */
     public static final ChatExtractor<BiUserData> PARTY_TRANSFER = new RegExChatExtractor<>(BiUserData.PATTERN_PARTY_TRANSFER, BiUserData::fromMatcher);
 
+    /**
+     * Match against and extract data from a Hypixel party yoink (admin ability!)
+     *
+     * @see BiUserData
+     */
+    public static final ChatExtractor<BiUserData> PARTY_YOINK = new RegExChatExtractor<>(BiUserData.PATTERN_PARTY_MEMBER_YOINK, BiUserData::fromMatcher);
+
     private ChatExtractors() { }
 
 }
