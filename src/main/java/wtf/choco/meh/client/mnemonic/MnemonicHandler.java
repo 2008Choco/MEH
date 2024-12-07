@@ -26,7 +26,7 @@ public final class MnemonicHandler {
 
     private MnemonicStack stack;
 
-    public MnemonicHandler() {
+    public void initialize() {
         LWJGLEvents.KEY_STATE_CHANGE.register(this::onKeyStateChange);
     }
 

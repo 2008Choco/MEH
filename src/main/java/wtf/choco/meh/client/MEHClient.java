@@ -32,8 +32,7 @@ public final class MEHClient implements ClientModInitializer {
     private static MEHClient instance;
     private static ConfigHolder<MEHConfig> config;
 
-    private MnemonicHandler mnemonicHandler;
-
+    private final MnemonicHandler mnemonicHandler = new MnemonicHandler();
     private final HypixelServerState hypixelServerState = new HypixelServerState();
 
     @SuppressWarnings("deprecation") // ItemModelProperty implementations
@@ -44,13 +43,12 @@ public final class MEHClient implements ClientModInitializer {
         AutoConfig.register(MEHConfig.class, GsonConfigSerializer::new);
         config = AutoConfig.getConfigHolder(MEHConfig.class);
 
-        this.mnemonicHandler = new MnemonicHandler();
-
         ChatListener.initialize();
 
         Features.bootstrap();
         MEHRegistries.FEATURE.forEach(Feature::initialize);
 
+        this.mnemonicHandler.initialize();
         this.hypixelServerState.initialize();
 
         MEHKeybinds.init();
