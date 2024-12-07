@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "meh:item/fishing_rod_3000"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "meh:item/fishing_rod_3000_cast"
+    },
+    "property": "minecraft:fishing_rod/cast"
+  }
+}

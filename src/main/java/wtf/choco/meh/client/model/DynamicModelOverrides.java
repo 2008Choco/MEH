@@ -11,16 +11,16 @@ import net.minecraft.world.level.ItemLike;
 /**
  * Allows access to overriding item models based on dynamic properties.
  * <p>
- * Use {@link #register(ItemLike, ModelOverride)} to register a custom item model override.
+ * Use {@link #register(ItemLike, DynamicModelOverride)} to register a custom item model override.
  */
-public final class CustomModelOverrides {
+public final class DynamicModelOverrides {
 
-    private static final ListMultimap<Item, ModelOverride> OVERRIDES_BY_ITEM_TYPE = MultimapBuilder.hashKeys().arrayListValues().build();
+    private static final ListMultimap<Item, DynamicModelOverride> OVERRIDES_BY_ITEM_TYPE = MultimapBuilder.hashKeys().arrayListValues().build();
 
-    private CustomModelOverrides() { }
+    private DynamicModelOverrides() { }
 
     /**
-     * Register a {@link ModelOverride} for the given item.
+     * Register a {@link DynamicModelOverride} for the given item.
      * <p>
      * Multiple model overrides may be registered per item. Priority is dictated by registration order.
      * Overrides that are registered earlier are prioritized over other model overrides.
@@ -28,17 +28,18 @@ public final class CustomModelOverrides {
      * @param item the item for which to register a model override
      * @param override the override to register
      */
-    public static void register(ItemLike item, ModelOverride override) {
+    public static void register(ItemLike item, DynamicModelOverride override) {
         OVERRIDES_BY_ITEM_TYPE.put(item.asItem(), override);
     }
 
     /**
-     * Get a {@link List} of all registered {@link ModelOverride ModelOverrides} for the given item.
+     * Get a {@link List} of all registered {@link DynamicModelOverride DynamicModelOverrides} for the
+     * given item.
      *
      * @param item the item whose model overrides to get
      * @return a list of all registered model overrides, or an empty list if none
      */
-    public static List<ModelOverride> get(ItemLike item) {
+    public static List<DynamicModelOverride> get(ItemLike item) {
         return OVERRIDES_BY_ITEM_TYPE.get(item.asItem());
     }
 

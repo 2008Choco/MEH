@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
+import wtf.choco.meh.client.feature.Features;
 
 public final class MEHKeybinds {
 
@@ -78,13 +79,11 @@ public final class MEHKeybinds {
     }
 
     private static BooleanSupplier chatChannelKeybind(Predicate<ChatChannelsFeature> keybindCallback) {
-        ChatChannelsFeature feature = MEHClient.getInstance().getFeature(ChatChannelsFeature.class);
-        return () -> keybindCallback.test(feature);
+        return () -> keybindCallback.test(Features.CHAT_CHANNELS);
     }
 
     private static BooleanSupplier emoteSelectorKeybind(Predicate<EmoteSelectorFeature> keybindCallback) {
-        EmoteSelectorFeature feature = MEHClient.getInstance().getFeature(EmoteSelectorFeature.class);
-        return () -> keybindCallback.test(feature);
+        return () -> keybindCallback.test(Features.EMOTE_SELECTOR);
     }
 
 }

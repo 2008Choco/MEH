@@ -5,6 +5,8 @@ import com.google.common.base.Preconditions;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import net.minecraft.resources.ResourceLocation;
+
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.Enableable;
 import wtf.choco.meh.client.config.MEHConfig;
@@ -14,6 +16,14 @@ import wtf.choco.meh.client.server.HypixelServerState;
  * A base feature that can be added to the mod and individually enabled or disabled.
  */
 public abstract class Feature {
+
+    public static final ResourceLocation AUTO_DISABLE_HOUSING_FLIGHT = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "auto_disable_housing_flight");
+    public static final ResourceLocation CHAT_CHANNELS = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "chat_channels");
+    public static final ResourceLocation EMOTE_SELECTOR = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "emote_selector");
+    public static final ResourceLocation MNEMONIC_GC = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "mnemonic_gc");
+    public static final ResourceLocation MNEMONIC_GG = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "mnemonic_gg");
+    public static final ResourceLocation PARTY_MANAGER = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "party_manager");
+    public static final ResourceLocation RETEXTURED_FISHING_RODS = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "retextured_fishing_rods");
 
     private boolean initialized = false;
 

@@ -1,16 +1,18 @@
 package wtf.choco.meh.client.server;
 
 import com.google.common.base.Preconditions;
+import com.mojang.serialization.Codec;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 
 /**
  * A type of server on the Hypixel network.
  */
-public enum HypixelServerType {
+public enum HypixelServerType implements StringRepresentable {
 
     MAIN_LOBBY("HYPIXEL"),
     TOURNAMENT_LOBBY("TOURNAMENT HALL"),
@@ -42,6 +44,8 @@ public enum HypixelServerType {
     WARLORDS("WARLORDS"),
     WOOL_GAMES("WOOL GAMES"),
     UNKNOWN;
+
+    public static final Codec<HypixelServerType> CODEC = StringRepresentable.fromEnum(HypixelServerType::values);
 
     private static final Map<String, HypixelServerType> BY_SCOREBOARD_TITLE = new HashMap<>();
 
@@ -103,6 +107,11 @@ public enum HypixelServerType {
      */
     public Component getDisplayName() {
         return Component.translatable(getDescriptionKey());
+    }
+
+    @Override
+    public String getSerializedName() {
+        return name().toLowerCase();
     }
 
     /**

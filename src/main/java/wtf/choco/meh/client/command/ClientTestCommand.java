@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.event.ContainerEvents;
-import wtf.choco.meh.client.party.PartyManagerFeature;
+import wtf.choco.meh.client.feature.Features;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class ClientTestCommand {
@@ -93,14 +93,13 @@ public final class ClientTestCommand {
             return 0;
         }
 
-        PartyManagerFeature partyManager = MEHClient.getInstance().getFeature(PartyManagerFeature.class);
-        if (!partyManager.isEnabled()) {
+        if (!Features.PARTY_MANAGER.isEnabled()) {
             context.getSource().sendError(Component.literal("The party manager feature is currently disabled. Can't query for party.").withStyle(ChatFormatting.RED));
             return 0;
         }
 
         context.getSource().sendFeedback(Component.literal("Refreshing your party..."));
-        partyManager.refreshParty().whenComplete((ignore, e) -> {
+        Features.PARTY_MANAGER.refreshParty().whenComplete((ignore, e) -> {
             if (e != null) {
                 context.getSource().sendError(Component.literal("Couldn't fetch party data. Check client logs for more information!").withStyle(ChatFormatting.RED));
                 e.printStackTrace();
@@ -120,13 +119,12 @@ public final class ClientTestCommand {
             return 0;
         }
 
-        PartyManagerFeature partyManager = MEHClient.getInstance().getFeature(PartyManagerFeature.class);
-        if (!partyManager.isEnabled()) {
+        if (!Features.PARTY_MANAGER.isEnabled()) {
             context.getSource().sendError(Component.literal("The party manager feature is currently disabled. Can't delete party.").withStyle(ChatFormatting.RED));
             return 0;
         }
 
-        if (partyManager.deleteCachedParty()) {
+        if (Features.PARTY_MANAGER.deleteCachedParty()) {
             context.getSource().sendFeedback(Component.literal("Local party cache successfully deleted.").withStyle(ChatFormatting.GREEN));
         } else {
             context.getSource().sendFeedback(Component.literal("No party in the local cache.").withStyle(ChatFormatting.RED));

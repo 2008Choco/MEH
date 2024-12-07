@@ -3,39 +3,27 @@ package wtf.choco.meh.client.fishing;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.Items;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.feature.Feature;
-import wtf.choco.meh.client.model.CustomModelOverrides;
+import wtf.choco.meh.client.model.DynamicModelOverrides;
 import wtf.choco.meh.client.server.HypixelServerType;
 
-public final class RetexturedFishingRodsFeature extends Feature implements ModelLoadingPlugin {
+public final class RetexturedFishingRodsFeature extends Feature {
 
     public RetexturedFishingRodsFeature(MEHClient mod) {
         super(mod, (Predicate<MEHConfig>) config -> config.getMainLobbyFishingConfig().isRetexturedFishingRodsEnabled());
-    }
 
-    @Override
-    protected void registerListeners() {
-        ModelLoadingPlugin.register(this);
-    }
-
-    @Override
-    public void initialize(Context context) {
         for (FishingRodType type : FishingRodType.values()) {
-            context.addModels(type.getModelLocation(), type.getCastModelLocation());
-            this.registerFishingRodModelOverride(type);
+            DynamicModelOverrides.register(Items.FISHING_ROD, new FishingRodModelOverride(this, type));
         }
     }
 
-    private void registerFishingRodModelOverride(FishingRodType type) {
-        CustomModelOverrides.register(Items.FISHING_ROD, new FishingRodModelOverride(this, type, false));
-        CustomModelOverrides.register(Items.FISHING_ROD, new FishingRodModelOverride(this, type, true));
-    }
+    @Override
+    protected void registerListeners() { }
 
     @Override
     public boolean isEnabled() {

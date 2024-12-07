@@ -6,24 +6,24 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
+import net.minecraft.resources.ResourceLocation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import wtf.choco.meh.client.chat.ChatChannelsFeature;
-import wtf.choco.meh.client.chat.EmoteSelectorFeature;
-import wtf.choco.meh.client.chat.GCMnemonicFeature;
-import wtf.choco.meh.client.chat.GGMnemonicFeature;
 import wtf.choco.meh.client.command.ClientTestCommand;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.impl.ChatListener;
-import wtf.choco.meh.client.feature.AutoDisableHousingFlightFeature;
 import wtf.choco.meh.client.feature.Feature;
-import wtf.choco.meh.client.feature.FeatureManager;
-import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
+import wtf.choco.meh.client.feature.Features;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mnemonic.MnemonicHandler;
-import wtf.choco.meh.client.party.PartyManagerFeature;
+import wtf.choco.meh.client.model.MEHModelLoadingPlugin;
+import wtf.choco.meh.client.model.property.ItemModelPropertyHypixelServerType;
+import wtf.choco.meh.client.model.property.ItemModelPropertyMEHFeatureEnabled;
+import wtf.choco.meh.client.registry.MEHRegistries;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class MEHClient implements ClientModInitializer {
@@ -37,8 +37,8 @@ public final class MEHClient implements ClientModInitializer {
     private MnemonicHandler mnemonicHandler;
 
     private final HypixelServerState hypixelServerState = new HypixelServerState();
-    private final FeatureManager featureManager = new FeatureManager(this);
 
+    @SuppressWarnings("deprecation") // ItemModelProperty implementations
     @Override
     public void onInitializeClient() {
         instance = this;
@@ -50,20 +50,18 @@ public final class MEHClient implements ClientModInitializer {
 
         ChatListener.initialize();
 
-        this.featureManager.addFeature(AutoDisableHousingFlightFeature.class, AutoDisableHousingFlightFeature::new);
-        this.featureManager.addFeature(ChatChannelsFeature.class, ChatChannelsFeature::new);
-        this.featureManager.addFeature(EmoteSelectorFeature.class, EmoteSelectorFeature::new);
-        this.featureManager.addFeature(GCMnemonicFeature.class, GCMnemonicFeature::new);
-        this.featureManager.addFeature(GGMnemonicFeature.class, GGMnemonicFeature::new);
-        this.featureManager.addFeature(PartyManagerFeature.class, PartyManagerFeature::new);
-        this.featureManager.addFeature(RetexturedFishingRodsFeature.class, RetexturedFishingRodsFeature::new);
+        Features.bootstrap();
+        MEHRegistries.FEATURE.forEach(Feature::initialize);
 
         this.hypixelServerState.initialize();
-        this.featureManager.initializeFeatures();
 
         MEHKeybinds.init();
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientTestCommand.register(dispatcher));
+
+        ModelLoadingPlugin.register(new MEHModelLoadingPlugin());
+        ConditionalItemModelProperties.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MOD_ID, "hypixel_server_type"), ItemModelPropertyHypixelServerType.MAP_CODEC);
+        ConditionalItemModelProperties.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MOD_ID, "meh_feature_enabled"), ItemModelPropertyMEHFeatureEnabled.MAP_CODEC);
     }
 
     public MnemonicHandler getMnemonicHandler() {
@@ -72,10 +70,6 @@ public final class MEHClient implements ClientModInitializer {
 
     public HypixelServerState getHypixelServerState() {
         return hypixelServerState;
-    }
-
-    public <T extends Feature> T getFeature(Class<T> featureClass) {
-        return featureManager.getFeature(featureClass);
     }
 
     public static MEHClient getInstance() {
