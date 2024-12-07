@@ -22,7 +22,7 @@ public class ItemModelResolverMixin {
         method = "appendItemLayers(Lnet/minecraft/client/renderer/item/ItemStackRenderState;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;I)V",
         at = @At(
             value = "INVOKE",
-            target = "get(Lnet/minecraft/core/component/DataComponentType;)Ljava/lang/Object;"
+            target = "Lnet/minecraft/world/item/ItemStack;get(Lnet/minecraft/core/component/DataComponentType;)Ljava/lang/Object;"
         )
     )
     public Object redirectGet(ItemStack itemStack, DataComponentType<?> dataComponentType, @Local Level level, @Local LivingEntity livingEntity) {
