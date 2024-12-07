@@ -6,7 +6,6 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
 import net.minecraft.resources.ResourceLocation;
 
@@ -20,7 +19,6 @@ import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.feature.Features;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mnemonic.MnemonicHandler;
-import wtf.choco.meh.client.model.MEHModelLoadingPlugin;
 import wtf.choco.meh.client.model.property.ItemModelPropertyHypixelServerType;
 import wtf.choco.meh.client.model.property.ItemModelPropertyMEHFeatureEnabled;
 import wtf.choco.meh.client.registry.MEHRegistries;
@@ -59,7 +57,6 @@ public final class MEHClient implements ClientModInitializer {
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientTestCommand.register(dispatcher));
 
-        ModelLoadingPlugin.register(new MEHModelLoadingPlugin());
         ConditionalItemModelProperties.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MOD_ID, "hypixel_server_type"), ItemModelPropertyHypixelServerType.MAP_CODEC);
         ConditionalItemModelProperties.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MOD_ID, "meh_feature_enabled"), ItemModelPropertyMEHFeatureEnabled.MAP_CODEC);
     }
