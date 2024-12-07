@@ -1,4 +1,4 @@
-package wtf.choco.meh.client.feature;
+package wtf.choco.meh.client.game.housing;
 
 import net.minecraft.client.Minecraft;
 
@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.HypixelServerEvents;
+import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.server.HypixelServerType;
 
 public final class AutoDisableHousingFlightFeature extends Feature {

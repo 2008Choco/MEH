@@ -12,6 +12,7 @@ import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.GCMnemonicFeature;
 import wtf.choco.meh.client.chat.GGMnemonicFeature;
 import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
+import wtf.choco.meh.client.game.housing.AutoDisableHousingFlightFeature;
 import wtf.choco.meh.client.party.PartyManagerFeature;
 import wtf.choco.meh.client.registry.MEHRegistries;
 
