@@ -18,7 +18,7 @@ public final class RetexturedFishingRodsFeature extends Feature {
         super(mod, (Predicate<MEHConfig>) config -> config.getMainLobbyFishingConfig().isRetexturedFishingRodsEnabled());
 
         for (FishingRodType type : FishingRodType.values()) {
-            DynamicModelOverrides.register(Items.FISHING_ROD, new FishingRodModelOverride(this, type));
+            DynamicModelOverrides.register(Items.FISHING_ROD, new FishingRodModelOverride(type));
         }
     }
 

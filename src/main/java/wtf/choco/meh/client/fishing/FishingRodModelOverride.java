@@ -7,21 +7,20 @@ import net.minecraft.world.level.Level;
 
 import org.jetbrains.annotations.Nullable;
 
+import wtf.choco.meh.client.feature.Features;
 import wtf.choco.meh.client.model.DynamicModelOverride;
 
 final class FishingRodModelOverride implements DynamicModelOverride {
 
-    private final RetexturedFishingRodsFeature feature;
     private final FishingRodType fishingRodType;
 
-    FishingRodModelOverride(RetexturedFishingRodsFeature feature, FishingRodType fishingRodType) {
-        this.feature = feature;
+    FishingRodModelOverride(FishingRodType fishingRodType) {
         this.fishingRodType = fishingRodType;
     }
 
     @Override
     public boolean shouldOverride(ItemStack itemStack, @Nullable Level level, @Nullable LivingEntity entity) {
-        return feature.isEnabled() && fishingRodType.matchesDisplayName(itemStack.getHoverName());
+        return Features.RETEXTURED_FISHING_RODS.isEnabled() && fishingRodType.matchesDisplayName(itemStack.getHoverName());
     }
 
     @Override
