@@ -32,9 +32,11 @@ public enum FishingRodType {
     FESTIVE_FISHING_ROD("Festive Fishing Rod", ChatFormatting.RED),
     SOLAR_FISHING_ROD("Solar Fishing Rod", ChatFormatting.GOLD);
 
+    private static final String MODEL_PREFIX = "item/";
     private static final String TEXTURE_LOCATION_PREFIX = "item/fishing_rod/";
 
-    private ResourceLocation modelLocation;
+    private ResourceLocation itemModelLocation;
+    private ResourceLocation modelLocation, castModelLocation;
     private ResourceLocation textureLocation, castTextureLocation;
 
     private final Component[] displayNames;
@@ -75,16 +77,42 @@ public enum FishingRodType {
     }
 
     /**
-     * Get the model location of the fishing rod.
+     * Get the item model location of the fishing rod ({@literal assets/<mod>/items}).
+     *
+     * @return the model location
+     */
+    public ResourceLocation getItemModelLocation() {
+        if (itemModelLocation == null) {
+            this.itemModelLocation = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, name().toLowerCase());
+        }
+
+        return itemModelLocation;
+    }
+
+    /**
+     * Get the model location of the fishing rod ({@literal assets/<mod>/models/item}).
      *
      * @return the model location
      */
     public ResourceLocation getModelLocation() {
         if (modelLocation == null) {
-            this.modelLocation = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, name().toLowerCase());
+            this.modelLocation = getItemModelLocation().withPrefix(MODEL_PREFIX);
         }
 
         return modelLocation;
+    }
+
+    /**
+     * Get the model location of the cast fishing rod ({@literal assets/<mod>/models/item}).
+     *
+     * @return the model location
+     */
+    public ResourceLocation getCastModelLocation() {
+        if (castModelLocation == null) {
+            this.castModelLocation = getModelLocation().withSuffix("_cast");
+        }
+
+        return castModelLocation;
     }
 
     /**

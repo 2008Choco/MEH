@@ -25,7 +25,7 @@ final class FishingRodModelOverride implements DynamicModelOverride {
 
     @Override
     public ResourceLocation getModelLocation() {
-        return fishingRodType.getModelLocation();
+        return fishingRodType.getItemModelLocation();
     }
 
 }

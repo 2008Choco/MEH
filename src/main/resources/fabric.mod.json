@@ -19,6 +19,9 @@
         "client": [
             "wtf.choco.meh.client.MEHClient"
         ],
+        "fabric-datagen": [
+            "wtf.choco.meh.client.datagen.MEHDataGenerator"
+        ],
         "modmenu": [
             "wtf.choco.meh.client.config.MEHModMenuIntegration"
         ]
