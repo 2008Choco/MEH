@@ -47,6 +47,8 @@ dependencies {
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
     outputs.upToDateWhen { false } // Always process resource properties
 
     def details = versionDetails()
