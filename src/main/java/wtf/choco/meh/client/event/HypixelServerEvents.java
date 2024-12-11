@@ -68,7 +68,7 @@ public final class HypixelServerEvents {
     /**
      * Callback for when the client receives an invitation from a user to join their party.
      */
-    public static final Event<PartyEvent.Invite> PARTY_INVITE = EventFactory.createArrayBacked(PartyEvent.Invite.class,
+    public static final Event<PartyEvent.Invite> PARTY_INVITED = EventFactory.createArrayBacked(PartyEvent.Invite.class,
             listeners -> inviter -> {
                 for (PartyEvent.Invite event : listeners) {
                     event.onInvite(inviter);
