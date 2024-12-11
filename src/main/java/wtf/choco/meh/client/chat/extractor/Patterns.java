@@ -18,6 +18,7 @@ final class Patterns {
 
     // UserData
     static final Pattern PATTERN_PARTY_DISBAND_LEADER_DISBANDED = Pattern.compile("^" + userMatchString() + " has disbanded the party!");
+    static final Pattern PATTERN_PARTY_INVITE = Pattern.compile("^" + userMatchString() + " has invited you to join their party!$");
     static final Pattern PATTERN_PARTY_JOIN = Pattern.compile("^You have joined " + userMatchString() + "'s* party!$");
     static final Pattern PATTERN_PARTY_KICK = Pattern.compile("^You have been kicked from the party by " + userMatchString() + "$");
     static final Pattern PATTERN_PARTY_MEMBER_JOIN = Pattern.compile("^" + userMatchString() + " joined the party.$");
