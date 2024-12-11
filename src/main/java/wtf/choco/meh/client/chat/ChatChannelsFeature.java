@@ -20,6 +20,7 @@ import net.minecraft.util.RandomSource;
 import org.lwjgl.glfw.GLFW;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.chat.extractor.UserData;
 import wtf.choco.meh.client.chat.filter.ChatMessageFilter;
 import wtf.choco.meh.client.config.KnownChannel;
 import wtf.choco.meh.client.config.MEHConfig;
@@ -104,11 +105,12 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     @SuppressWarnings("unused") // rank, message, lastCommunicated
-    private void onPrivateMessage(String username, String rank, String message, OptionalLong lastCommunicated, ChatChannelEvents.Switch.Reason switchReason) {
+    private void onPrivateMessage(UserData user, String message, OptionalLong lastCommunicated, ChatChannelEvents.Switch.Reason switchReason) {
         if (!isEnabled()) {
             return;
         }
 
+        String username = user.username();
         Minecraft minecraft = Minecraft.getInstance();
         if (username.equals(minecraft.player.getName().getString()) || channelSelector.exists(username)) {
             return;
@@ -141,12 +143,12 @@ public final class ChatChannelsFeature extends Feature {
         }
     }
 
-    private void onPrivateMessageReceived(String username, String rank, String message, OptionalLong lastCommunicated) {
-        this.onPrivateMessage(username, rank, message, lastCommunicated, ChatChannelEvents.Switch.Reason.AUTOMATIC_INCOMING);
+    private void onPrivateMessageReceived(UserData user, String message, OptionalLong lastCommunicated) {
+        this.onPrivateMessage(user, message, lastCommunicated, ChatChannelEvents.Switch.Reason.AUTOMATIC_INCOMING);
     }
 
-    private void onPrivateMessageSent(String username, String rank, String message, OptionalLong lastCommunicated) {
-        this.onPrivateMessage(username, rank, message, lastCommunicated, ChatChannelEvents.Switch.Reason.AUTOMATIC_OUTGOING);
+    private void onPrivateMessageSent(UserData user, String message, OptionalLong lastCommunicated) {
+        this.onPrivateMessage(user, message, lastCommunicated, ChatChannelEvents.Switch.Reason.AUTOMATIC_OUTGOING);
     }
 
     @SuppressWarnings("unused")

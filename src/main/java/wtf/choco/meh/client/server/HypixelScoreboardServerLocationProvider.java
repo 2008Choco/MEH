@@ -47,7 +47,7 @@ final class HypixelScoreboardServerLocationProvider implements ServerLocationPro
         }
 
         if (!sentServerLocationChangeEvent) {
-            HypixelServerEvents.SERVER_LOCATION_CHANGE.invoker().onLocationChange(serverType, lobby, lastServerType, lastLobby);
+            HypixelServerEvents.SERVER_LOCATION_CHANGED.invoker().onLocationChange(serverType, lobby, lastServerType, lastLobby);
             this.sentServerLocationChangeEvent = true;
         }
     }

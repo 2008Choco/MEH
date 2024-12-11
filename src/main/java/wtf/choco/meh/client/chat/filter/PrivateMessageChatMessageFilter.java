@@ -15,7 +15,7 @@ final class PrivateMessageChatMessageFilter implements ChatMessageFilter {
     @Override
     public boolean test(GuiMessage message) {
         return ChatExtractors.PRIVATE_MESSAGE.extract(message.content().getString())
-            .filter(data -> data.username().equals(username))
+            .filter(data -> data.user().username().equals(username))
             .isPresent();
     }
 

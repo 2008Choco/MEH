@@ -1,31 +1,25 @@
 package wtf.choco.meh.client.chat.extractor;
 
+import com.google.common.base.Enums;
 import com.google.common.base.Preconditions;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.jetbrains.annotations.Nullable;
-
-import static wtf.choco.meh.client.chat.extractor.RegExUtil.userMatchString;
+import wtf.choco.meh.client.party.PartyRole;
 
 /**
  * Data extracted from a Hypixel party promotion or demotion.
  *
- * @param rank the rank of the user that performed the role change, or null if none
- * @param username the username of the user that performed the role change
+ * @param user the user that performed the role change
  * @param action the action that was taken
- * @param targetRank the rank of the user whose role is being changed, or null if none
- * @param targetUsername the username of the user whose role is being changed
+ * @param target the user whose role is being changed
  * @param role the new role of the target user
  *
  * @see ChatExtractors#PARTY_ROLE_CHANGE
  */
-public record PartyRoleChangeData(@Nullable String rank, String username, Action action, @Nullable String targetRank, String targetUsername, String role) {
-
-    static final Pattern PATTERN = Pattern.compile("^" + userMatchString() + " has " + Action.toMatchString("action") + " " + userMatchString("target") + " to (?<role>[\\w\\s]+)$");
+public record PartyRoleChangeData(UserData user, Action action, UserData target, PartyRole role) {
 
     /**
      * Construct a {@link PartyRoleChangeData} instance from a RegEx {@link Matcher} that
@@ -43,9 +37,9 @@ public record PartyRoleChangeData(@Nullable String rank, String username, Action
         Action action = Action.fromText(matcher.group("action"));
         String targetRank = matcher.group("targetRank");
         String targetUsername = matcher.group("targetUsername");
-        String role = matcher.group("role");
+        PartyRole role = Enums.getIfPresent(PartyRole.class, matcher.group("role").toUpperCase()).get();
 
-        return new PartyRoleChangeData(rank, username, action, targetRank, targetUsername, role);
+        return new PartyRoleChangeData(new UserData(rank, username), action, new UserData(targetRank, targetUsername), role);
     }
 
     /**
@@ -77,10 +71,6 @@ public record PartyRoleChangeData(@Nullable String rank, String username, Action
 
         private static Action fromText(String text) {
             return FROM_TEXT.getOrDefault(text, PROMOTED);
-        }
-
-        private static String toMatchString(String groupName) {
-            return RegExUtil.toMatchString(Action.class, groupName);
         }
 
     }

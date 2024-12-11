@@ -51,7 +51,7 @@ final class HypixelServerLocationProvider implements ServerLocationProvider {
         this.lastLobby = lobby;
         this.lobby = packet.getLobbyName().isPresent();
 
-        HypixelServerEvents.SERVER_LOCATION_CHANGE.invoker().onLocationChange(serverType, lobby, lastServerType, lastLobby);
+        HypixelServerEvents.SERVER_LOCATION_CHANGED.invoker().onLocationChange(serverType, lobby, lastServerType, lastLobby);
     }
 
     private HypixelEnvironment convert(Environment environment) {

@@ -5,97 +5,83 @@ package wtf.choco.meh.client.chat.extractor;
  */
 public final class ChatExtractors {
 
+    // PrivateMessageData
     /**
-     * Match against and extract data from a Hypixel private message.
-     *
      * @see PrivateMessageData
      */
-    public static final ChatExtractor<PrivateMessageData> PRIVATE_MESSAGE = new RegExChatExtractor<>(PrivateMessageData.PATTERN, PrivateMessageData::fromMatcher);
+    public static final ChatExtractor<PrivateMessageData> PRIVATE_MESSAGE = new RegExChatExtractor<>(Patterns.PATTERN_PRIVATE_MESSAGE, PrivateMessageData::fromMatcher);
 
+    // PartyRoleChangeData
     /**
-     * Match against a Hypixel party disband due to the party being empty.
-     */
-    public static final ChatMatcher PARTY_DISBAND_EMPTY = new StringChatMatcher("The party was disbanded because all invites expired and the party was empty.");
-
-    /**
-     * Match against a Hypixel party disband due to the party leader leaving.
-     */
-    public static final ChatMatcher PARTY_DISBAND_LEADER_DISCONNECTED = new StringChatMatcher("The party was disbanded because the party leader disconnected.");
-
-    /**
-     * Match against a Hypixel party disband due to user action.
-     *
-     * @see UserData
-     */
-    public static final ChatExtractor<UserData> PARTY_DISBAND = new RegExChatExtractor<>(UserData.PATTERN_PARTY_DISBAND, UserData::fromMatcher);
-
-    /**
-     * Match against and extract data from a Hypixel party invitation.
-     *
-     * @see BiUserData
-     */
-    public static final ChatExtractor<BiUserData> PARTY_INVITE = new RegExChatExtractor<>(BiUserData.PATTERN_PARTY_INVITE, BiUserData::fromMatcher);
-
-    /**
-     * Match against and extract data from when you join another another player's Hypixel party.
-     *
-     * @see UserData
-     */
-    public static final ChatExtractor<UserData> PARTY_JOIN_SELF = new RegExChatExtractor<>(UserData.PATTERN_PARTY_JOIN_SELF, UserData::fromMatcher);
-
-    /**
-     * Match against and extract data from when another player joins a Hypixel party that you are in.
-     *
-     * @see UserData
-     */
-    public static final ChatExtractor<UserData> PARTY_JOIN_OTHER = new RegExChatExtractor<>(UserData.PATTERN_PARTY_JOIN_OTHER, UserData::fromMatcher);
-
-    /**
-     * Match against and extract data from when another member is kicked from the party.
-     *
-     * @see UserData
-     */
-    public static final ChatExtractor<UserData> PARTY_KICK_OTHER = new RegExChatExtractor<>(UserData.PATTERN_PARTY_KICKED_OTHER, UserData::fromMatcher);
-
-    /**
-     * Match against and extract data from when the client is kicked from the party.
-     *
-     * @see UserData
-     */
-    public static final ChatExtractor<UserData> PARTY_KICKED_SELF = new RegExChatExtractor<>(UserData.PATTERN_PARTY_KICKED_SELF, UserData::fromMatcher);
-
-    /**
-     * Match against and extract data from a Hypixel party leave by another user.
-     *
-     * @see UserData
-     */
-    public static final ChatExtractor<UserData> PARTY_LEAVE_OTHER = new RegExChatExtractor<>(UserData.PATTERN_PARTY_LEAVE_OTHER, UserData::fromMatcher);
-
-    /**
-     * Match against a Hypixel party leave by the client.
-     */
-    public static final ChatMatcher PARTY_LEAVE_SELF = new StringChatMatcher("You left the party.");
-
-    /**
-     * Match against and extract data from a Hypixel party role promotion or demotion.
-     *
      * @see PartyRoleChangeData
      */
-    public static final ChatExtractor<PartyRoleChangeData> PARTY_ROLE_CHANGE = new RegExChatExtractor<>(PartyRoleChangeData.PATTERN, PartyRoleChangeData::fromMatcher);
+    public static final ChatExtractor<PartyRoleChangeData> PARTY_ROLE_CHANGE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_ROLE_CHANGE, PartyRoleChangeData::fromMatcher);
 
+    // UserData
     /**
-     * Match against and extract data from a Hypixel party transfer.
+     * Extracts the rank and username of the party leader.
+     *
+     * @see UserData
+     */
+    public static final ChatExtractor<UserData> PARTY_DISBAND_LEADER_DISBANDED = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_DISBAND_LEADER_DISBANDED, UserData::fromMatcher);
+    /**
+     * Extracts the rank and username of the party leader.
+     *
+     * @see UserData
+     */
+    public static final ChatExtractor<UserData> PARTY_JOIN = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_JOIN, UserData::fromMatcher);
+    /**
+     * Extracts the rank and username of the party member that issued the kick.
+     *
+     * @see UserData
+     */
+    public static final ChatExtractor<UserData> PARTY_KICK = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_KICK, UserData::fromMatcher);
+    /**
+     * Extracts the rank and username of the member that was kicked.
+     *
+     * @see UserData
+     */
+    public static final ChatExtractor<UserData> PARTY_MEMBER_KICK = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_KICK, UserData::fromMatcher);
+    /**
+     * Extracts the rank and username of the member that left.
+     *
+     * @see UserData
+     */
+    public static final ChatExtractor<UserData> PARTY_MEMBER_LEAVE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_LEAVE, UserData::fromMatcher);
+    /**
+     * Extracts the rank and username of the member that joined.
+     *
+     * @see UserData
+     */
+    public static final ChatExtractor<UserData> PARTY_USER_JOIN = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_JOIN, UserData::fromMatcher);
+
+    // BiUserData
+    /**
+     * Extracts the rank and username of the member that was yoinked ({@link BiUserData#targetUser()})
+     * and the user that performed the yoink ({@link BiUserData#user()}).
      *
      * @see BiUserData
      */
-    public static final ChatExtractor<BiUserData> PARTY_TRANSFER = new RegExChatExtractor<>(BiUserData.PATTERN_PARTY_TRANSFER, BiUserData::fromMatcher);
-
+    public static final ChatExtractor<BiUserData> PARTY_MEMBER_YOINK = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_YOINK, BiUserData::fromMatcher);
     /**
-     * Match against and extract data from a Hypixel party yoink (admin ability!)
+     * Extracts the rank and username of the member to which the party was transfered ({@link BiUserData#targetUser()})
+     * and the user that transfered the party ({@link BiUserData#user()}).
      *
      * @see BiUserData
      */
-    public static final ChatExtractor<BiUserData> PARTY_YOINK = new RegExChatExtractor<>(BiUserData.PATTERN_PARTY_MEMBER_YOINK, BiUserData::fromMatcher);
+    public static final ChatExtractor<BiUserData> PARTY_TRANSFER = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_TRANSFER, BiUserData::fromMatcher);
+    /**
+     * Extracts the rank and username of the member that was invited ({@link BiUserData#targetUser()})
+     * and the user that sent the invitation ({@link BiUserData#user()}).
+     *
+     * @see BiUserData
+     */
+    public static final ChatExtractor<BiUserData> PARTY_USER_INVITE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_INVITE, BiUserData::fromMatcher);
+
+    // Matchers
+    public static final ChatMatcher PARTY_DISBAND_EMPTY = new StringChatMatcher(Patterns.STRING_PARTY_DISBAND_EMPTY);
+    public static final ChatMatcher PARTY_DISBAND_LEADER_DISCONNECTED = new StringChatMatcher(Patterns.STRING_PARTY_DISBAND_LEADER_DISCONNECTED);
+    public static final ChatMatcher PARTY_LEAVE = new StringChatMatcher(Patterns.STRING_PARTY_LEAVE);
 
     private ChatExtractors() { }
 

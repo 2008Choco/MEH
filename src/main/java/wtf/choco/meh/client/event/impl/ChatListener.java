@@ -22,6 +22,7 @@ import wtf.choco.meh.client.chat.extractor.PartyRoleChangeData;
 import wtf.choco.meh.client.chat.extractor.PrivateMessageData;
 import wtf.choco.meh.client.chat.extractor.UserData;
 import wtf.choco.meh.client.event.HypixelServerEvents;
+import wtf.choco.meh.client.party.PartyRole;
 
 public final class ChatListener {
 
@@ -31,19 +32,19 @@ public final class ChatListener {
     // To be honest, the client can probably parse these strings of text pretty quick... but short circuit as best as possible
     private static final List<ChatHandler> CHAT_HANDLERS = List.of(
             new MatcherHandler(ChatExtractors.PARTY_DISBAND_EMPTY, ChatListener::handlePartyDisbandEmpty),
-            new MatcherHandler(ChatExtractors.PARTY_DISBAND_LEADER_DISCONNECTED, ChatListener::handlePartyDisbandDisconnected),
-            new MatcherHandler(ChatExtractors.PARTY_LEAVE_SELF, ChatListener::handlePartyLeave),
+            new MatcherHandler(ChatExtractors.PARTY_DISBAND_LEADER_DISCONNECTED, ChatListener::handlePartyDisbandLeaderDisconnected),
+            new MatcherHandler(ChatExtractors.PARTY_LEAVE, ChatListener::handlePartyLeave),
             new ExtractorHandler<>(ChatExtractors.PRIVATE_MESSAGE, ChatListener::handlePrivateMessage),
-            new ExtractorHandler<>(ChatExtractors.PARTY_DISBAND, ChatListener::handlePartyDisband),
-            new ExtractorHandler<>(ChatExtractors.PARTY_JOIN_SELF, ChatListener::handlePartyJoinSelf),
-            new ExtractorHandler<>(ChatExtractors.PARTY_JOIN_OTHER, ChatListener::handlePartyJoinOther),
-            new ExtractorHandler<>(ChatExtractors.PARTY_KICK_OTHER, ChatListener::handlePartyMemberKick),
-            new ExtractorHandler<>(ChatExtractors.PARTY_KICKED_SELF, ChatListener::handlePartyKicked),
-            new ExtractorHandler<>(ChatExtractors.PARTY_LEAVE_OTHER, ChatListener::handlePartyMemberLeave),
-            new ExtractorHandler<>(ChatExtractors.PARTY_INVITE, ChatListener::handlePartyInvite),
+            new ExtractorHandler<>(ChatExtractors.PARTY_DISBAND_LEADER_DISBANDED, ChatListener::handlePartyDisbandLeaderDisbanded),
+            new ExtractorHandler<>(ChatExtractors.PARTY_JOIN, ChatListener::handlePartyJoin),
+            new ExtractorHandler<>(ChatExtractors.PARTY_USER_JOIN, ChatListener::handlePartyUserJoin),
+            new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_KICK, ChatListener::handlePartyMemberKick),
+            new ExtractorHandler<>(ChatExtractors.PARTY_KICK, ChatListener::handlePartyKick),
+            new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_LEAVE, ChatListener::handlePartyMemberLeave),
+            new ExtractorHandler<>(ChatExtractors.PARTY_USER_INVITE, ChatListener::handlePartyUserInvite),
             new ExtractorHandler<>(ChatExtractors.PARTY_TRANSFER, ChatListener::handlePartyTransfer),
             new ExtractorHandler<>(ChatExtractors.PARTY_ROLE_CHANGE, ChatListener::handlePartyRoleChange),
-            new ExtractorHandler<>(ChatExtractors.PARTY_YOINK, ChatListener::handleYoink)
+            new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_YOINK, ChatListener::handlePartyMemberYoink)
     );
 
     private static boolean initialized = false;
@@ -72,88 +73,78 @@ public final class ChatListener {
     }
 
     private static void handlePartyDisbandEmpty() {
-        HypixelServerEvents.PARTY_DISBAND.invoker().onDisband(null, null, HypixelServerEvents.PartyEvent.Disband.Reason.EMPTY_PARTY);
+        HypixelServerEvents.PARTY_DISBANDED.invoker().onDisband(HypixelServerEvents.PartyEvent.Disband.Reason.EMPTY_PARTY, null);
     }
 
-    private static void handlePartyDisbandDisconnected() {
-        HypixelServerEvents.PARTY_DISBAND.invoker().onDisband(null, null, HypixelServerEvents.PartyEvent.Disband.Reason.LEADER_DISCONNECTED);
+    private static void handlePartyDisbandLeaderDisconnected() {
+        HypixelServerEvents.PARTY_DISBANDED.invoker().onDisband(HypixelServerEvents.PartyEvent.Disband.Reason.LEADER_DISCONNECTED, null);
     }
 
-    private static void handlePartyDisband(UserData userData) {
-        HypixelServerEvents.PARTY_DISBAND.invoker().onDisband(userData.rank(), userData.username(), HypixelServerEvents.PartyEvent.Disband.Reason.LEADER_DISBANDED);
+    private static void handlePartyDisbandLeaderDisbanded(UserData userData) {
+        HypixelServerEvents.PARTY_DISBANDED.invoker().onDisband(HypixelServerEvents.PartyEvent.Disband.Reason.LEADER_DISBANDED, userData);
     }
 
     private static void handlePrivateMessage(PrivateMessageData data) {
         PrivateMessageData.Direction direction = data.direction();
-        String rank = data.rank();
-        String username = data.username();
-        String messageString = data.message();
+        String username = data.user().username();
 
         long lastCommunicatedTimestamp = LAST_COMMUNICATED.getLong(username);
         OptionalLong lastCommunicated = lastCommunicatedTimestamp > 0 ? OptionalLong.of(lastCommunicatedTimestamp) : OptionalLong.empty();
 
         if (direction == PrivateMessageData.Direction.INCOMING) {
-            HypixelServerEvents.PRIVATE_MESSAGE_RECEIVED.invoker().onReceived(username, rank, messageString, lastCommunicated);
+            HypixelServerEvents.PRIVATE_MESSAGE_RECEIVED.invoker().onReceived(data.user(), data.message(), lastCommunicated);
         } else if (direction == PrivateMessageData.Direction.OUTGOING) {
-            HypixelServerEvents.PRIVATE_MESSAGE_SENT.invoker().onSent(username, rank, messageString, lastCommunicated);
+            HypixelServerEvents.PRIVATE_MESSAGE_SENT.invoker().onSent(data.user(), data.message(), lastCommunicated);
         }
 
         LAST_COMMUNICATED.put(username, System.currentTimeMillis());
     }
 
-    private static void handlePartyJoinSelf(UserData data) {
-        HypixelServerEvents.PARTY_JOIN.invoker().onJoin(data.rank(), data.username());
+    private static void handlePartyJoin(UserData data) {
+        HypixelServerEvents.PARTY_JOINED.invoker().onJoin(data);
     }
 
-    private static void handlePartyJoinOther(UserData data) {
-        HypixelServerEvents.PARTY_MEMBER_JOIN.invoker().onJoin(data.rank(), data.username());
+    private static void handlePartyUserJoin(UserData data) {
+        HypixelServerEvents.PARTY_USER_JOINED.invoker().onUserJoin(data);
     }
 
     private static void handlePartyLeave() {
-        HypixelServerEvents.PARTY_LEAVE.invoker().onLeave();
+        HypixelServerEvents.PARTY_LEFT.invoker().onLeave();
     }
 
     private static void handlePartyMemberLeave(UserData data) {
-        handlePartyMemberRemoval(data, false);
+        HypixelServerEvents.PARTY_MEMBER_LEFT.invoker().onMemberLeave(data);
     }
 
     private static void handlePartyMemberKick(UserData data) {
-        handlePartyMemberRemoval(data, true);
+        HypixelServerEvents.PARTY_MEMBER_KICKED.invoker().onMemberKick(data);
     }
 
-    private static void handlePartyMemberRemoval(UserData data, boolean kicked) {
-        HypixelServerEvents.PARTY_MEMBER_LEAVE.invoker().onLeave(data.rank(), data.username(), kicked);
+    private static void handlePartyKick(UserData data) {
+        HypixelServerEvents.PARTY_KICKED.invoker().onKick(data);
     }
 
-    private static void handlePartyKicked(UserData data) {
-        HypixelServerEvents.PARTY_KICKED.invoker().onKicked(data.rank(), data.username());
-    }
-
-    private static void handlePartyInvite(BiUserData data) {
-        HypixelServerEvents.PARTY_MEMBER_INVITE.invoker().onInvite(data.targetRank(), data.targetUsername(), data.rank(), data.username());
+    private static void handlePartyUserInvite(BiUserData data) {
+        HypixelServerEvents.PARTY_USER_INVITED.invoker().onUserInvite(data.targetUser(), data.user());
     }
 
     private static void handlePartyTransfer(BiUserData data) {
-        HypixelServerEvents.PARTY_TRANSFER.invoker().onTransfer(data.targetRank(), data.targetUsername(), data.rank(), data.username());
+        HypixelServerEvents.PARTY_TRANSFERED.invoker().onTransfer(data.targetUser(), data.user());
     }
 
     private static void handlePartyRoleChange(PartyRoleChangeData data) {
-        String rank = data.rank();
-        String username = data.username();
-        String targetRank = data.targetRank();
-        String targetUsername = data.targetUsername();
-        String role = data.role();
+        PartyRole role = data.role();
 
         PartyRoleChangeData.Action action = data.action();
         if (action == PartyRoleChangeData.Action.PROMOTED) {
-            HypixelServerEvents.PARTY_MEMBER_PROMOTE.invoker().onPromote(targetRank, targetUsername, rank, username, role);
+            HypixelServerEvents.PARTY_MEMBER_PROMOTED.invoker().onMemberPromote(data.target(), data.user(), role);
         } else if (action == PartyRoleChangeData.Action.DEMOTED) {
-            HypixelServerEvents.PARTY_MEMBER_DEMOTE.invoker().onDemote(targetRank, targetUsername, rank, username, role);
+            HypixelServerEvents.PARTY_MEMBER_DEMOTED.invoker().onMemberDemote(data.target(), data.user(), role);
         }
     }
 
-    private static void handleYoink(BiUserData data) {
-        HypixelServerEvents.PARTY_MEMBER_YOINK.invoker().onYoink(data.targetRank(), data.targetUsername(), data.rank(), data.username());
+    private static void handlePartyMemberYoink(BiUserData data) {
+        HypixelServerEvents.PARTY_USER_YOINKED.invoker().onUserYoink(data.targetUser(), data.user());
     }
 
     private static interface ChatHandler {

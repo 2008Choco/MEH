@@ -37,7 +37,7 @@ final class RegExUtil {
      *
      * @return the RegEx-compliant named capture group
      */
-    static <E extends Enum<E> & Matchable> String toMatchString(Class<E> enumClass, String groupName) {
+    static <E extends Enum<E> & Matchable> String enumMatchString(Class<E> enumClass, String groupName) {
         StringJoiner string = new StringJoiner("|", "(?<" + groupName + ">", ")");
 
         for (E constant : enumClass.getEnumConstants()) {

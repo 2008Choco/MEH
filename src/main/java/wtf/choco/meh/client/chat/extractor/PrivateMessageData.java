@@ -5,32 +5,15 @@ import com.google.common.base.Preconditions;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.jetbrains.annotations.Nullable;
-
-import static wtf.choco.meh.client.chat.extractor.RegExUtil.userMatchString;
 
 /**
  * Data extracted from a Hypixel private message.
  *
  * @param direction the direction of the private message
- * @param rank the rank of the user with whom the client is communicating, or null if none
- * @param username the username of the user with whom the client is communicating
+ * @param user the data of the user on the other end of the communication
  * @param message the plain text message sent in the private message
- *
- * @see ChatExtractors#PRIVATE_MESSAGE
  */
-public final record PrivateMessageData(Direction direction, @Nullable String rank, String username, String message) {
-
-    /*
-     * (direction) (?rank) (name): (message)
-     *
-     * From [ADMIN] 2008Choco: message
-     * To [MVP++] Player: message
-     * From UnrankedPlayer: message
-     */
-    static final Pattern PATTERN = Pattern.compile("^" + Direction.toMatchString("direction") + " " + userMatchString() + ": (?<message>.+)");
+public final record PrivateMessageData(Direction direction, UserData user, String message) {
 
     /**
      * Construct a {@link PrivateMessageData} instance from a RegEx {@link Matcher} that has
@@ -48,7 +31,7 @@ public final record PrivateMessageData(Direction direction, @Nullable String ran
         String username = matcher.group("username");
         String message = matcher.group("message");
 
-        return new PrivateMessageData(direction, rank, username, message);
+        return new PrivateMessageData(direction, new UserData(rank, username), message);
     }
 
     /**
@@ -87,10 +70,6 @@ public final record PrivateMessageData(Direction direction, @Nullable String ran
 
         private static Direction fromText(String text) {
             return FROM_TEXT.getOrDefault(text, INCOMING);
-        }
-
-        private static String toMatchString(String groupName) {
-            return RegExUtil.toMatchString(Direction.class, groupName);
         }
 
     }

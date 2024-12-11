@@ -32,16 +32,17 @@ public final class PartyManagerFeature extends Feature {
             layers[0].add(this::renderPartyList);
         });
 
-        HypixelServerEvents.PARTY_DISBAND.register((disbanderRank, disbanderUsername, reason) -> refreshParty());
-        HypixelServerEvents.PARTY_MEMBER_DEMOTE.register((rank, username, demoterRank, demoterUsername, role) -> refreshParty());
-        HypixelServerEvents.PARTY_MEMBER_JOIN.register((rank, username) -> refreshParty());
-        HypixelServerEvents.PARTY_MEMBER_LEAVE.register((rank, username, kicked) -> refreshParty());
-        HypixelServerEvents.PARTY_MEMBER_PROMOTE.register((rank, username, promoterRank, promoterUsername, role) -> refreshParty());
-        HypixelServerEvents.PARTY_MEMBER_YOINK.register((rank, username, yoinkerRank, yoinkerUsername) -> refreshParty());
-        HypixelServerEvents.PARTY_JOIN.register((partyLeaderRank, partyLeaderUsername) -> refreshParty());
-        HypixelServerEvents.PARTY_KICKED.register((kickerRank, kickerUsername) -> refreshParty());
-        HypixelServerEvents.PARTY_LEAVE.register(this::refreshParty);
-        HypixelServerEvents.PARTY_TRANSFER.register((rank, username, transferrerRank, transferrerUsername) -> refreshParty());
+        HypixelServerEvents.PARTY_DISBANDED.register((reason, disbander) -> refreshParty());
+        HypixelServerEvents.PARTY_JOINED.register(partyLeader -> refreshParty());
+        HypixelServerEvents.PARTY_KICKED.register(kicker -> refreshParty());
+        HypixelServerEvents.PARTY_LEFT.register(this::refreshParty);
+        HypixelServerEvents.PARTY_MEMBER_DEMOTED.register((demoted, demoter, role) -> refreshParty());
+        HypixelServerEvents.PARTY_MEMBER_KICKED.register(user -> refreshParty());
+        HypixelServerEvents.PARTY_MEMBER_LEFT.register(user -> refreshParty());
+        HypixelServerEvents.PARTY_MEMBER_PROMOTED.register((promoted, promoter, role) -> refreshParty());
+        HypixelServerEvents.PARTY_TRANSFERED.register((newPartyLeader, transferrer) -> refreshParty());
+        HypixelServerEvents.PARTY_USER_JOINED.register(user -> refreshParty());
+        HypixelServerEvents.PARTY_USER_YOINKED.register((yoinked, yoinker) -> refreshParty());
     }
 
     public boolean deleteCachedParty() {

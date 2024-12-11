@@ -18,7 +18,7 @@ public final class AutoDisableHousingFlightFeature extends Feature {
 
     @Override
     protected void registerListeners() {
-        HypixelServerEvents.SERVER_LOCATION_CHANGE.register(this::onServerLocationChange);
+        HypixelServerEvents.SERVER_LOCATION_CHANGED.register(this::onServerLocationChange);
     }
 
     @SuppressWarnings("unused")
