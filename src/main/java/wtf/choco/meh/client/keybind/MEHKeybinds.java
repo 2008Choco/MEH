@@ -7,6 +7,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.KeyMapping;
 
@@ -21,6 +22,14 @@ public final class MEHKeybinds {
 
     public static final String CATEGORY_MEH = "key.categories.meh";
 
+    // Standard key mappings
+    public static final int KEY_PARTY_INVITE_ACCEPT = InputConstants.KEY_Y;
+    public static final int KEY_PARTY_INVITE_DECLINE = InputConstants.KEY_N;
+
+    public static final KeyMapping PARTY_INVITE_ACCEPT = registerKeybind("party_invite_accept", KEY_PARTY_INVITE_ACCEPT);
+    public static final KeyMapping PARTY_INVITE_DECLINE = registerKeybind("party_invite_decline", KEY_PARTY_INVITE_DECLINE);
+
+    // AMECS key mappings
     public static final int KEY_SWITCH_CHANNEL = InputConstants.KEY_TAB;
     public static final int KEY_DELETE_CHANNEL = InputConstants.KEY_MINUS;
     public static final int KEY_EMOTE_SELECTOR = InputConstants.KEY_E;
@@ -76,6 +85,12 @@ public final class MEHKeybinds {
 
     private static KeyMapping registerPriorityKeybind(String keyId, InputConstants.Type type, int key, boolean control, BooleanSupplier onPress) {
         return registerPriorityKeybind(keyId, type, key, control, false, onPress);
+    }
+
+    private static KeyMapping registerKeybind(String keyId, int key) {
+        KeyMapping keybind = new KeyMapping(keyId, key, CATEGORY_MEH);
+        KeyBindingHelper.registerKeyBinding(keybind);
+        return keybind;
     }
 
     private static BooleanSupplier chatChannelKeybind(Predicate<ChatChannelsFeature> keybindCallback) {

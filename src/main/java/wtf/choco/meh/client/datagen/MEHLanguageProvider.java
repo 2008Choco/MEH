@@ -4,11 +4,13 @@ import java.util.concurrent.CompletableFuture;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.core.HolderLookup.Provider;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.emote.HypixelChatEmote;
 import wtf.choco.meh.client.config.FilterType;
+import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mnemonic.Mnemonic;
 import wtf.choco.meh.client.mnemonic.Mnemonics;
 import wtf.choco.meh.client.screen.widgets.PartyListWidget;
@@ -29,10 +31,15 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add("meh.channel.focus.tooltip", "Focus mode enabled. Press %s to disable.");
         builder.add("meh.channel.new.msg", "Creating new chat channel for %s.");
         builder.add("meh.channel.switch", "Chat channel switched to %s.");
+        builder.add("meh.party_manager.invitation.decline", "Declined party invitation from %s.");
+        builder.add("meh.party_manager.invitation.empty", "You do not have any pending party invitations.");
 
-        /*
         // Keybinds
         builder.add(MEHKeybinds.CATEGORY_MEH, "MEH");
+        this.add(builder, MEHKeybinds.PARTY_INVITE_ACCEPT, "Accept Party Invite");
+        this.add(builder, MEHKeybinds.PARTY_INVITE_DECLINE, "Decline Party Invite");
+        /*
+        // AMECS keybinds
         this.add(builder, MEHKeybinds.DELETE_CHANNEL, "Delete Channel", "Delete the current chat channel (while chat is open).\nCtrl is highly recommended for this keybind!");
         this.add(builder, MEHKeybinds.EMOTE_SELECTOR, "Emote Selector", "Open or close the emote selector (while chat is open).\nCtrl is highly recommended for this keybind!");
         this.add(builder, MEHKeybinds.SWITCH_CHANNEL, "Switch Channel (Next)", "Switch to the next chat channel (while chat is open).\nCtrl is highly recommended for this keybind!");
@@ -164,11 +171,11 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, keybind, name);
         builder.add(keybind.getName() + ".amecsapi.description", amecsDescription);
     }
+    */
 
     private void add(TranslationBuilder builder, KeyMapping keybind, String name) {
         builder.add(keybind.getName(), name);
     }
-    */
 
     private void add(TranslationBuilder builder, HypixelChatEmote emote, String name) {
         builder.add(emote.getDescriptionKey(), name);
