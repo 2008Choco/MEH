@@ -49,6 +49,12 @@ public final class ChatExtractors {
      */
     public static final ChatExtractor<UserData> PARTY_MEMBER_BARGE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_BARGE, UserData::fromMatcher);
     /**
+     * Extracts the rank and username of the member that disconnected.
+     *
+     * @see UserData
+     */
+    public static final ChatExtractor<UserData> PARTY_MEMBER_DISCONNECT = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_DISCONNECT, UserData::fromMatcher);
+    /**
      * Extracts the rank and username of the member that was kicked.
      *
      * @see UserData
@@ -60,6 +66,12 @@ public final class ChatExtractors {
      * @see UserData
      */
     public static final ChatExtractor<UserData> PARTY_MEMBER_LEAVE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_LEAVE, UserData::fromMatcher);
+    /**
+     * Extracts the rank and username of the member that rejoined.
+     *
+     * @see UserData
+     */
+    public static final ChatExtractor<UserData> PARTY_MEMBER_REJOIN = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_REJOIN, UserData::fromMatcher);
     /**
      * Extracts the rank and username of the member that joined.
      *

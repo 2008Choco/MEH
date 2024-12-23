@@ -176,6 +176,21 @@ public final class HypixelServerEvents {
     );
 
     /**
+     * Callback for when a party member (excluding the client) has disconnected from the Hypixel
+     * server, thus giving them a period of time to rejoin before being removed from the party.
+     * <p>
+     * Not to be confused with {@link #PARTY_MEMBER_LEFT}, which is an intentional removal from the
+     * party. A disconnection will lead to a leave if the time to rejoin expires. (TODO: THIS NEEDS IMPLEMENTING, THE REMOVAL MESSAGE IS UNKNOWN)
+     */
+    public static final Event<PartyEvent.MemberDisconnect> PARTY_MEMBER_DISCONNECTED = EventFactory.createArrayBacked(PartyEvent.MemberDisconnect.class,
+            listeners -> user -> {
+                for (PartyEvent.MemberDisconnect event : listeners) {
+                    event.onMemberDisconnect(user);
+                }
+            }
+    );
+
+    /**
      * Callback for when a party member (excluding the client) has been kicked from the party.
      */
     public static final Event<PartyEvent.MemberKick> PARTY_MEMBER_KICKED = EventFactory.createArrayBacked(PartyEvent.MemberKick.class,
@@ -204,6 +219,20 @@ public final class HypixelServerEvents {
             listeners -> (promoted, promoter, role) -> {
                 for (PartyEvent.MemberPromote event : listeners) {
                     event.onMemberPromote(promoted, promoter, role);
+                }
+            }
+    );
+
+    /**
+     * Callback for when a party member (excluding the client) has rejoined the party after having
+     * disconnected from the Hypixel server.
+     *
+     * @see #PARTY_MEMBER_DISCONNECTED
+     */
+    public static final Event<PartyEvent.MemberRejoin> PARTY_MEMBER_REJOINED = EventFactory.createArrayBacked(PartyEvent.MemberRejoin.class,
+            listeners -> user -> {
+                for (PartyEvent.MemberRejoin event : listeners) {
+                    event.onMemberRejoin(user);
                 }
             }
     );
@@ -451,6 +480,18 @@ public final class HypixelServerEvents {
         }
 
         @FunctionalInterface
+        public interface MemberDisconnect {
+
+            /**
+             * Called when a party member (excluding the client) has disconnected from the party.
+             *
+             * @param user the user that disconnected
+             */
+            public void onMemberDisconnect(UserData user);
+
+        }
+
+        @FunctionalInterface
         public interface MemberKick {
 
             /**
@@ -485,6 +526,19 @@ public final class HypixelServerEvents {
              * @param role the new role of the user
              */
             public void onMemberPromote(UserData promoted, UserData promoter, PartyRole role);
+
+        }
+
+        @FunctionalInterface
+        public interface MemberRejoin {
+
+            /**
+             * Called when a party member that had previously disconnected rejoins the party
+             * before the auto-leave timer expired.
+             *
+             * @param user the user that rejoined
+             */
+            public void onMemberRejoin(UserData user);
 
         }
 

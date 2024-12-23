@@ -39,10 +39,12 @@ public final class ChatListener {
             new ExtractorHandler<>(ChatExtractors.PARTY_DISBAND_LEADER_DISBANDED, ChatListener::handlePartyDisbandLeaderDisbanded),
             new ExtractorHandler<>(ChatExtractors.PARTY_JOIN, ChatListener::handlePartyJoin),
             new ExtractorHandler<>(ChatExtractors.PARTY_USER_JOIN, ChatListener::handlePartyUserJoin),
+            new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_DISCONNECT, ChatListener::handlePartyMemberDisconnect),
+            new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_REJOIN, ChatListener::handlePartyMemberRejoin),
             new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_KICK, ChatListener::handlePartyMemberKick),
             new ExtractorHandler<>(ChatExtractors.PARTY_KICK, ChatListener::handlePartyKick),
-            new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_BARGE, ChatListener::handlePartyMemberBarge),
             new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_LEAVE, ChatListener::handlePartyMemberLeave),
+            new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_BARGE, ChatListener::handlePartyMemberBarge),
             new ExtractorHandler<>(ChatExtractors.PARTY_USER_INVITE, ChatListener::handlePartyUserInvite),
             new ExtractorHandler<>(ChatExtractors.PARTY_TRANSFER, ChatListener::handlePartyTransfer),
             new ExtractorHandler<>(ChatExtractors.PARTY_ROLE_CHANGE, ChatListener::handlePartyRoleChange),
@@ -108,6 +110,14 @@ public final class ChatListener {
 
     private static void handlePartyUserJoin(UserData data) {
         HypixelServerEvents.PARTY_USER_JOINED.invoker().onUserJoin(data);
+    }
+
+    private static void handlePartyMemberDisconnect(UserData data) {
+        HypixelServerEvents.PARTY_MEMBER_DISCONNECTED.invoker().onMemberDisconnect(data);
+    }
+
+    private static void handlePartyMemberRejoin(UserData data) {
+        HypixelServerEvents.PARTY_MEMBER_REJOINED.invoker().onMemberRejoin(data);
     }
 
     private static void handlePartyLeave() {

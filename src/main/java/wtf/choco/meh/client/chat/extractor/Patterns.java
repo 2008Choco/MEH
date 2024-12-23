@@ -22,9 +22,11 @@ final class Patterns {
     static final Pattern PATTERN_PARTY_JOIN = Pattern.compile("^You have joined " + userMatchString() + "'s* party!$");
     static final Pattern PATTERN_PARTY_KICK = Pattern.compile("^You have been kicked from the party by " + userMatchString() + "$");
     static final Pattern PATTERN_PARTY_MEMBER_BARGE = Pattern.compile("^" + userMatchString() + " barged into the party.$");
+    static final Pattern PATTERN_PARTY_MEMBER_DISCONNECT = Pattern.compile("^" + userMatchString() + " has disconnected, they have 5 minutes to rejoin before they are removed from the party.$");
     static final Pattern PATTERN_PARTY_MEMBER_JOIN = Pattern.compile("^" + userMatchString() + " joined the party.$");
     static final Pattern PATTERN_PARTY_MEMBER_KICK = Pattern.compile("^" + userMatchString() + " has been removed from the party.$");
     static final Pattern PATTERN_PARTY_MEMBER_LEAVE = Pattern.compile("^" + userMatchString() + " has left the party.$");
+    static final Pattern PATTERN_PARTY_MEMBER_REJOIN = Pattern.compile("^" + userMatchString() + " has rejoined.$");
 
     // BiUserData
     static final Pattern PATTERN_PARTY_MEMBER_INVITE = Pattern.compile("^" + userMatchString() + " invited " + userMatchString("target") + " to the party! They have \\d+ seconds to accept.$");
