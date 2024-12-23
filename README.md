@@ -1,5 +1,5 @@
 # Miscellaneous Enhancements for Hypixel (MEH)
-No seriously. Meh. This is a Fabric mod for Minecraft 1.21.2 and 1.21.3 that introduces some quality of life and convenience features when playing on the Hypixel server specifically. There's no true goal for this mod other than quality of life. This mod is maintained freely by [Choco](https://github.com/2008Choco) and includes features that just felt useful.
+No seriously. Meh. This is a Fabric mod for Minecraft 1.21.4 that introduces some quality of life and convenience features when playing on the Hypixel server specifically. There's no true goal for this mod other than quality of life. This mod is maintained freely by [Choco](https://github.com/2008Choco) and includes features that just felt useful.
 
 This project is licensed under the MIT license.
 
@@ -59,11 +59,11 @@ When joining a party, it can often feel overwhelming to know who your party mate
 > This feature requires Hypixel Mod API to be installed. See Dependencies & Integration for more information!
 
 ## Dependencies & Integration
-- Minecraft 1.21.1 (consequently, Java 21)
+- Minecraft 1.21.4 (consequently, Java 21)
 - Fabric Loader (version 0.16 or above)
-- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) (version 0.104.x or above)
-- [Cloth Config API](https://modrinth.com/mod/cloth-config/) (v15 and above)
-- _(Optional)_ [Mod Menu](https://modrinth.com/mod/modmenu/) (v11 and above)
+- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) (version 0.110.x or above)
+- [Cloth Config API](https://modrinth.com/mod/cloth-config/) (v17 and above)
+- _(Optional)_ [Mod Menu](https://modrinth.com/mod/modmenu/) (v13 and above)
   - Provides a configuration screen in the Mod Menu list
 - _(Optional)_ [Hypixel Mod API](https://modrinth.com/mod/hypixel-mod-api) (v1.0.1 and above)
   - Provides more accurate information about the client's current state
