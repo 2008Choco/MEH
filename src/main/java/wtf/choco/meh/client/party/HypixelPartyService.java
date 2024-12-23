@@ -56,7 +56,7 @@ public final class HypixelPartyService implements PartyService {
     private PartyRole convert(ClientboundPartyInfoPacket.PartyRole role) {
         return switch (role) {
             case LEADER -> PartyRole.LEADER;
-            case MOD -> PartyRole.MOD;
+            case MOD -> PartyRole.MODERATOR;
             case MEMBER -> PartyRole.MEMBER;
             default -> throw new UnsupportedOperationException("ClientboundPartyInfoPacket.PartyRole." + role.name());
         };

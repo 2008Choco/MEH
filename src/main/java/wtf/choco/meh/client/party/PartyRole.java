@@ -3,7 +3,7 @@ package wtf.choco.meh.client.party;
 public enum PartyRole {
 
     LEADER("Leader"),
-    MOD("Moderator"),
+    MODERATOR("Mod"),
     MEMBER("Member");
 
     private final String prettyName;

@@ -24,7 +24,7 @@ public final class FabricTestPartyService implements PartyService {
 
             Map<UUID, PartyMember> members = new HashMap<>();
             this.addMember(members, playerUUID, PartyRole.LEADER);
-            this.addMember(members, UUID_2008CHOCO, PartyRole.MOD);
+            this.addMember(members, UUID_2008CHOCO, PartyRole.MODERATOR);
             this.addMember(members, UUID_HYPIXEL, PartyRole.MEMBER);
             this.addMember(members, UUID_MD_5, PartyRole.MEMBER);
 
