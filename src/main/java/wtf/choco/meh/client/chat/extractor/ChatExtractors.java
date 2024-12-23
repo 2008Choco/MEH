@@ -43,6 +43,12 @@ public final class ChatExtractors {
      */
     public static final ChatExtractor<UserData> PARTY_KICK = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_KICK, UserData::fromMatcher);
     /**
+     * Extracts the rank and username of the member that barged into the party.
+     *
+     * @see UserData
+     */
+    public static final ChatExtractor<UserData> PARTY_MEMBER_BARGE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_BARGE, UserData::fromMatcher);
+    /**
      * Extracts the rank and username of the member that was kicked.
      *
      * @see UserData
@@ -85,6 +91,7 @@ public final class ChatExtractors {
     public static final ChatExtractor<BiUserData> PARTY_USER_INVITE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_INVITE, BiUserData::fromMatcher);
 
     // Matchers
+    public static final ChatMatcher PARTY_BARGE = new StringChatMatcher(Patterns.STRING_PARTY_BARGE);
     public static final ChatMatcher PARTY_DISBAND_EMPTY = new StringChatMatcher(Patterns.STRING_PARTY_DISBAND_EMPTY);
     public static final ChatMatcher PARTY_DISBAND_LEADER_DISCONNECTED = new StringChatMatcher(Patterns.STRING_PARTY_DISBAND_LEADER_DISCONNECTED);
     public static final ChatMatcher PARTY_LEAVE = new StringChatMatcher(Patterns.STRING_PARTY_LEAVE);

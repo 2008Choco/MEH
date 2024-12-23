@@ -55,6 +55,26 @@ public final class HypixelServerEvents {
     );
 
     /**
+     * Callback for when the client (a Hypixel Admin) barges into another user's party.
+     * <p>
+     * Note that a {@link #PARTY_BARGED} is called before a {@link #PARTY_MEMBER_BARGED}
+     * is called. Hypixel treats barging into the party as the following process:
+     * <ol>
+     *   <li>Admin executes command to barge into a party.
+     *   <li>Admin is now part of the party <em>(PARTY_BARGED event is called)</em>.
+     *   <li>The party (which now includes the admin) is notified of the admin having
+     *   barged into the party <em>(PARTY_MEMBER_BARGED event is called)</em>.
+     * </ol>
+     */
+    public static final Event<PartyEvent.Barge> PARTY_BARGED = EventFactory.createArrayBacked(PartyEvent.Barge.class,
+           listeners -> () -> {
+               for (PartyEvent.Barge event : listeners) {
+                   event.onBarge();
+               }
+           }
+    );
+
+    /**
      * Callback for when a party has been disbanded.
      */
     public static final Event<PartyEvent.Disband> PARTY_DISBANDED = EventFactory.createArrayBacked(PartyEvent.Disband.class,
@@ -119,6 +139,27 @@ public final class HypixelServerEvents {
             listeners -> (newPartyLeader, transferrer) -> {
                 for (PartyEvent.Transfer event : listeners) {
                     event.onTransfer(newPartyLeader, transferrer);
+                }
+            }
+    );
+
+    /**
+     * Callback for when a Hypixel Admin (including the client) barges into the party.
+     * <p>
+     * Note that if the client is the member that barged into the party, a {@link #PARTY_BARGED}
+     * is also called before a {@link #PARTY_MEMBER_BARGED} (i.e. the admin is also informed of
+     * their own barging). Hypixel treats barging into the party as the following process:
+     * <ol>
+     *   <li>Admin executes command to barge into a party.
+     *   <li>Admin is now part of the party <em>(PARTY_BARGED event is called)</em>.
+     *   <li>The party (which now includes the admin) is notified of the admin having
+     *   barged into the party <em>(PARTY_MEMBER_BARGED event is called)</em>.
+     * </ol>
+     */
+    public static final Event<PartyEvent.MemberBarge> PARTY_MEMBER_BARGED = EventFactory.createArrayBacked(PartyEvent.MemberBarge.class,
+            listeners -> user -> {
+                for (PartyEvent.MemberBarge event : listeners) {
+                    event.onMemberBarge(user);
                 }
             }
     );
@@ -265,6 +306,25 @@ public final class HypixelServerEvents {
     public final class PartyEvent {
 
         @FunctionalInterface
+        public interface Barge {
+
+            /**
+             * Called when the client barges into another user's party without an invitation.
+             * <p>
+             * Note that a {@link Barge} is called before a {@link MemberBarge} is called.
+             * Hypixel treats barging into the party as the following process:
+             * <ol>
+             *   <li>Admin executes command to barge into a party.
+             *   <li>Admin is now part of the party <em>(Barge event is called)</em>.
+             *   <li>The party (which now includes the admin) is notified of the admin having
+             *   barged into the party <em>(MemberBarge event is called)</em>.
+             * </ol>
+             */
+            public void onBarge();
+
+        }
+
+        @FunctionalInterface
         public interface Disband {
 
             /**
@@ -350,6 +410,29 @@ public final class HypixelServerEvents {
              * @param transferrer the user that issued the party transfer
              */
             public void onTransfer(UserData newPartyLeader, UserData transferrer);
+
+        }
+
+        @FunctionalInterface
+        public interface MemberBarge {
+
+            /**
+             * Called when a Hypixel Admin (including the client) barges into the party.
+             * <p>
+             * Note that if the client is the member that barged into the party, a {@link #PARTY_BARGED}
+             * is also called before a {@link #PARTY_MEMBER_BARGED} (i.e. the admin is also
+             * informed of their own barging). Hypixel treats barging into the party as the
+             * following process:
+             * <ol>
+             *   <li>Admin executes command to barge into a party.
+             *   <li>Admin is now part of the party <em>(Barge event is called)</em>.
+             *   <li>The party (which now includes the admin) is notified of the admin having
+             *   barged into the party <em>(MemberBarge event is called)</em>.
+             * </ol>
+             *
+             * @param user the Hypixel Admin that barged into the party
+             */
+            public void onMemberBarge(UserData user);
 
         }
 

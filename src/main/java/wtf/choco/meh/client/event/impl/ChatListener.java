@@ -34,12 +34,14 @@ public final class ChatListener {
             new MatcherHandler(ChatExtractors.PARTY_DISBAND_EMPTY, ChatListener::handlePartyDisbandEmpty),
             new MatcherHandler(ChatExtractors.PARTY_DISBAND_LEADER_DISCONNECTED, ChatListener::handlePartyDisbandLeaderDisconnected),
             new MatcherHandler(ChatExtractors.PARTY_LEAVE, ChatListener::handlePartyLeave),
+            new MatcherHandler(ChatExtractors.PARTY_BARGE, ChatListener::handlePartyBarge),
             new ExtractorHandler<>(ChatExtractors.PRIVATE_MESSAGE, ChatListener::handlePrivateMessage),
             new ExtractorHandler<>(ChatExtractors.PARTY_DISBAND_LEADER_DISBANDED, ChatListener::handlePartyDisbandLeaderDisbanded),
             new ExtractorHandler<>(ChatExtractors.PARTY_JOIN, ChatListener::handlePartyJoin),
             new ExtractorHandler<>(ChatExtractors.PARTY_USER_JOIN, ChatListener::handlePartyUserJoin),
             new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_KICK, ChatListener::handlePartyMemberKick),
             new ExtractorHandler<>(ChatExtractors.PARTY_KICK, ChatListener::handlePartyKick),
+            new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_BARGE, ChatListener::handlePartyMemberBarge),
             new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_LEAVE, ChatListener::handlePartyMemberLeave),
             new ExtractorHandler<>(ChatExtractors.PARTY_USER_INVITE, ChatListener::handlePartyUserInvite),
             new ExtractorHandler<>(ChatExtractors.PARTY_TRANSFER, ChatListener::handlePartyTransfer),
@@ -112,6 +114,10 @@ public final class ChatListener {
         HypixelServerEvents.PARTY_LEFT.invoker().onLeave();
     }
 
+    private static void handlePartyBarge() {
+        HypixelServerEvents.PARTY_BARGED.invoker().onBarge();
+    }
+
     private static void handlePartyMemberLeave(UserData data) {
         HypixelServerEvents.PARTY_MEMBER_LEFT.invoker().onMemberLeave(data);
     }
@@ -122,6 +128,10 @@ public final class ChatListener {
 
     private static void handlePartyKick(UserData data) {
         HypixelServerEvents.PARTY_KICKED.invoker().onKick(data);
+    }
+
+    private static void handlePartyMemberBarge(UserData data) {
+        HypixelServerEvents.PARTY_MEMBER_BARGED.invoker().onMemberBarge(data);
     }
 
     private static void handlePartyUserInvite(BiUserData data) {

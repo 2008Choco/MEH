@@ -48,6 +48,7 @@ public final class PartyManagerFeature extends Feature {
         HypixelServerEvents.PARTY_JOINED.register(partyLeader -> refreshParty());
         HypixelServerEvents.PARTY_KICKED.register(kicker -> refreshParty());
         HypixelServerEvents.PARTY_LEFT.register(this::refreshParty);
+        HypixelServerEvents.PARTY_MEMBER_BARGED.register(user -> refreshParty()); // Don't need to listen for PARTY_BARGED because this event covers that case
         HypixelServerEvents.PARTY_MEMBER_DEMOTED.register((demoted, demoter, role) -> refreshParty());
         HypixelServerEvents.PARTY_MEMBER_KICKED.register(user -> refreshParty());
         HypixelServerEvents.PARTY_MEMBER_LEFT.register(user -> refreshParty());
