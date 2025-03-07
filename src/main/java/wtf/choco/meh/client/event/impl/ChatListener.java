@@ -45,6 +45,7 @@ public final class ChatListener {
             new ExtractorHandler<>(ChatExtractors.PARTY_KICK, ChatListener::handlePartyKick),
             new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_LEAVE, ChatListener::handlePartyMemberLeave),
             new ExtractorHandler<>(ChatExtractors.PARTY_MEMBER_BARGE, ChatListener::handlePartyMemberBarge),
+            new ExtractorHandler<>(ChatExtractors.PARTY_INVITE, ChatListener::handlePartyInvite),
             new ExtractorHandler<>(ChatExtractors.PARTY_USER_INVITE, ChatListener::handlePartyUserInvite),
             new ExtractorHandler<>(ChatExtractors.PARTY_TRANSFER, ChatListener::handlePartyTransfer),
             new ExtractorHandler<>(ChatExtractors.PARTY_ROLE_CHANGE, ChatListener::handlePartyRoleChange),
@@ -142,6 +143,10 @@ public final class ChatListener {
 
     private static void handlePartyMemberBarge(UserData data) {
         HypixelServerEvents.PARTY_MEMBER_BARGED.invoker().onMemberBarge(data);
+    }
+
+    private static void handlePartyInvite(UserData data) {
+        HypixelServerEvents.PARTY_INVITED.invoker().onInvite(data);
     }
 
     private static void handlePartyUserInvite(BiUserData data) {
