@@ -31,6 +31,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add("meh.channel.focus.tooltip", "Focus mode enabled. Press %s to disable.");
         builder.add("meh.channel.new.msg", "Creating new chat channel for %s.");
         builder.add("meh.channel.switch", "Chat channel switched to %s.");
+        builder.add("meh.housing.auto_night_vision.success", "Found a night vision command (%s) and executed it. Enjoy night vision!");
         builder.add("meh.party_manager.invitation.decline", "Declined party invitation from %s.");
         builder.add("meh.party_manager.invitation.empty", "You do not have any pending party invitations.");
 
@@ -119,7 +120,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
 
         // Configuration options
         this.addPrefix(builder, "max_remembered_chat_history", "General Options");
-        this.addPrefix(builder, "auto_disable_housing_flight", "Feature Options");
+        this.addPrefix(builder, "chat_channels", "Feature Options");
 
         this.addOption(builder, "max_remembered_chat_history", "Max Remembered Chat History",
             "The amount of chat messages Minecraft will remember.",
@@ -127,8 +128,6 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
             "Higher numbers consume more memory! Be careful!",
             "By default, Minecraft remembers only 100 messages."
         );
-        this.addOption(builder, "auto_disable_housing_flight", "Auto-Disable Housing Flight", "When enabled, automatically runs /fly to disable flight when joining a House.");
-        this.addOption(builder, "auto_disable_housing_flight.enabled", "Enabled");
         this.addOption(builder, "chat_channels", "Chat Channels", "Organize your chat better with simple chat channels.");
         this.addOption(builder, "chat_channels.auto_switch_on_new_message", "Auto Switch on New Message",
             "When receiving a new private message, automatically switch to the newly created channel.",
@@ -138,6 +137,13 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.addOption(builder, "chat_channels.known_channels", "Known Channels", "A list of channels loaded into the client by default. Channels listed here are not removable.");
         this.addOption(builder, "emote_selector", "Emote Selector", "A visual selection widget for Hypixel's emote system.");
         this.addOption(builder, "emote_selector.enabled", "Enabled");
+        this.addOption(builder, "housing", "Housing", "Enhancements to Hypixel's Housing servers.");
+        this.addOption(builder, "housing.auto_disable_flight", "Auto-Disable Flight", "When enabled, automatically runs /fly to disable flight when joining a House.");
+        this.addOption(builder, "housing.auto_night_vision", "Auto Night Vision",
+            "When enabled, try to execute well-known commands to enable Night Vision.",
+            "It will only try to execute commands that the client is aware of!",
+            "If a housing doesn't send commands to the client, this will not work!"
+        );
         this.addOption(builder, "KnownChannel", "Known Channel");
         this.addOption(builder, "KnownChannel.color", "Channel Color");
         this.addOption(builder, "KnownChannel.command_prefix", "Command Prefix", "The command prefix to use in order to chat int his channel. '/' is optional.");

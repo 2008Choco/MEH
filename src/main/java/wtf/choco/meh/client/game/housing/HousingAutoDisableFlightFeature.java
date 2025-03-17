@@ -1,5 +1,7 @@
 package wtf.choco.meh.client.game.housing;
 
+import java.util.function.Predicate;
+
 import net.minecraft.client.Minecraft;
 
 import org.jetbrains.annotations.Nullable;
@@ -10,10 +12,10 @@ import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.server.HypixelServerType;
 
-public final class AutoDisableHousingFlightFeature extends Feature {
+public final class HousingAutoDisableFlightFeature extends Feature {
 
-    public AutoDisableHousingFlightFeature(MEHClient mod) {
-        super(mod, MEHConfig::getAutoDisableHousingFlightConfig);
+    public HousingAutoDisableFlightFeature(MEHClient mod) {
+        super(mod, (Predicate<MEHConfig>) config -> config.getHousingConfig().isAutoDisableFlight());
     }
 
     @Override

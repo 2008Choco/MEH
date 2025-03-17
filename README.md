@@ -47,8 +47,13 @@ An assortment of enhancements to the main lobby fishing experience are made by t
 >
 > Please download and use their resource pack if you enjoy main lobby fishing on Hypixel but aren't willing to use this mod :)
 
-### Auto-Disable Housing Flight
+### Auto-Disable Flight (Housing)
 Those with permission, when joining a Housing, will have their flight automatically enabled. This can be problematic for houses with parkours in which flight will cancel a run. Often you have to run `/fly` when joining _every single house_ to ensure you don't accidentally fly while doing a parkour. This feature will automatically run the `/fly` command when joining a Housing.
+
+This feature is disabled by default because its usefulness is limited.
+
+### Auto Night Vision (Housing)
+Many houses in Housing will provide commands to enable night vision, but they often vary in name. It can be a bit frustrating joining a server and trying a bunch of commands to enable night vision. This feature will search commands that the client is aware of and automatically execute ones that are generally associated with enabling night vision.
 
 This feature is disabled by default because its usefulness is limited.
 

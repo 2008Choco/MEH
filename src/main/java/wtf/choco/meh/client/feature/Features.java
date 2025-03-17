@@ -12,15 +12,17 @@ import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.GCMnemonicFeature;
 import wtf.choco.meh.client.chat.GGMnemonicFeature;
 import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
-import wtf.choco.meh.client.game.housing.AutoDisableHousingFlightFeature;
+import wtf.choco.meh.client.game.housing.HousingAutoDisableFlightFeature;
+import wtf.choco.meh.client.game.housing.HousingAutoNightVisionFeature;
 import wtf.choco.meh.client.party.PartyManagerFeature;
 import wtf.choco.meh.client.registry.MEHRegistries;
 
 public final class Features {
 
-    public static final AutoDisableHousingFlightFeature AUTO_DISABLE_HOUSING_FLIGHT = register("auto_disable_housing_flight", AutoDisableHousingFlightFeature::new);
     public static final ChatChannelsFeature CHAT_CHANNELS = register("chat_channels", ChatChannelsFeature::new);
     public static final EmoteSelectorFeature EMOTE_SELECTOR = register("emote_selector", EmoteSelectorFeature::new);
+    public static final HousingAutoDisableFlightFeature HOUSING_AUTO_DISABLE_FLIGHT = register("housing_auto_disable_flight", HousingAutoDisableFlightFeature::new);
+    public static final HousingAutoNightVisionFeature HOUSING_AUTO_NIGHT_VISION = register("housing_auto_night_vision", HousingAutoNightVisionFeature::new);
     public static final GCMnemonicFeature MNEMONIC_GC = register("mnemonic_gc", GCMnemonicFeature::new);
     public static final GGMnemonicFeature MNEMONIC_GG = register("mnemonic_gg", GGMnemonicFeature::new);
     public static final PartyManagerFeature PARTY_MANAGER = register("party_manager", PartyManagerFeature::new);

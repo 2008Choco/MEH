@@ -17,15 +17,15 @@ public final class MEHConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.PrefixText
     @ConfigEntry.Gui.CollapsibleObject
-    private ConfigAutoDisableHousingFlight auto_disable_housing_flight = new ConfigAutoDisableHousingFlight();
-
-    @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.CollapsibleObject
     private ConfigChatChannels chat_channels = new ConfigChatChannels();
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
     private ConfigEmoteSelector emote_selector = new ConfigEmoteSelector();
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
+    private ConfigHousing housing = new ConfigHousing();
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
@@ -43,16 +43,16 @@ public final class MEHConfig implements ConfigData {
         return max_remembered_chat_history;
     }
 
-    public ConfigAutoDisableHousingFlight getAutoDisableHousingFlightConfig() {
-        return auto_disable_housing_flight;
-    }
-
     public ConfigChatChannels getChatChannelsConfig() {
         return chat_channels;
     }
 
     public ConfigEmoteSelector getEmoteSelectorConfig() {
         return emote_selector;
+    }
+
+    public ConfigHousing getHousingConfig() {
+        return housing;
     }
 
     public ConfigMainLobbyFishing getMainLobbyFishingConfig() {
