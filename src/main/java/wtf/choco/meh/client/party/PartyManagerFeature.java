@@ -6,16 +6,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.extractor.UserData;
 import wtf.choco.meh.client.config.MEHConfig;
-import wtf.choco.meh.client.event.GuiEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
@@ -34,15 +32,12 @@ public final class PartyManagerFeature extends Feature {
 
     public PartyManagerFeature(MEHClient mod) {
         super(mod, MEHConfig::getPartyManager);
-
         this.partyList = new PartyListWidget(this);
     }
 
     @Override
     protected void registerListeners() {
-        GuiEvents.ADD_HUD_DRAW_LAYER.register((minecraft, layers) -> {
-            layers[0].add(this::renderPartyList);
-        });
+        HudLayerRegistrationCallback.EVENT.register(drawer -> drawer.addLayer(partyList));
 
         HypixelServerEvents.PARTY_DISBANDED.register((reason, disbander) -> refreshParty());
         HypixelServerEvents.PARTY_JOINED.register(partyLeader -> refreshParty());
@@ -81,14 +76,6 @@ public final class PartyManagerFeature extends Feature {
 
     public Party getParty() {
         return party;
-    }
-
-    @SuppressWarnings("unused")
-    private void renderPartyList(GuiGraphics graphics, DeltaTracker delta) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (isEnabled() && !minecraft.gui.getDebugOverlay().showDebugScreen()) {
-            this.partyList.render(graphics);
-        }
     }
 
     private void onReceivePartyInvite(UserData inviter) {

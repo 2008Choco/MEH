@@ -9,12 +9,15 @@ import java.util.List;
 
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry.Translatable;
 
+import net.fabricmc.fabric.api.client.rendering.v1.IdentifiedLayer;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.PlayerFaceRenderer;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +26,9 @@ import wtf.choco.meh.client.party.Party;
 import wtf.choco.meh.client.party.PartyManagerFeature;
 import wtf.choco.meh.client.party.PartyMember;
 
-public final class PartyListWidget {
+public final class PartyListWidget implements IdentifiedLayer {
+
+    private static final ResourceLocation ID_PARTY_LIST = ResourceLocation.fromNamespaceAndPath("meh", "party_list");
 
     public static enum Position implements Translatable {
 
@@ -49,8 +54,13 @@ public final class PartyListWidget {
         this.feature = feature;
     }
 
-    public void render(GuiGraphics graphics) {
+    @Override
+    public void render(GuiGraphics graphics, DeltaTracker delta) {
         Minecraft minecraft = Minecraft.getInstance();
+        if (!feature.isEnabled() || minecraft.gui.getDebugOverlay().showDebugScreen()) {
+            return;
+        }
+
         Window window = minecraft.getWindow();
         /*
         int mouseX = Mth.floor(minecraft.mouseHandler.xpos() * window.getGuiScaledWidth() / window.getScreenWidth());
@@ -107,6 +117,11 @@ public final class PartyListWidget {
 
             stack.popPose();
         }
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID_PARTY_LIST;
     }
 
 }

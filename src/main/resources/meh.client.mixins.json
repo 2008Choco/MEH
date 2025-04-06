@@ -6,7 +6,6 @@
         "AbstractContainerMenuMixin",
         "ChatComponentMixin",
         "ChatScreenAccessor",
-        "GuiMixin",
         "ItemModelResolverMixin",
         "KeyboardHandlerMixin",
         "MultiPlayerGameModeMixin",

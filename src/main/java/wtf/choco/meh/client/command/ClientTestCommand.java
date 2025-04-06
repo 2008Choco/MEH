@@ -71,8 +71,8 @@ public final class ClientTestCommand {
                 .append(". Any item you click in an inventory will now dump its contents in chat. Use ")
                 .append(Component.literal("/mehtest dumpinventory").withStyle(style -> style
                     .applyFormat(ChatFormatting.YELLOW)
-                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mehtest dumpinventory"))
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("Click to execute.")))
+                    .withClickEvent(new ClickEvent.RunCommand("/mehtest dumpinventory"))
+                    .withHoverEvent(new HoverEvent.ShowText(Component.literal("Click to execute.")))
                 ))
                 .append(" to toggle it off.")
             );
