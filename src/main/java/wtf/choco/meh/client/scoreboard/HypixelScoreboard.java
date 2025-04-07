@@ -66,8 +66,13 @@ public final class HypixelScoreboard {
     private final Map<HypixelScoreboardLine, String> entries = new EnumMap<>(HypixelScoreboardLine.class);
     private String title;
 
-    public HypixelScoreboard() {
+    public HypixelScoreboard(int autoRefreshInterval) {
         LISTENING_SCOREBOARDS.add(this);
+        this.setAutoRefreshInterval(autoRefreshInterval);
+    }
+
+    public HypixelScoreboard() {
+        this(0);
     }
 
     /**

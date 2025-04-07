@@ -1,6 +1,5 @@
 package wtf.choco.meh.client.server;
 
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -10,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ServerData;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.include.com.google.common.base.Preconditions;
 
@@ -65,7 +63,7 @@ public final class HypixelServerState {
         ServerData server = minecraft.getCurrentServer();
         this.connectedToHypixel = (server != null) && PATTERN_HYPIXEL_IP.matcher(server.ip).matches();
         if (connectedToHypixel) {
-            this.setScoreboard(new HypixelScoreboard(), scoreboard -> scoreboard.setAutoRefreshInterval(20));
+            this.setScoreboard(new HypixelScoreboard(20));
         }
     }
 
@@ -83,12 +81,6 @@ public final class HypixelServerState {
      */
     public boolean isConnectedToHypixel() {
         return connectedToHypixel || FabricLoader.getInstance().isDevelopmentEnvironment();
-    }
-
-    private void setScoreboard(@NotNull HypixelScoreboard scoreboard, @NotNull Consumer<HypixelScoreboard> action) {
-        Preconditions.checkArgument(scoreboard != null, "scoreboard must not be null");
-        this.setScoreboard(scoreboard);
-        action.accept(scoreboard);
     }
 
     private void setScoreboard(@Nullable HypixelScoreboard scoreboard) {
