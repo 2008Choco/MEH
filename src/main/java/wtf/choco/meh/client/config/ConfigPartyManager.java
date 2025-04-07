@@ -5,7 +5,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDispla
 
 import wtf.choco.meh.client.screen.widgets.PartyListWidget;
 
-public final class ConfigPartyManager implements Enableable {
+public final class ConfigPartyManager {
 
     private boolean enabled = true;
 
@@ -14,7 +14,6 @@ public final class ConfigPartyManager implements Enableable {
 
     ConfigPartyManager() { }
 
-    @Override
     public boolean isEnabled() {
         return enabled;
     }

@@ -7,7 +7,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 import net.minecraft.Util;
 
-public final class ConfigChatChannels implements Enableable {
+public final class ConfigChatChannels {
 
     private boolean enabled = true;
 
@@ -23,7 +23,6 @@ public final class ConfigChatChannels implements Enableable {
 
     ConfigChatChannels() { }
 
-    @Override
     public boolean isEnabled() {
         return enabled;
     }

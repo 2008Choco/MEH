@@ -52,13 +52,18 @@ public final class ChatChannelsFeature extends Feature {
     private final ChannelSelector channelSelector = new ChannelSelector();
 
     public ChatChannelsFeature(MEHClient mod) {
-        super(mod, MEHConfig::getChatChannelsConfig);
+        super(mod);
 
         // Register configured known channels
         for (KnownChannel channel : MEHClient.getConfig().getChatChannelsConfig().getKnownChannels()) {
             ChatChannel chatChannel = new ChatChannel(channel.getId(), Component.literal(channel.getName()), channel.getColor(), channel.getCommandPrefix(), ChatChannelType.BUILT_IN, channel.getFocusFilter().toChatMessageFilter());
             this.channelSelector.addChannel(chatChannel);
         }
+    }
+
+    @Override
+    protected boolean isFeatureEnabled(MEHConfig config) {
+        return config.getChatChannelsConfig().isEnabled();
     }
 
     @Override

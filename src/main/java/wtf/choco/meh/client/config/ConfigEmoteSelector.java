@@ -1,12 +1,11 @@
 package wtf.choco.meh.client.config;
 
-public final class ConfigEmoteSelector implements Enableable {
+public final class ConfigEmoteSelector {
 
     private boolean enabled = true;
 
     ConfigEmoteSelector() { }
 
-    @Override
     public boolean isEnabled() {
         return enabled;
     }

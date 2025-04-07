@@ -7,7 +7,12 @@ import wtf.choco.meh.client.mnemonic.Mnemonics;
 public final class GCMnemonicFeature extends MnemonicChatFeature {
 
     public GCMnemonicFeature(MEHClient mod) {
-        super(mod, ConfigMnemonics::isGCEnabled, Mnemonics.GC, "gc");
+        super(mod, Mnemonics.GC, "gc");
+    }
+
+    @Override
+    protected boolean isMnemonicEnabled(ConfigMnemonics config) {
+        return config.isGCEnabled();
     }
 
 }

@@ -21,7 +21,12 @@ public final class EmoteSelectorFeature extends Feature {
     private final EmoteSelectorWidget emoteSelector = new EmoteSelectorWidget(this);
 
     public EmoteSelectorFeature(MEHClient mod) {
-        super(mod, MEHConfig::getEmoteSelectorConfig);
+        super(mod);
+    }
+
+    @Override
+    protected boolean isFeatureEnabled(MEHConfig config) {
+        return config.getEmoteSelectorConfig().isEnabled();
     }
 
     @Override

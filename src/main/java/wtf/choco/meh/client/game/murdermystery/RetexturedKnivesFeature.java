@@ -1,7 +1,6 @@
 package wtf.choco.meh.client.game.murdermystery;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -14,7 +13,7 @@ import wtf.choco.meh.client.server.HypixelServerType;
 public final class RetexturedKnivesFeature extends Feature {
 
     public RetexturedKnivesFeature(MEHClient mod) {
-        super(mod, (Predicate<MEHConfig>) config -> config.getMurderMysteryConfig().isRetexturedMurdererKnives());
+        super(mod);
 
         for (KnifeType type : KnifeType.values()) {
             if (!type.shouldRetexture()) {
@@ -26,23 +25,22 @@ public final class RetexturedKnivesFeature extends Feature {
     }
 
     @Override
-    protected void registerListeners() { }
-
-    @Override
-    public boolean isEnabled() {
-        boolean enabled = super.isEnabled();
-        if (!enabled) {
-            return false;
-        }
-
+    public boolean isFeatureEnabled(MEHConfig config) {
         // Always render in a development environment
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             return true;
+        }
+
+        if (!config.getMurderMysteryConfig().isRetexturedMurdererKnives()) {
+            return false;
         }
 
         // Otherwise, only render in Murder Mystery
         Optional<HypixelServerType> serverType = getMod().getHypixelServerState().getServerLocationProvider().getServerType();
         return serverType.isPresent() && serverType.get() == HypixelServerType.MURDER_MYSTERY;
     }
+
+    @Override
+    protected void registerListeners() { }
 
 }

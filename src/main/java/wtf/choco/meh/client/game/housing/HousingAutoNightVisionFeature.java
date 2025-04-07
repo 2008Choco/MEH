@@ -3,8 +3,6 @@ package wtf.choco.meh.client.game.housing;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 
-import java.util.function.Predicate;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -31,7 +29,12 @@ public final class HousingAutoNightVisionFeature extends Feature {
     };
 
     public HousingAutoNightVisionFeature(MEHClient mod) {
-        super(mod, (Predicate<MEHConfig>) config -> config.getHousingConfig().isAutoNightVision());
+        super(mod);
+    }
+
+    @Override
+    protected boolean isFeatureEnabled(MEHConfig config) {
+        return config.getHousingConfig().isAutoNightVision();
     }
 
     @Override

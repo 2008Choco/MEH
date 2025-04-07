@@ -1,7 +1,5 @@
 package wtf.choco.meh.client.chat;
 
-import java.util.function.Predicate;
-
 import net.minecraft.client.Minecraft;
 
 import wtf.choco.meh.client.MEHClient;
@@ -16,11 +14,18 @@ abstract class MnemonicChatFeature extends Feature {
     private final Mnemonic mnemonic;
     private final String message;
 
-    public MnemonicChatFeature(MEHClient mod, Predicate<ConfigMnemonics> mnemonicFeatureEnabled, Mnemonic mnemonic, String message) {
-        super(mod, (Predicate<MEHConfig>) config -> mnemonicFeatureEnabled.test(config.getMnemonicsConfig()));
+    public MnemonicChatFeature(MEHClient mod, Mnemonic mnemonic, String message) {
+        super(mod);
         this.mnemonic = mnemonic;
         this.message = message;
     }
+
+    @Override
+    protected final boolean isFeatureEnabled(MEHConfig config) {
+        return isMnemonicEnabled(config.getMnemonicsConfig());
+    }
+
+    protected abstract boolean isMnemonicEnabled(ConfigMnemonics config);
 
     @Override
     protected void registerListeners() {
