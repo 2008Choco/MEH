@@ -40,8 +40,13 @@ final class HypixelScoreboardServerLocationProvider implements ServerLocationPro
         this.serverType = HypixelServerType.getByScoreboardTitle(title);
 
         if (scoreboard.getMaxLine() >= 1) {
-            Matcher matcher = PATTERN_SCOREBOARD_SERVER_ID.matcher(ChatFormatting.stripFormatting(scoreboard.getLine(1)));
-            this.lobby = matcher.find() && matcher.group("server").startsWith("L");
+            String serverInfoText = ChatFormatting.stripFormatting(scoreboard.getLine(1));
+            if (serverInfoText != null) {
+                Matcher matcher = PATTERN_SCOREBOARD_SERVER_ID.matcher(serverInfoText);
+                this.lobby = matcher.find() && matcher.group("server").startsWith("L");
+            } else {
+                this.lobby = false;
+            }
         } else {
             this.lobby = false;
         }
