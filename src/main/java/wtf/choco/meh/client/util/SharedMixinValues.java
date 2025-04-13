@@ -6,8 +6,6 @@ import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
 public final class SharedMixinValues {
 
-    public static boolean cancelNextMenuClick = false;
-
     private SharedMixinValues() { }
 
     public static boolean isWritingCommand(ChatScreen screen) {
