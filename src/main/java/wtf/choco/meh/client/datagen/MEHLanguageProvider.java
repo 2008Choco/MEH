@@ -128,6 +128,10 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
             "Higher numbers consume more memory! Be careful!",
             "By default, Minecraft remembers only 100 messages."
         );
+        this.addOption(builder, "quiet_thunder", "Quiet Thunder",
+            "Hypixel uses lots of lightning, but it's so loud!",
+            "When enabled, reduces the volume of thunder sounds to a reasonable level."
+        );
         this.addOption(builder, "chat_channels", "Chat Channels", "Organize your chat better with simple chat channels.");
         this.addOption(builder, "chat_channels.auto_switch_on_new_message", "Auto Switch on New Message",
             "When receiving a new private message, automatically switch to the newly created channel.",

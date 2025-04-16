@@ -14,6 +14,9 @@ public final class MEHConfig implements ConfigData {
     @ConfigEntry.BoundedDiscrete(min = 100, max = 1000)
     private int max_remembered_chat_history = 250;
 
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    private boolean quiet_thunder = false;
+
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.PrefixText
     @ConfigEntry.Gui.CollapsibleObject
@@ -45,6 +48,10 @@ public final class MEHConfig implements ConfigData {
 
     public int getMaxRememberedChatHistory() {
         return max_remembered_chat_history;
+    }
+
+    public boolean isQuietThunder() {
+        return quiet_thunder;
     }
 
     public ConfigChatChannels getChatChannelsConfig() {
