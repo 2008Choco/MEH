@@ -23,11 +23,9 @@ public final class MEHKeybinds {
     public static final String CATEGORY_MEH = "key.categories.meh";
 
     // Standard key mappings
-    public static final int KEY_PARTY_INVITE_ACCEPT = InputConstants.KEY_Y;
-    public static final int KEY_PARTY_INVITE_DECLINE = InputConstants.KEY_N;
-
-    public static final KeyMapping PARTY_INVITE_ACCEPT = registerKeybind("party_invite_accept", KEY_PARTY_INVITE_ACCEPT);
-    public static final KeyMapping PARTY_INVITE_DECLINE = registerKeybind("party_invite_decline", KEY_PARTY_INVITE_DECLINE);
+    public static final KeyMapping PARTY_INVITE_ACCEPT = registerKeybind("party_invite_accept", InputConstants.KEY_Y);
+    public static final KeyMapping PARTY_INVITE_DECLINE = registerKeybind("party_invite_decline", InputConstants.KEY_N);
+    public static final KeyMapping OPEN_CUSTOM_STATUS_SCREEN = registerKeybind("open_custom_status_screen", InputConstants.UNKNOWN.getValue());
 
     // AMECS key mappings
     public static final int KEY_SWITCH_CHANNEL = InputConstants.KEY_TAB;
