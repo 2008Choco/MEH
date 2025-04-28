@@ -18,22 +18,23 @@ public final class CustomStatusMenuFeature extends Feature {
 
     @Override
     protected boolean isFeatureEnabled(MEHConfig config) {
-        return getMod().getHypixelServerState().getServerLocationProvider().isLobby();
+        return true;
     }
 
     @Override
     protected void registerListeners() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!isEnabled()) {
-                HypixelServerState serverState = getMod().getHypixelServerState();
-                if (serverState.isConnectedToHypixel() && !serverState.getServerLocationProvider().isLobby()) {
-                    client.player.displayClientMessage(Component.translatable("gui.meh.custom_status.not_in_lobby").withStyle(ChatFormatting.RED), false);
-                }
-
                 return;
             }
 
             if (client.screen == null && MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN.consumeClick()) {
+                HypixelServerState serverState = getMod().getHypixelServerState();
+                if (serverState.isConnectedToHypixel() && !serverState.getServerLocationProvider().isLobby()) {
+                    client.player.displayClientMessage(Component.translatable("gui.meh.custom_status.not_in_lobby").withStyle(ChatFormatting.RED), false);
+                    return;
+                }
+
                 client.setScreen(new CustomStatusScreen(getMod().getStatusStorage()));
             }
         });
