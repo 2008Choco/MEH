@@ -8,6 +8,7 @@ import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.screen.CustomStatusScreen;
+import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class CustomStatusMenuFeature extends Feature {
 
@@ -17,14 +18,15 @@ public final class CustomStatusMenuFeature extends Feature {
 
     @Override
     protected boolean isFeatureEnabled(MEHConfig config) {
-        return isInLobby();
+        return getMod().getHypixelServerState().getServerLocationProvider().isLobby();
     }
 
     @Override
     protected void registerListeners() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!isEnabled()) {
-                if (!isInLobby()) {
+                HypixelServerState serverState = getMod().getHypixelServerState();
+                if (serverState.isConnectedToHypixel() && !serverState.getServerLocationProvider().isLobby()) {
                     client.player.displayClientMessage(Component.translatable("gui.meh.custom_status.not_in_lobby").withStyle(ChatFormatting.RED), false);
                 }
 
@@ -35,10 +37,6 @@ public final class CustomStatusMenuFeature extends Feature {
                 client.setScreen(new CustomStatusScreen(getMod().getStatusStorage()));
             }
         });
-    }
-
-    private boolean isInLobby() {
-        return getMod().getHypixelServerState().getServerLocationProvider().isLobby();
     }
 
 }
