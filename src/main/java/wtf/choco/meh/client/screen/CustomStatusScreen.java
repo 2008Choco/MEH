@@ -38,6 +38,8 @@ public final class CustomStatusScreen extends Screen {
     private static final ResourceLocation SIDEBAR_TAB_SPRITE = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "container/sidebar_tab");
     private static final ResourceLocation SIDEBAR_TEXT_FIELD_SPRITE = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "container/sidebar_text_field");
 
+    private static final int MAX_STATUS_LENGTH = 256 - "/customstatus ".length();
+
     private static final int BACKGROUND_WIDTH = 217;
     private static final int BACKGROUND_HEIGHT = 146;
     private static final int SIDEBAR_TAB_X = 214;
@@ -559,7 +561,7 @@ public final class CustomStatusScreen extends Screen {
         public AddEditBox(Font font, int x, int y, int width, int height) {
             super(font, x, y, width, height, Component.translatable("gui.meh.custom_status.edit_box.status_text.narration"));
             this.setBordered(false);
-            this.setMaxLength(64);
+            this.setMaxLength(MAX_STATUS_LENGTH);
             this.setHint(Component.translatable("gui.meh.custom_status.edit_box.status_text.hint"));
             this.setResponder(this::onValueChange);
         }
@@ -605,7 +607,7 @@ public final class CustomStatusScreen extends Screen {
         public EditEditBox(Font font, int x, int y, int width, int height) {
             super(font, x, y, width, height, Component.translatable("gui.meh.custom_status.edit_box.status_text.narration"));
             this.setBordered(false);
-            this.setMaxLength(64);
+            this.setMaxLength(MAX_STATUS_LENGTH);
             this.setHint(Component.translatable("gui.meh.custom_status.edit_box.status_text.hint"));
             this.setResponder(this::onValueChange);
         }
