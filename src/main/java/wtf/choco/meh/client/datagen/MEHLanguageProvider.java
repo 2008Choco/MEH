@@ -35,6 +35,26 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add("meh.party_manager.invitation.decline", "Declined party invitation from %s.");
         builder.add("meh.party_manager.invitation.empty", "You do not have any pending party invitations.");
 
+        builder.add("gui.meh.custom_status.title", "Your Custom Statuses");
+        builder.add("gui.meh.custom_status.info", """
+                What's this?
+                
+                You've stumbled across a tool used by a Hypixel Staff member! Hypixel Staff are able to use custom lobby statuses, and this is a handy editor/dictionary for those statuses.
+                
+                This is likely of no use to you. Unless you're a staff member, in which case, you're in luck!""".translateEscapes());
+        builder.add("gui.meh.custom_status.empty.header", "No custom statuses saved :(");
+        builder.add("gui.meh.custom_status.empty.footer", "Why not add some?");
+        builder.add("gui.meh.custom_status.button.add_status.narration", "Add Status");
+        builder.add("gui.meh.custom_status.button.add_status.tooltip", "Create and add a new status.");
+        builder.add("gui.meh.custom_status.button.delete_status.narration", "Delete Status");
+        builder.add("gui.meh.custom_status.button.delete_status.tooltip", "Delete the selected status.");
+        builder.add("gui.meh.custom_status.button.edit_status.narration", "Edit Status");
+        builder.add("gui.meh.custom_status.button.edit_status.tooltip", "Edit the selected status.");
+        builder.add("gui.meh.custom_status.button.apply_status.narration", "Apply Status");
+        builder.add("gui.meh.custom_status.button.apply_status.tooltip", "Apply the selected status.");
+        builder.add("gui.meh.custom_status.edit_box.status_text.narration", "Status Text");
+        builder.add("gui.meh.custom_status.edit_box.status_text.hint", "Status text...");
+
         // Keybinds
         builder.add(MEHKeybinds.CATEGORY_MEH, "MEH");
         this.add(builder, MEHKeybinds.PARTY_INVITE_ACCEPT, "Accept Party Invite");

@@ -102,7 +102,7 @@ public final class CustomStatusScreen extends Screen {
     private final CustomStatusStorage statusStorage;
 
     public CustomStatusScreen(CustomStatusStorage statusStorage) {
-        super(Component.literal("Your Custom Statuses")); // TODO: Translatable
+        super(Component.translatable("gui.meh.custom_status.title"));
 
         this.statusStorage = statusStorage;
         this.selectedIndex = -1; // TODO: This should be pulled from the currently selected status, if possible
@@ -184,7 +184,7 @@ public final class CustomStatusScreen extends Screen {
         int infoY = topY + INFO_Y;
         int infoEndY = infoY + INFO_SIZE_Y;
         if (mouseX >= infoX && mouseX <= infoEndX && mouseY >= infoY && mouseY <= infoEndY) {
-            graphics.renderTooltip(font, Tooltip.splitTooltip(minecraft, Component.literal("What's this?\n\nYou've stumbled across a tool used by a Hypixel Staff member! Hypixel Staff are able to use custom lobby statuses, and this is a handy editor/dictionary for those statuses.\n\nThis is likely of no use to you. Unless you're a staff member, in which case, you're in luck!")), DefaultTooltipPositioner.INSTANCE, mouseX, mouseY);
+            graphics.renderTooltip(font, Tooltip.splitTooltip(minecraft, Component.translatable("gui.meh.custom_status.info")), DefaultTooltipPositioner.INSTANCE, mouseX, mouseY);
         }
     }
 
@@ -222,8 +222,8 @@ public final class CustomStatusScreen extends Screen {
         stack.scale(EMPTY_STATUS_TEXT_SCALE, EMPTY_STATUS_TEXT_SCALE, 0.0F);
         stack.translate(-centerX, -centerY, 0);
 
-        Component header = Component.literal("No custom statuses saved :(");
-        Component footer = Component.literal("Why not add some? :(");
+        Component header = Component.translatable("gui.meh.custom_status.empty.header");
+        Component footer = Component.translatable("gui.meh.custom_status.empty.footer");
         int y = (height + font.lineHeight) / 2;
         int headerX = startX + ((STATUS_BUTTON_WIDTH - font.width(header)) / 2);
         int footerX = startX + ((STATUS_BUTTON_WIDTH - font.width(footer)) / 2);
@@ -444,8 +444,8 @@ public final class CustomStatusScreen extends Screen {
         private boolean adding = false;
 
         protected AddStatusButton(int x, int y, int width, int height) {
-            super(x, y, width, height, Component.literal("+"), null, text -> Component.literal("Add Status"));
-            this.setTooltip(Tooltip.create(Component.literal("Create and add a new status.")));
+            super(x, y, width, height, Component.literal("+"), null, text -> Component.translatable("gui.meh.custom_status.button.add_status.narration"));
+            this.setTooltip(Tooltip.create(Component.translatable("gui.meh.custom_status.button.add_status.tooltip")));
         }
 
         @Override
@@ -471,8 +471,8 @@ public final class CustomStatusScreen extends Screen {
     private final class RemoveStatusButton extends Button {
 
         protected RemoveStatusButton(int x, int y, int width, int height) {
-            super(x, y, width, height, Component.literal("-"), null, text -> Component.literal("Delete Status"));
-            this.setTooltip(Tooltip.create(Component.literal("Delete the selected status.")));
+            super(x, y, width, height, Component.literal("-"), null, text -> Component.translatable("gui.meh.custom_status.button.delete_status.narration"));
+            this.setTooltip(Tooltip.create(Component.translatable("gui.meh.custom_status.button.delete_status.tooltip")));
         }
 
         @Override
@@ -497,8 +497,8 @@ public final class CustomStatusScreen extends Screen {
         private boolean editing = false;
 
         protected EditStatusButton(int x, int y, int width, int height) {
-            super(x, y, width, height, Component.literal("✎"), null, text -> Component.literal("Edit Status"));
-            this.setTooltip(Tooltip.create(Component.literal("Edit the selected status.")));
+            super(x, y, width, height, Component.literal("✎"), null, text -> Component.translatable("gui.meh.custom_status.button.edit_status.narration"));
+            this.setTooltip(Tooltip.create(Component.translatable("gui.meh.custom_status.button.edit_status.tooltip")));
         }
 
         @Override
@@ -532,8 +532,8 @@ public final class CustomStatusScreen extends Screen {
     private final class ApplyStatusButton extends Button {
 
         public ApplyStatusButton(int x, int y, int width, int height) {
-            super(x, y, width, height, Component.literal("✔"), null, text -> Component.literal("Apply Status"));
-            this.setTooltip(Tooltip.create(Component.literal("Apply the selected status.")));
+            super(x, y, width, height, Component.literal("✔"), null, text -> Component.translatable("gui.meh.custom_status.button.apply_status.narration"));
+            this.setTooltip(Tooltip.create(Component.translatable("gui.meh.custom_status.button.apply_status.tooltip")));
         }
 
         @Override
@@ -557,10 +557,10 @@ public final class CustomStatusScreen extends Screen {
     private final class AddEditBox extends EditBox {
 
         public AddEditBox(Font font, int x, int y, int width, int height) {
-            super(font, x, y, width, height, Component.literal("Add Status Text"));
+            super(font, x, y, width, height, Component.translatable("gui.meh.custom_status.edit_box.status_text.narration"));
             this.setBordered(false);
             this.setMaxLength(64);
-            this.setHint(Component.literal("Status text..."));
+            this.setHint(Component.translatable("gui.meh.custom_status.edit_box.status_text.hint"));
             this.setResponder(this::onValueChange);
         }
 
@@ -603,10 +603,10 @@ public final class CustomStatusScreen extends Screen {
         private int editingIndex = -1;
 
         public EditEditBox(Font font, int x, int y, int width, int height) {
-            super(font, x, y, width, height, Component.literal("Edit Status Text"));
+            super(font, x, y, width, height, Component.translatable("gui.meh.custom_status.edit_box.status_text.narration"));
             this.setBordered(false);
             this.setMaxLength(64);
-            this.setHint(Component.literal("Status text..."));
+            this.setHint(Component.translatable("gui.meh.custom_status.edit_box.status_text.hint"));
             this.setResponder(this::onValueChange);
         }
 
