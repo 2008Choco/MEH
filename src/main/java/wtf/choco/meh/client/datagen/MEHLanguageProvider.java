@@ -54,6 +54,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add("gui.meh.custom_status.button.apply_status.tooltip", "Apply the selected status.");
         builder.add("gui.meh.custom_status.edit_box.status_text.narration", "Status Text");
         builder.add("gui.meh.custom_status.edit_box.status_text.hint", "Status text...");
+        builder.add("gui.meh.custom_status.not_in_lobby", "You can only open the Custom Status screen when in a lobby!");
 
         // Keybinds
         builder.add(MEHKeybinds.CATEGORY_MEH, "MEH");

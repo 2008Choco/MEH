@@ -21,6 +21,7 @@ import wtf.choco.meh.client.registry.MEHRegistries;
 public final class Features {
 
     public static final ChatChannelsFeature CHAT_CHANNELS = register("chat_channels", ChatChannelsFeature::new);
+    public static final CustomStatusMenuFeature CUSTOM_STATUS_MENU = register("custom_status_menu", CustomStatusMenuFeature::new);
     public static final EmoteSelectorFeature EMOTE_SELECTOR = register("emote_selector", EmoteSelectorFeature::new);
     public static final HousingAutoDisableFlightFeature HOUSING_AUTO_DISABLE_FLIGHT = register("housing_auto_disable_flight", HousingAutoDisableFlightFeature::new);
     public static final HousingAutoNightVisionFeature HOUSING_AUTO_NIGHT_VISION = register("housing_auto_night_vision", HousingAutoNightVisionFeature::new);

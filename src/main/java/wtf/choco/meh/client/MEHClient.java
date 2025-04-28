@@ -8,7 +8,6 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +25,6 @@ import wtf.choco.meh.client.mnemonic.MnemonicHandler;
 import wtf.choco.meh.client.model.property.ItemModelPropertyHypixelServerType;
 import wtf.choco.meh.client.model.property.ItemModelPropertyMEHFeatureEnabled;
 import wtf.choco.meh.client.registry.MEHRegistries;
-import wtf.choco.meh.client.screen.CustomStatusScreen;
 import wtf.choco.meh.client.server.CustomStatusStorage;
 import wtf.choco.meh.client.server.HypixelServerState;
 
@@ -64,12 +62,6 @@ public final class MEHClient implements ClientModInitializer {
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientTestCommand.register(dispatcher));
 
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.screen == null && MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN.isDown()) {
-                client.setScreen(new CustomStatusScreen(statusStorage));
-            }
-        });
-
         this.statusStorage.readFromFile();
 
         ConditionalItemModelProperties.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MOD_ID, "hypixel_server_type"), ItemModelPropertyHypixelServerType.MAP_CODEC);
@@ -82,6 +74,10 @@ public final class MEHClient implements ClientModInitializer {
 
     public HypixelServerState getHypixelServerState() {
         return hypixelServerState;
+    }
+
+    public CustomStatusStorage getStatusStorage() {
+        return statusStorage;
     }
 
     public static MEHClient getInstance() {
