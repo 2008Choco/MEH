@@ -26,6 +26,7 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.server.CustomStatusStorage;
 import wtf.choco.meh.client.util.Components;
 
@@ -378,6 +379,13 @@ public final class CustomStatusScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN.matches(keyCode, scanCode) || minecraft.options.keyInventory.matches(keyCode, scanCode)) {
+            if (!addStatusButton.adding && !editStatusButton.editing) {
+                this.onClose();
+                return true;
+            }
+        }
+
         if (isAllowedToScroll()) {
             int focusedIndex = -1;
             if (getFocused() instanceof CustomStatusButton button) {

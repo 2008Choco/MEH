@@ -1,6 +1,7 @@
 package wtf.choco.meh.client.feature;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
@@ -30,7 +31,7 @@ public final class CustomStatusMenuFeature extends Feature {
 
             if (client.screen == null && MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN.consumeClick()) {
                 HypixelServerState serverState = getMod().getHypixelServerState();
-                if (serverState.isConnectedToHypixel() && !serverState.getServerLocationProvider().isLobby()) {
+                if (serverState.isConnectedToHypixel() && !FabricLoader.getInstance().isDevelopmentEnvironment() && !serverState.getServerLocationProvider().isLobby()) {
                     client.player.displayClientMessage(Component.translatable("gui.meh.custom_status.not_in_lobby").withStyle(ChatFormatting.RED), false);
                     return;
                 }
