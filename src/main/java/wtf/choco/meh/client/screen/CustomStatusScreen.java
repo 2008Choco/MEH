@@ -543,7 +543,7 @@ public final class CustomStatusScreen extends Screen {
             }
 
             Component status = statusStorage.getStatus(selectedIndex);
-            String command = "/customstatus " + Components.toLegacyText(status, '&');
+            String command = "customstatus " + Components.toLegacyText(status, '&');
 
             if (!FabricLoader.getInstance().isDevelopmentEnvironment()) {
                 minecraft.player.connection.sendCommand(command);
