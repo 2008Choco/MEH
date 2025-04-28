@@ -59,6 +59,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add(MEHKeybinds.CATEGORY_MEH, "MEH");
         this.add(builder, MEHKeybinds.PARTY_INVITE_ACCEPT, "Accept Party Invite");
         this.add(builder, MEHKeybinds.PARTY_INVITE_DECLINE, "Decline Party Invite");
+        this.add(builder, MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN, "Open Custom Status Screen");
         /*
         // AMECS keybinds
         this.add(builder, MEHKeybinds.DELETE_CHANNEL, "Delete Channel", "Delete the current chat channel (while chat is open).\nCtrl is highly recommended for this keybind!");
