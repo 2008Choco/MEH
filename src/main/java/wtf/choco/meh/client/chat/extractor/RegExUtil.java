@@ -9,7 +9,8 @@ import org.jetbrains.annotations.Nullable;
  */
 final class RegExUtil {
 
-    private static final String HYPIXEL_RANK_AND_USERNAME_MATCH_STRING = "(?:\\[(?<rank>[\\w+]+)\\] )?(?<username>\\w+)";
+    private static final char HYPIXEL_STAFF_CHAR = '\u12DE';
+    private static final String HYPIXEL_RANK_AND_USERNAME_MATCH_STRING = "(?:\\[(?<rank>[\\w+" + HYPIXEL_STAFF_CHAR + "]+)\\] )?(?<username>\\w+)";
 
     /**
      * An object capable of containing match text.
