@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.feature.Features;
+import wtf.choco.meh.client.mixin.GuiAccessor;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class ClientTestCommand {
@@ -21,6 +22,9 @@ public final class ClientTestCommand {
             .then(ClientCommandManager.literal("party")
                 .then(ClientCommandManager.literal("refresh").executes(ClientTestCommand::refreshParty))
                 .then(ClientCommandManager.literal("delete").executes(ClientTestCommand::deleteParty))
+            )
+            .then(ClientCommandManager.literal("actionbar")
+                .then(ClientCommandManager.literal("copy").executes(ClientTestCommand::copyActionBar))
             )
         );
     }
@@ -70,6 +74,19 @@ public final class ClientTestCommand {
         }
 
         return 1;
+    }
+
+    private static int copyActionBar(CommandContext<FabricClientCommandSource> context) {
+        GuiAccessor gui = (GuiAccessor) context.getSource().getClient().gui;
+        if (gui.getActionBarTicks() <= 0) {
+            context.getSource().sendError(Component.literal("There is no action bar to be copied.").withStyle(ChatFormatting.RED));
+            return 0;
+        }
+
+        String actionBar = Component.Serializer.toJson(gui.getActionBarText(), context.getSource().registryAccess());
+        context.getSource().getClient().keyboardHandler.setClipboard(actionBar);
+        context.getSource().sendFeedback(Component.literal("Copied action bar JSON to clipboard!").withStyle(ChatFormatting.GREEN));
+        return 0;
     }
 
 }

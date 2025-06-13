@@ -5,6 +5,7 @@
     "mixins": [
         "ChatComponentMixin",
         "ChatScreenAccessor",
+        "GuiAccessor",
         "ItemModelResolverMixin",
         "KeyboardHandlerMixin",
         "LightningBoltMixin",
