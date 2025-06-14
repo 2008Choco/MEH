@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.profiling.Profiler;
 
 import wtf.choco.meh.client.MEHClient;
 
@@ -62,9 +63,13 @@ public final class PrettySkyBlockHudLayer implements IdentifiedLayer {
         int defenseY = barY - DEFENSE_ICON_SIZE - 2;
         int manaBarX = halfWidth + DISTANCE_FROM_CENTER_OF_HOTBAR - MANA_BAR_WIDTH - 1;
 
+        Profiler.get().push("healthBar");
         this.renderHealthBar(graphics, healthBarX, barY);
+        Profiler.get().popPush("defenseInformation");
         this.renderDefenseInformation(graphics, defenseX, defenseY);
+        Profiler.get().popPush("manaBar");
         this.renderManaBar(graphics, manaBarX, barY);
+        Profiler.get().pop();
     }
 
     private void renderHealthBar(GuiGraphics graphics, int x, int y) {
