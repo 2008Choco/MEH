@@ -98,6 +98,8 @@ public final class PrettySkyBlockHudLayer implements IdentifiedLayer {
         graphics.blitSprite(RenderType::guiTextured, SPRITE_MANA_CONTAINER, x, y, MANA_BAR_WIDTH, MANA_BAR_HEIGHT);
         float manaProgress = Mth.clamp(((MANA_BAR_ICON_SIZE / 2.0F) + feature.getCurrentMana()) / Math.max(feature.getMaxMana(), 1), 0.0F, 1.0F);
 
+        // We have to use scissor here because the filled mana bar texture needs to fill from right to left, which we can't stretch in reverse...
+        // So instead we can just render the whole filled sprite and expand the scissor start area leftward as we need it
         graphics.enableScissor(x + Mth.floor((1.0F - manaProgress) * MANA_BAR_WIDTH), y, x + MANA_BAR_WIDTH, y + HEALTH_BAR_HEIGHT);
         graphics.blitSprite(RenderType::guiTextured, SPRITE_MANA_FULL, MANA_BAR_WIDTH, MANA_BAR_HEIGHT, 0, 0, x, y, MANA_BAR_WIDTH, MANA_BAR_HEIGHT);
         graphics.disableScissor();
