@@ -46,6 +46,10 @@ public final class MEHConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     private ConfigPartyManager party_manager = new ConfigPartyManager();
 
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
+    private ConfigSkyBlock skyblock = new ConfigSkyBlock();
+
     public int getMaxRememberedChatHistory() {
         return max_remembered_chat_history;
     }
@@ -80,6 +84,10 @@ public final class MEHConfig implements ConfigData {
 
     public ConfigPartyManager getPartyManager() {
         return party_manager;
+    }
+
+    public ConfigSkyBlock getSkyBlock() {
+        return skyblock;
     }
 
 }

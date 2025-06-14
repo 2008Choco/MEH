@@ -6,6 +6,7 @@
         "ChatComponentMixin",
         "ChatScreenAccessor",
         "GuiAccessor",
+        "GuiMixin",
         "ItemModelResolverMixin",
         "KeyboardHandlerMixin",
         "LightningBoltMixin",

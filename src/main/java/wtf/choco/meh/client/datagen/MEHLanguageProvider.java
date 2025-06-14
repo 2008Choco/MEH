@@ -196,6 +196,8 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.addOption(builder, "party_manager", "Party Manager", "Options to customize the appearance and behavior of Party Manager features.");
         this.addOption(builder, "party_manager.enabled", "Enabled");
         this.addOption(builder, "party_manager.party_list_position", "Party List Position");
+        this.addOption(builder, "skyblock", "SkyBlock", "Enhancements to Hypixel SkyBlock.");
+        this.addOption(builder, "skyblock.pretty_hud", "Pretty HUD", "Improve SkyBlock's various HUD elements with pretty client-sided elements.");
         builder.add(AUTOCONFIG + ".title", "MEH Options");
     }
 

@@ -156,5 +156,9 @@
   "text.autoconfig.meh.option.quiet_thunder": "Quiet Thunder",
   "text.autoconfig.meh.option.quiet_thunder.@Tooltip[0]": "Hypixel uses lots of lightning, but it's so loud!",
   "text.autoconfig.meh.option.quiet_thunder.@Tooltip[1]": "When enabled, reduces the volume of thunder sounds to a reasonable level.",
+  "text.autoconfig.meh.option.skyblock": "SkyBlock",
+  "text.autoconfig.meh.option.skyblock.@Tooltip": "Enhancements to Hypixel SkyBlock.",
+  "text.autoconfig.meh.option.skyblock.pretty_hud": "Pretty HUD",
+  "text.autoconfig.meh.option.skyblock.pretty_hud.@Tooltip": "Improve SkyBlock's various HUD elements with pretty client-sided elements.",
   "text.autoconfig.meh.title": "MEH Options"
 }

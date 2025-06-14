@@ -15,11 +15,13 @@ import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
 import wtf.choco.meh.client.game.housing.HousingAutoDisableFlightFeature;
 import wtf.choco.meh.client.game.housing.HousingAutoNightVisionFeature;
 import wtf.choco.meh.client.game.murdermystery.RetexturedKnivesFeature;
+import wtf.choco.meh.client.game.skyblock.SkyBlockPrettyHudFeature;
 import wtf.choco.meh.client.party.PartyManagerFeature;
 import wtf.choco.meh.client.registry.MEHRegistries;
 
 public final class Features {
 
+    // Non-SkyBlock
     public static final ChatChannelsFeature CHAT_CHANNELS = register("chat_channels", ChatChannelsFeature::new);
     public static final CustomStatusMenuFeature CUSTOM_STATUS_MENU = register("custom_status_menu", CustomStatusMenuFeature::new);
     public static final EmoteSelectorFeature EMOTE_SELECTOR = register("emote_selector", EmoteSelectorFeature::new);
@@ -31,6 +33,9 @@ public final class Features {
     public static final QuietThunderFeature QUIET_THUNDER = register("quiet_thunder", QuietThunderFeature::new);
     public static final RetexturedFishingRodsFeature RETEXTURED_FISHING_RODS = register("retextured_fishing_rods", RetexturedFishingRodsFeature::new);
     public static final RetexturedKnivesFeature RETEXTURED_KNIVES = register("retextured_knives", RetexturedKnivesFeature::new);
+
+    // SkyBlock
+    public static final SkyBlockPrettyHudFeature SKYBLOCK_PRETTY_HUD = register("skyblock/pretty_hud", SkyBlockPrettyHudFeature::new);
 
     private Features() { }
 
