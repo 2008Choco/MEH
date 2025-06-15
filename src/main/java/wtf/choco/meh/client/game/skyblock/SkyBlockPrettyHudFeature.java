@@ -8,11 +8,14 @@ import java.util.regex.Pattern;
 import me.shedaniel.autoconfig.AutoConfig;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.IdentifiedLayer;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 
@@ -49,6 +52,8 @@ public final class SkyBlockPrettyHudFeature extends Feature {
             })
     };
 
+    private boolean ignoreNextUpdate = false;
+
     private int currentHealth;
     private int maxHealth;
     private int currentDefense;
@@ -79,6 +84,7 @@ public final class SkyBlockPrettyHudFeature extends Feature {
         HudLayerRegistrationCallback.EVENT.register(drawer -> drawer.attachLayerAfter(IdentifiedLayer.HOTBAR_AND_BARS, new PrettySkyBlockHudLayer(this)));
         ClientReceiveMessageEvents.MODIFY_GAME.register(this::onModifyMessage);
         HypixelServerEvents.SERVER_LOCATION_CHANGED.register(this::onServerLocationChange);
+        ClientPlayConnectionEvents.JOIN.register(this::onJoin);
         AutoConfig.getConfigHolder(MEHConfig.class).registerSaveListener((holder, config) -> {
             this.refreshState(getMod().getHypixelServerState().isConnectedToHypixel() && isFeatureEnabled(config));
             return InteractionResult.SUCCESS;
@@ -114,9 +120,16 @@ public final class SkyBlockPrettyHudFeature extends Feature {
 
         for (PatternStripper pattern : PATTERNS) {
             messageAsString = pattern.pattern().matcher(messageAsString).replaceAll(result -> {
-                pattern.onMatch().accept(result, this);
+                if (!ignoreNextUpdate) {
+                    pattern.onMatch().accept(result, this);
+                }
+
                 return "";
             });
+        }
+
+        if (ignoreNextUpdate) {
+            this.ignoreNextUpdate = false;
         }
 
         return Component.literal(messageAsString);
@@ -126,6 +139,15 @@ public final class SkyBlockPrettyHudFeature extends Feature {
     private void onServerLocationChange(HypixelServerType serverType, boolean lobby, @Nullable HypixelServerType fromServerType, boolean fromLobby) {
         if (serverType != fromServerType) {
             this.refreshState(serverType == HypixelServerType.SKYBLOCK);
+        }
+    }
+
+    @SuppressWarnings("unused") // listener, sender, minecraft
+    private void onJoin(ClientPacketListener listener, PacketSender sender, Minecraft minecraft) {
+        if (isEnabled()) {
+            // On first join, attributes aren't yet calculated, so Hypixel sends some preliminary numbers (like default health, defense of only the equipped armor, and reduced mana)
+            // We'll just ignore the first message sent to us so it doesn't flicker from high to low between server changes
+            this.ignoreNextUpdate = true;
         }
     }
 
