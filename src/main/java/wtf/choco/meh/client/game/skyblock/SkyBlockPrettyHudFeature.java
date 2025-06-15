@@ -1,6 +1,8 @@
 package wtf.choco.meh.client.game.skyblock;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
 import me.shedaniel.autoconfig.AutoConfig;
@@ -31,9 +33,21 @@ public final class SkyBlockPrettyHudFeature extends Feature {
     private static final char ICON_DEFENSE = '\u2748';
     private static final char ICON_MANA = '\u270e';
 
-    private static final Pattern PATTERN_HEALTH = Pattern.compile("\\s*" + SECTION_CHAR + "c(?<current>\\d+)\\/(?<max>\\d+)\\s*" + ICON_HEART);
-    private static final Pattern PATTERN_DEFENSE = Pattern.compile("\\s*" + SECTION_CHAR + "a(?<value>\\d+)" + SECTION_CHAR + "a" + ICON_DEFENSE + " Defense\\s*");
-    private static final Pattern PATTERN_MANA = Pattern.compile("\\s*" + SECTION_CHAR + "b(?<current>\\d+)\\/(?<max>\\d+)" + ICON_MANA + " Mana\\s*");
+    private static final record PatternStripper(Pattern pattern, BiConsumer<MatchResult, SkyBlockPrettyHudFeature> onMatch) { }
+
+    private static final PatternStripper[] PATTERNS = {
+            new PatternStripper(Pattern.compile("\\s*" + SECTION_CHAR + "c(?<current>\\d+)\\/(?<max>\\d+)\\s*" + ICON_HEART), (result, feature) -> {
+                feature.currentHealth = NumberUtils.toInt(result.group("current"), 0);
+                feature.maxHealth = NumberUtils.toInt(result.group("max"), 0);
+            }),
+            new PatternStripper(Pattern.compile("\\s*" + SECTION_CHAR + "a(?<value>\\d+)" + SECTION_CHAR + "a" + ICON_DEFENSE + " Defense\\s*"), (result, feature) -> {
+                feature.currentDefense = NumberUtils.toInt(result.group("value"));
+            }),
+            new PatternStripper(Pattern.compile("\\s*" + SECTION_CHAR + "b(?<current>\\d+)\\/(?<max>\\d+)" + ICON_MANA + " Mana\\s*"), (result, feature) -> {
+                feature.currentMana = NumberUtils.toInt(result.group("current"), 0);
+                feature.maxMana = NumberUtils.toInt(result.group("max"), 0);
+            })
+    };
 
     private int currentHealth;
     private int maxHealth;
@@ -98,22 +112,12 @@ public final class SkyBlockPrettyHudFeature extends Feature {
 
         String messageAsString = message.getString();
 
-        messageAsString = PATTERN_HEALTH.matcher(messageAsString).replaceFirst(result -> {
-            this.currentHealth = NumberUtils.toInt(result.group("current"), 0);
-            this.maxHealth = NumberUtils.toInt(result.group("max"), 0);
-            return "";
-        });
-
-        messageAsString = PATTERN_DEFENSE.matcher(messageAsString).replaceFirst(result -> {
-            this.currentDefense = NumberUtils.toInt(result.group("value"));
-            return "";
-        });
-
-        messageAsString = PATTERN_MANA.matcher(messageAsString).replaceFirst(result -> {
-            this.currentMana = NumberUtils.toInt(result.group("current"), 0);
-            this.maxMana = NumberUtils.toInt(result.group("max"), 0);
-            return "";
-        });
+        for (PatternStripper pattern : PATTERNS) {
+            messageAsString = pattern.pattern().matcher(messageAsString).replaceAll(result -> {
+                pattern.onMatch().accept(result, this);
+                return "";
+            });
+        }
 
         return Component.literal(messageAsString);
     }
