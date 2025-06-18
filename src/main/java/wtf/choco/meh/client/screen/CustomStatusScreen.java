@@ -2,7 +2,8 @@ package wtf.choco.meh.client.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+import java.util.List;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
@@ -15,15 +16,18 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2fStack;
+import org.joml.Matrix4f;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
@@ -165,7 +169,7 @@ public final class CustomStatusScreen extends Screen {
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta) {
         super.render(graphics, mouseX, mouseY, tickDelta);
 
-        graphics.drawString(font, title, leftX + TITLE_OFFSET_X, topY + TITLE_OFFSET_Y, 0x040404, false);
+        graphics.drawString(font, title, leftX + TITLE_OFFSET_X, topY + TITLE_OFFSET_Y, 0xFF040404, false);
         this.renderCustomStatusTextOnButtons(graphics);
         this.renderScrollBar(graphics);
 
@@ -187,19 +191,20 @@ public final class CustomStatusScreen extends Screen {
         int infoY = topY + INFO_Y;
         int infoEndY = infoY + INFO_SIZE_Y;
         if (mouseX >= infoX && mouseX <= infoEndX && mouseY >= infoY && mouseY <= infoEndY) {
-            graphics.renderTooltip(font, Tooltip.splitTooltip(minecraft, Component.translatable("gui.meh.custom_status.info")), DefaultTooltipPositioner.INSTANCE, mouseX, mouseY);
+            List<FormattedCharSequence> tooltip = Tooltip.splitTooltip(minecraft, Component.translatable("gui.meh.custom_status.info"));
+            graphics.setTooltipForNextFrame(tooltip, mouseX, mouseY);
         }
     }
 
     @Override
     public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta) {
-        graphics.blit(RenderType::guiTextured, BACKGROUND_LOCATION, leftX, topY, 0.0F, 0.0F, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 256, 256);
-        graphics.blitSprite(RenderType::guiTextured, SIDEBAR_TAB_SPRITE, leftX + SIDEBAR_TAB_X, topY + SIDEBAR_TAB_Y, SIDEBAR_TAB_WIDTH, SIDEBAR_TAB_HEIGHT);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND_LOCATION, leftX, topY, 0.0F, 0.0F, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 256, 256);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SIDEBAR_TAB_SPRITE, leftX + SIDEBAR_TAB_X, topY + SIDEBAR_TAB_Y, SIDEBAR_TAB_WIDTH, SIDEBAR_TAB_HEIGHT);
 
         if (addStatusButton.adding) {
-            graphics.blitSprite(RenderType::guiTextured, SIDEBAR_TEXT_FIELD_SPRITE, leftX + SIDEBAR_TEXT_FIELD_BACKGROUND_X, topY + SIDEBAR_TEXT_FIELD_BACKGROUND_Y, SIDEBAR_TEXT_FIELD_BACKGROUND_WIDTH, SIDEBAR_TEXT_FIELD_BACKGROUND_HEIGHT);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SIDEBAR_TEXT_FIELD_SPRITE, leftX + SIDEBAR_TEXT_FIELD_BACKGROUND_X, topY + SIDEBAR_TEXT_FIELD_BACKGROUND_Y, SIDEBAR_TEXT_FIELD_BACKGROUND_WIDTH, SIDEBAR_TEXT_FIELD_BACKGROUND_HEIGHT);
         } else if (editStatusButton.editing) {
-            graphics.blitSprite(RenderType::guiTextured, SIDEBAR_TEXT_FIELD_SPRITE, leftX + SIDEBAR_TEXT_FIELD_BACKGROUND_X, topY + SIDEBAR_TEXT_FIELD_BACKGROUND_Y + 40, SIDEBAR_TEXT_FIELD_BACKGROUND_WIDTH, SIDEBAR_TEXT_FIELD_BACKGROUND_HEIGHT);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SIDEBAR_TEXT_FIELD_SPRITE, leftX + SIDEBAR_TEXT_FIELD_BACKGROUND_X, topY + SIDEBAR_TEXT_FIELD_BACKGROUND_Y + 40, SIDEBAR_TEXT_FIELD_BACKGROUND_WIDTH, SIDEBAR_TEXT_FIELD_BACKGROUND_HEIGHT);
         }
 
         Component selectedStatus;
@@ -213,27 +218,27 @@ public final class CustomStatusScreen extends Screen {
     }
 
     private void renderCenteredEmptyStatusMessage(GuiGraphics graphics) {
-        PoseStack stack = graphics.pose();
-        stack.pushPose();
+        Matrix3x2fStack stack = graphics.pose();
+        stack.pushMatrix();
 
         // Re-scale the text because the default scale is too large
         int startX = leftX + STATUS_BUTTON_X;
         int startY = topY + STATUS_BUTTON_START_Y;
         int centerX = startX + (STATUS_BUTTON_WIDTH / 2);
         int centerY = startY + (STATUS_WIDGET_HEIGHT / 2);
-        stack.translate(centerX, centerY, 0);
-        stack.scale(EMPTY_STATUS_TEXT_SCALE, EMPTY_STATUS_TEXT_SCALE, 0.0F);
-        stack.translate(-centerX, -centerY, 0);
+        stack.translate(centerX, centerY);
+        stack.scale(EMPTY_STATUS_TEXT_SCALE);
+        stack.translate(-centerX, -centerY);
 
         Component header = Component.translatable("gui.meh.custom_status.empty.header");
         Component footer = Component.translatable("gui.meh.custom_status.empty.footer");
         int y = (height + font.lineHeight) / 2;
         int headerX = startX + ((STATUS_BUTTON_WIDTH - font.width(header)) / 2);
         int footerX = startX + ((STATUS_BUTTON_WIDTH - font.width(footer)) / 2);
-        graphics.drawString(font, header, headerX, y - (font.lineHeight / 2) - 1, 0x3A3A3A, false);
-        graphics.drawString(font, footer, footerX, y + (font.lineHeight / 2) + 1, 0x3A3A3A, false);
+        graphics.drawString(font, header, headerX, y - (font.lineHeight / 2) - 1, 0xFF3A3A3A, false);
+        graphics.drawString(font, footer, footerX, y + (font.lineHeight / 2) + 1, 0xFF3A3A3A, false);
 
-        stack.popPose();
+        stack.popMatrix();
     }
 
     private void renderCustomStatusTextOnButtons(GuiGraphics graphics) {
@@ -245,7 +250,7 @@ public final class CustomStatusScreen extends Screen {
         for (int i = 0; i < Math.min(STATUS_BUTTON_COUNT, statusStorage.getStatusCount()); i++) {
             int statusIndex = i + scrollOffset;
             graphics.enableScissor(clipX, 0, clipEndX, graphics.guiHeight());
-            graphics.drawString(font, statusStorage.getStatus(statusIndex), textX, textY, 0xFFFFFF);
+            graphics.drawString(font, statusStorage.getStatus(statusIndex), textX, textY, 0xFFFFFFFF);
             graphics.disableScissor();
             textY += STATUS_BUTTON_HEIGHT;
         }
@@ -264,7 +269,7 @@ public final class CustomStatusScreen extends Screen {
         }
 
         ResourceLocation sprite = isAllowedToScroll() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
-        graphics.blitSprite(RenderType::guiTextured, sprite, leftX + SCROLL_BAR_X, topY + SCROLL_BAR_Y + scrollerOffset, SCROLLER_WIDTH, SCROLLER_HEIGHT);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, leftX + SCROLL_BAR_X, topY + SCROLL_BAR_Y + scrollerOffset, SCROLLER_WIDTH, SCROLLER_HEIGHT);
     }
 
     private void renderPortraitWithNameplateFollowsMouse(GuiGraphics graphics, int mouseX, int mouseY, @Nullable Component customStatusText) {
@@ -299,28 +304,30 @@ public final class CustomStatusScreen extends Screen {
     }
 
     private void renderNameplate(GuiGraphics graphics, Component text, float x, float y, float scale) {
-        Lighting.setupForEntityInInventory();
-        PoseStack stack = graphics.pose();
-        stack.pushPose();
-        stack.translate(x, y, 50);
-        stack.scale(scale, scale, 0.0F);
+        Minecraft.getInstance().gameRenderer.getLighting().setupFor(Lighting.Entry.ENTITY_IN_UI);
+        Matrix3x2fStack stack = graphics.pose();
+        stack.pushMatrix();
+        stack.translate(x, y);
+        stack.scale(scale);
 
         float offsetX = -font.width(text) / 2.0F;
         int nameplateBackgroundAlpha = (int) (minecraft.options.getBackgroundOpacity(0.25F) * 255.0F) << 24;
-        graphics.drawSpecial(buffer -> font.drawInBatch(
+        BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+        Matrix4f pose = new Matrix4f().mul(stack).translate(0, 0, 50); // TODO: This doesn't work. Need to figure out how to render a nametag in an inventory with this new rendering code!
+        this.font.drawInBatch(
                 text,
                 offsetX, 0, // Offset x, y
                 0xFFFFFFFF, // Text color
                 false, // Draw shadow
-                stack.last().pose(),
+                pose,
                 buffer,
                 DisplayMode.NORMAL,
                 nameplateBackgroundAlpha | 0x9A9A9A,
                 LightTexture.FULL_BRIGHT
-        ));
+        );
 
-        stack.popPose();
-        Lighting.setupFor3DItems();
+        stack.popMatrix();
+        Minecraft.getInstance().gameRenderer.getLighting().setupFor(Lighting.Entry.ITEMS_3D);
     }
 
     private boolean isAllowedToScroll() {

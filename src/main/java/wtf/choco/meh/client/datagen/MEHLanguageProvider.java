@@ -13,7 +13,7 @@ import wtf.choco.meh.client.config.FilterType;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mnemonic.Mnemonic;
 import wtf.choco.meh.client.mnemonic.Mnemonics;
-import wtf.choco.meh.client.screen.widgets.PartyListWidget;
+import wtf.choco.meh.client.screen.widgets.PartyListHudElement;
 import wtf.choco.meh.client.server.HypixelServerType;
 
 public final class MEHLanguageProvider extends FabricLanguageProvider {
@@ -135,8 +135,8 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, FilterType.REGEX, "RegEx");
         this.add(builder, FilterType.REGEX_EXACT, "RegEx (Exact)");
         this.add(builder, FilterType.STARTS_WITH, "Starts With");
-        this.add(builder, PartyListWidget.Position.TOP_LEFT, "Top Left");
-        this.add(builder, PartyListWidget.Position.TOP_RIGHT, "Top Right");
+        this.add(builder, PartyListHudElement.Position.TOP_LEFT, "Top Left");
+        this.add(builder, PartyListHudElement.Position.TOP_RIGHT, "Top Right");
         this.add(builder, Mnemonics.GC, "GC");
         this.add(builder, Mnemonics.GG, "GG");
 
@@ -221,7 +221,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add(serverType.getDescriptionKey(), name);
     }
 
-    private void add(TranslationBuilder builder, PartyListWidget.Position position, String name) {
+    private void add(TranslationBuilder builder, PartyListHudElement.Position position, String name) {
         builder.add(position.getKey(), name);
     }
 

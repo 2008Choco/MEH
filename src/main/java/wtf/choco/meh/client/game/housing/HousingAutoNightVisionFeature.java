@@ -6,8 +6,8 @@ import com.mojang.brigadier.tree.RootCommandNode;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.multiplayer.ClientSuggestionProvider;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 
 import org.jetbrains.annotations.Nullable;
@@ -54,10 +54,10 @@ public final class HousingAutoNightVisionFeature extends Feature {
 
         LocalPlayer player = Minecraft.getInstance().player;
         ClientPacketListener connection = player.connection;
-        RootCommandNode<SharedSuggestionProvider> rootCommandNode = connection.getCommands().getRoot();
+        RootCommandNode<ClientSuggestionProvider> rootCommandNode = connection.getCommands().getRoot();
 
         for (String nightVisionCommandName : COMMON_NIGHT_VISION_COMMANDS) {
-            CommandNode<SharedSuggestionProvider> nightVisionCommand = rootCommandNode.getChild(nightVisionCommandName);
+            CommandNode<ClientSuggestionProvider> nightVisionCommand = rootCommandNode.getChild(nightVisionCommandName);
             if (nightVisionCommand == null) {
                 continue;
             }

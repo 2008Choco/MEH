@@ -1,24 +1,24 @@
 package wtf.choco.meh.client.game.skyblock;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import java.text.NumberFormat;
 
-import net.fabricmc.fabric.api.client.rendering.v1.IdentifiedLayer;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.Profiler;
 
+import org.joml.Matrix3x2fStack;
+
 import wtf.choco.meh.client.MEHClient;
 
-public final class PrettySkyBlockHudLayer implements IdentifiedLayer {
+public final class SkyBlockPrettyHudElement implements HudElement {
 
     public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "pretty_skyblock_hud");
 
@@ -46,7 +46,7 @@ public final class PrettySkyBlockHudLayer implements IdentifiedLayer {
 
     private final SkyBlockPrettyHudFeature feature;
 
-    public PrettySkyBlockHudLayer(SkyBlockPrettyHudFeature feature) {
+    public SkyBlockPrettyHudElement(SkyBlockPrettyHudFeature feature) {
         this.feature = feature;
     }
 
@@ -73,9 +73,9 @@ public final class PrettySkyBlockHudLayer implements IdentifiedLayer {
     }
 
     private void renderHealthBar(GuiGraphics graphics, int x, int y) {
-        graphics.blitSprite(RenderType::guiTextured, SPRITE_HEALTH_CONTAINER, x, y, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_HEALTH_CONTAINER, x, y, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
         float healthProgress = Mth.clamp(((HEALTH_BAR_ICON_SIZE / 2.0F) + feature.getCurrentHealth()) / Math.max(feature.getMaxHealth(), 1), 0.0F, 1.0F);
-        graphics.blitSprite(RenderType::guiTextured, SPRITE_HEALTH_FULL, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT, 0, 0, x, y, Mth.floor(healthProgress * HEALTH_BAR_WIDTH), HEALTH_BAR_HEIGHT);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_HEALTH_FULL, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT, 0, 0, x, y, Mth.floor(healthProgress * HEALTH_BAR_WIDTH), HEALTH_BAR_HEIGHT);
 
         Component healthText = Component.literal(FORMAT.format(feature.getCurrentHealth()) + "/" + FORMAT.format(feature.getMaxHealth())).withStyle(ChatFormatting.WHITE);
         int healthBarTextX = x + ((HEALTH_BAR_ICON_SIZE + HEALTH_BAR_WIDTH) / 2);
@@ -85,7 +85,7 @@ public final class PrettySkyBlockHudLayer implements IdentifiedLayer {
     }
 
     private void renderDefenseInformation(GuiGraphics graphics, int x, int y) {
-        graphics.blitSprite(RenderType::guiTextured, SPRITE_ARMOR_FULL, x, y, DEFENSE_ICON_SIZE, DEFENSE_ICON_SIZE);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_ARMOR_FULL, x, y, DEFENSE_ICON_SIZE, DEFENSE_ICON_SIZE);
 
         Component defenseText = Component.literal(FORMAT.format(feature.getCurrentDefense()));
         int defenseTextX = x + DEFENSE_ICON_SIZE + 2;
@@ -95,13 +95,13 @@ public final class PrettySkyBlockHudLayer implements IdentifiedLayer {
     }
 
     private void renderManaBar(GuiGraphics graphics, int x, int y) {
-        graphics.blitSprite(RenderType::guiTextured, SPRITE_MANA_CONTAINER, x, y, MANA_BAR_WIDTH, MANA_BAR_HEIGHT);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_MANA_CONTAINER, x, y, MANA_BAR_WIDTH, MANA_BAR_HEIGHT);
         float manaProgress = Mth.clamp(((MANA_BAR_ICON_SIZE / 2.0F) + feature.getCurrentMana()) / Math.max(feature.getMaxMana(), 1), 0.0F, 1.0F);
 
         // We have to use scissor here because the filled mana bar texture needs to fill from right to left, which we can't stretch in reverse...
         // So instead we can just render the whole filled sprite and expand the scissor start area leftward as we need it
         graphics.enableScissor(x + Mth.floor((1.0F - manaProgress) * MANA_BAR_WIDTH), y, x + MANA_BAR_WIDTH, y + HEALTH_BAR_HEIGHT);
-        graphics.blitSprite(RenderType::guiTextured, SPRITE_MANA_FULL, MANA_BAR_WIDTH, MANA_BAR_HEIGHT, 0, 0, x, y, MANA_BAR_WIDTH, MANA_BAR_HEIGHT);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_MANA_FULL, MANA_BAR_WIDTH, MANA_BAR_HEIGHT, 0, 0, x, y, MANA_BAR_WIDTH, MANA_BAR_HEIGHT);
         graphics.disableScissor();
 
         Component manaText = Component.literal(FORMAT.format(feature.getCurrentMana()) + "/" + FORMAT.format(feature.getMaxMana())).withStyle(ChatFormatting.WHITE);
@@ -122,18 +122,13 @@ public final class PrettySkyBlockHudLayer implements IdentifiedLayer {
             x -= halfWidth;
         }
 
-        PoseStack pose = graphics.pose();
-        pose.pushPose();
-        pose.translate(x + xScaleOffset, y + halfLineHeight, 0);
-        pose.scale(scale, scale, scale);
-        pose.translate(-x - xScaleOffset, -y - halfLineHeight, 0);
+        Matrix3x2fStack pose = graphics.pose();
+        pose.pushMatrix();
+        pose.translate(x + xScaleOffset, y + halfLineHeight);
+        pose.scale(scale);
+        pose.translate(-x - xScaleOffset, -y - halfLineHeight);
         graphics.drawString(font, text, x, y, 0xFFFFFFFF);
-        pose.popPose();
-    }
-
-    @Override
-    public ResourceLocation id() {
-        return ID;
+        pose.popMatrix();
     }
 
 }

@@ -6,7 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -17,7 +17,7 @@ import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
-import wtf.choco.meh.client.screen.widgets.PartyListWidget;
+import wtf.choco.meh.client.screen.widgets.PartyListHudElement;
 
 public final class PartyManagerFeature extends Feature {
 
@@ -28,11 +28,11 @@ public final class PartyManagerFeature extends Feature {
 
     private final Deque<PartyInvitation> partyInvitations = new ArrayDeque<>();
 
-    private final PartyListWidget partyList;
+    private final PartyListHudElement partyList;
 
     public PartyManagerFeature(MEHClient mod) {
         super(mod);
-        this.partyList = new PartyListWidget(this);
+        this.partyList = new PartyListHudElement(this);
     }
 
     @Override
@@ -42,7 +42,7 @@ public final class PartyManagerFeature extends Feature {
 
     @Override
     protected void registerListeners() {
-        HudLayerRegistrationCallback.EVENT.register(drawer -> drawer.addLayer(partyList));
+        HudElementRegistry.addLast(PartyListHudElement.ID, partyList);
 
         HypixelServerEvents.PARTY_DISBANDED.register((reason, disbander) -> refreshParty());
         HypixelServerEvents.PARTY_JOINED.register(partyLeader -> refreshParty());
