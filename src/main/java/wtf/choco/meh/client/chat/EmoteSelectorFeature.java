@@ -13,7 +13,7 @@ import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 import wtf.choco.meh.client.mixin.ScreenAccessor;
 import wtf.choco.meh.client.screen.widgets.EmoteSelectorWidget;
-import wtf.choco.meh.client.util.SharedMixinValues;
+import wtf.choco.meh.client.util.ScreenUtil;
 
 public final class EmoteSelectorFeature extends Feature {
 
@@ -52,7 +52,7 @@ public final class EmoteSelectorFeature extends Feature {
     }
 
     private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
-        if (!isEnabled() || SharedMixinValues.isWritingCommand(screen)) {
+        if (!isEnabled() || ScreenUtil.isWritingCommand(screen)) {
             return true;
         }
 

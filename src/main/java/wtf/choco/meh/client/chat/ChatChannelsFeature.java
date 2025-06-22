@@ -32,7 +32,7 @@ import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
-import wtf.choco.meh.client.util.SharedMixinValues;
+import wtf.choco.meh.client.util.ScreenUtil;
 
 public final class ChatChannelsFeature extends Feature {
 
@@ -238,7 +238,7 @@ public final class ChatChannelsFeature extends Feature {
         }
 
         Minecraft minecraft = Minecraft.getInstance();
-        if (!(minecraft.screen instanceof ChatScreen) || SharedMixinValues.isWritingCommand((ChatScreen) minecraft.screen)) {
+        if (!(minecraft.screen instanceof ChatScreen) || ScreenUtil.isWritingCommand((ChatScreen) minecraft.screen)) {
             return false;
         }
 
@@ -247,7 +247,7 @@ public final class ChatChannelsFeature extends Feature {
 
     @SuppressWarnings("unused")
     private void onRenderChatScreen(ChatScreen screen, GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        if (!isEnabled() || SharedMixinValues.isWritingCommand(screen)) {
+        if (!isEnabled() || ScreenUtil.isWritingCommand(screen)) {
             return;
         }
 

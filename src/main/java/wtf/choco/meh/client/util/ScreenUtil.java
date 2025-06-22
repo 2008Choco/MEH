@@ -4,9 +4,9 @@ import net.minecraft.client.gui.screens.ChatScreen;
 
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
-public final class SharedMixinValues {
+public final class ScreenUtil {
 
-    private SharedMixinValues() { }
+    private ScreenUtil() { }
 
     public static boolean isWritingCommand(ChatScreen screen) {
         String text = ((ChatScreenAccessor) screen).getInput().getValue();
