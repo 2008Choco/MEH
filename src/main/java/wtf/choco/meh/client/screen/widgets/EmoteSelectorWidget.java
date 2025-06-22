@@ -21,7 +21,6 @@ import org.joml.Matrix3x2fStack;
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.emote.ChatEmote;
 import wtf.choco.meh.client.chat.emote.HypixelChatEmote;
-import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
 public final class EmoteSelectorWidget implements Renderable {
@@ -202,7 +201,7 @@ public final class EmoteSelectorWidget implements Renderable {
             return;
         }
 
-        if (!MEHKeybinds.isAmecsLoaded() && (Screen.hasControlDown() && key == MEHKeybinds.KEY_EMOTE_SELECTOR)) {
+        if (Screen.hasControlDown() && key == InputConstants.KEY_E) {
             this.returnFocusToChatBox();
             return;
         }
@@ -263,7 +262,7 @@ public final class EmoteSelectorWidget implements Renderable {
     }
 
     // Relinquish focus from this emote selector to the chat screen's edit box
-    public void returnFocusToChatBox() {
+    private void returnFocusToChatBox() {
         if (!focused || chatScreen == null) {
             return;
         }

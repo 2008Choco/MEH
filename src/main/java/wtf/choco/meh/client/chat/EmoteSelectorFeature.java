@@ -1,15 +1,15 @@
 package wtf.choco.meh.client.chat;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.feature.Feature;
-import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 import wtf.choco.meh.client.mixin.ScreenAccessor;
 import wtf.choco.meh.client.screen.widgets.EmoteSelectorWidget;
@@ -56,7 +56,7 @@ public final class EmoteSelectorFeature extends Feature {
             return true;
         }
 
-        if (!MEHKeybinds.isAmecsLoaded() && Screen.hasControlDown() && key == MEHKeybinds.KEY_EMOTE_SELECTOR && !emoteSelector.isFocused()) {
+        if (Screen.hasControlDown() && key == InputConstants.KEY_E && !emoteSelector.isFocused()) {
             this.emoteSelector.takeFocus(screen);
             return false;
         }
@@ -71,34 +71,6 @@ public final class EmoteSelectorFeature extends Feature {
 
     private boolean onKeyInChatScreen(Screen screen, int key, int keycode, int scancode) { // bridge
         return onKeyInChatScreen((ChatScreen) screen, key, keycode, scancode);
-    }
-
-    public boolean keybindOnToggleEmoteSelector() {
-        if (!shouldProcessKeybind()) {
-            return false;
-        }
-
-        Minecraft minecraft = Minecraft.getInstance();
-        if (!emoteSelector.isFocused()) {
-            this.emoteSelector.takeFocus((ChatScreen) minecraft.screen);
-        } else {
-            this.emoteSelector.returnFocusToChatBox();
-        }
-
-        return true;
-    }
-
-    private boolean shouldProcessKeybind() {
-        if (!isEnabled()) {
-            return false;
-        }
-
-        Minecraft minecraft = Minecraft.getInstance();
-        if (!(minecraft.screen instanceof ChatScreen) || SharedMixinValues.isWritingCommand((ChatScreen) minecraft.screen)) {
-            return false;
-        }
-
-        return true;
     }
 
     @SuppressWarnings("unused")

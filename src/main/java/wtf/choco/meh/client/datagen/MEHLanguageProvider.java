@@ -59,14 +59,6 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         // Keybinds
         builder.add(MEHKeybinds.CATEGORY_MEH, "MEH");
         this.add(builder, MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN, "Open Custom Status Screen");
-        /*
-        // AMECS keybinds
-        this.add(builder, MEHKeybinds.DELETE_CHANNEL, "Delete Channel", "Delete the current chat channel (while chat is open).\nCtrl is highly recommended for this keybind!");
-        this.add(builder, MEHKeybinds.EMOTE_SELECTOR, "Emote Selector", "Open or close the emote selector (while chat is open).\nCtrl is highly recommended for this keybind!");
-        this.add(builder, MEHKeybinds.SWITCH_CHANNEL, "Switch Channel (Next)", "Switch to the next chat channel (while chat is open).\nCtrl is highly recommended for this keybind!");
-        this.add(builder, MEHKeybinds.SWITCH_CHANNEL_PREVIOUS, "Switch Channel (Previous)", "Switch to the previous chat channel (while chat is open).\nCtrl is highly recommended for this keybind!");
-        this.add(builder, MEHKeybinds.TOGGLE_FOCUS_MODE, "Toggle Focus Mode", "Toggle the chat channel focus mode (while chat is open).\nCtrl is highly recommended for this keybind!");
-        */
 
         // Constants
         this.add(builder, HypixelChatEmote.ARROW, "Arrow");
@@ -198,14 +190,6 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.addOption(builder, "skyblock.pretty_hud", "Pretty HUD", "Improve SkyBlock's various HUD elements with pretty client-sided elements.");
         builder.add(AUTOCONFIG + ".title", "MEH Options");
     }
-
-    /*
-    // Unused until AMECS updates their API
-    private void add(TranslationBuilder builder, KeyMapping keybind, String name, String amecsDescription) {
-        this.add(builder, keybind, name);
-        builder.add(keybind.getName() + ".amecsapi.description", amecsDescription);
-    }
-    */
 
     private void add(TranslationBuilder builder, KeyMapping keybind, String name) {
         builder.add(keybind.getName(), name);

@@ -73,11 +73,6 @@ When joining a party, it can often feel overwhelming to know who your party mate
 - _(Optional)_ [Hypixel Mod API](https://modrinth.com/mod/hypixel-mod-api) (v1.0.1 and above)
   - Provides more accurate information about the client's current state
   - If not installed, MEH will do its best, but some features may not work as described
-- ~~_(Optional)_ [Amecs](https://www.curseforge.com/minecraft/mc-mods/amecs) or [Too Many Shortcuts](https://modrinth.com/mod/too-many-shortcuts)~~
-  - ~~Allows various keys to be configurable (due to them using Ctrl and Shift modifiers)~~
-  - ~~Amecs is not updated to 1.21.1, but if [this PR](https://github.com/Siphalor/amecs/pull/90) ever gets merged, it is preferred over Too Many Shortcuts~~
-  - ~~It is highly advised to still prefix keybinds with Ctrl because the chat screen will type characters not prefixed with a modifier~~
-  - Amecs' API is broken as of 1.21.2, and Too Many Shortcuts' repository is offline... so there is no up-to-date artifact to depend on. Amecs support is disabled until either of those issues are resolved by third parties
 
 ## Building/Distribution
 This project only has precompiled binaries through GitHub Actions. If you’d like to use this mod, you can download the precompiled binaries from the actions section. This project likely will not ever have any releases. However, if you prefer to compile it yourself, this project makes use of Gradle and can be easily compiled with the following command run in the project’s root directory:

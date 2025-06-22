@@ -28,7 +28,6 @@ repositories {
     maven { url "https://maven.shedaniel.me/" } // Cloth Config API
     maven { url "https://maven.terraformersmc.com/releases/" } // Mod Menu
     maven { url "https://repo.hypixel.net/repository/Hypixel/" } // Hypixel Mod API
-    // maven { url "https://maven.siphalor.de/" } // AMECS (keybinds)
 }
 
 dependencies {
@@ -43,7 +42,6 @@ dependencies {
     }
     modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
     modApi "net.hypixel:mod-api:${project.hypixel_mod_api_version}"
-    // modApi "de.siphalor:amecsapi-1.20:1.5.6+mc1.20.2" // Amecs API provided by "too many shortcuts": https://github.com/wyatt-herkamp/too-many-shortcuts
 }
 
 processResources {

@@ -1,5 +1,7 @@
 package wtf.choco.meh.client.chat;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import java.util.Objects;
 import java.util.OptionalLong;
 
@@ -29,7 +31,6 @@ import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
-import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 import wtf.choco.meh.client.util.SharedMixinValues;
 
@@ -80,10 +81,7 @@ public final class ChatChannelsFeature extends Feature {
                 return;
             }
 
-            if (!MEHKeybinds.isAmecsLoaded()) {
-                ScreenKeyboardEvents.allowKeyPress(screen).register(this::onKeyInChatScreen);
-            }
-
+            ScreenKeyboardEvents.allowKeyPress(screen).register(this::onKeyInChatScreen);
             ScreenEvents.afterRender(screen).register(this::onRenderChatScreen);
         });
 
@@ -176,13 +174,13 @@ public final class ChatChannelsFeature extends Feature {
     @SuppressWarnings("unused")
     private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
         if (Screen.hasControlDown()) {
-            if (key == MEHKeybinds.KEY_SWITCH_CHANNEL) {
+            if (key == InputConstants.KEY_TAB) {
                 boolean next = (modifiers & GLFW.GLFW_MOD_SHIFT) == 0;
-                return !(next ? keybindSwitchChannelNext() : keybindSwitchChannelPrevious());
-            } else if (key == MEHKeybinds.KEY_DELETE_CHANNEL) {
-                return !keybindDeleteChannel();
-            } else if (key == MEHKeybinds.KEY_TOGGLE_FOCUS_MODE) {
-                return !keybindToggleFocusMode();
+                return !handleSwitchChannelKeybind(next);
+            } else if (key == InputConstants.KEY_MINUS) {
+                return !handleDeleteChannelKeybind();
+            } else if (key == InputConstants.KEY_F) {
+                return !handleToggleFocusModeKeybind();
             }
         }
 
@@ -193,25 +191,16 @@ public final class ChatChannelsFeature extends Feature {
         return onKeyInChatScreen((ChatScreen) screen, key, keycode, scancode);
     }
 
-    public boolean keybindSwitchChannelNext() {
+    private boolean handleSwitchChannelKeybind(boolean next) {
         if (shouldProcessKeybind()) {
-            this.switchChannel(true);
+            this.switchChannel(next);
             return true;
         }
 
         return false;
     }
 
-    public boolean keybindSwitchChannelPrevious() {
-        if (shouldProcessKeybind()) {
-            this.switchChannel(false);
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean keybindDeleteChannel() {
+    private boolean handleDeleteChannelKeybind() {
         if (!shouldProcessKeybind()) {
             return false;
         }
@@ -230,7 +219,7 @@ public final class ChatChannelsFeature extends Feature {
         return false;
     }
 
-    public boolean keybindToggleFocusMode() {
+    private boolean handleToggleFocusModeKeybind() {
         if (!shouldProcessKeybind()) {
             return false;
         }
@@ -289,8 +278,7 @@ public final class ChatChannelsFeature extends Feature {
             graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_FOCUS, x, y, 0, 0, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE);
 
             if (mouseX >= x && mouseX <= x + FOCUS_ICON_SIZE && mouseY >= y && mouseY <= y + FOCUS_ICON_SIZE) {
-                Component keybind = MEHKeybinds.isAmecsLoaded() ? MEHKeybinds.TOGGLE_FOCUS_MODE.getTranslatedKeyMessage() : Component.literal("Control + F");
-                MutableComponent tooltipComponent = Component.translatable("meh.channel.focus.tooltip", keybind);
+                MutableComponent tooltipComponent = Component.translatable("meh.channel.focus.tooltip", Component.literal("Ctrl + F"));
                 graphics.setTooltipForNextFrame(Tooltip.splitTooltip(minecraft, tooltipComponent), mouseX, mouseY);
             }
         }
