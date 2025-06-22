@@ -3,14 +3,14 @@ package wtf.choco.meh.client.config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 
-import wtf.choco.meh.client.screen.widgets.PartyListWidget;
+import wtf.choco.meh.client.screen.widgets.PartyListHudElement;
 
 public final class ConfigPartyManager {
 
     private boolean enabled = true;
 
     @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
-    private PartyListWidget.Position party_list_position = PartyListWidget.Position.TOP_LEFT;
+    private PartyListHudElement.Position party_list_position = PartyListHudElement.Position.TOP_LEFT;
 
     ConfigPartyManager() { }
 
@@ -18,7 +18,7 @@ public final class ConfigPartyManager {
         return enabled;
     }
 
-    public PartyListWidget.Position getPartyListPosition() {
+    public PartyListHudElement.Position getPartyListPosition() {
         return party_list_position;
     }
 

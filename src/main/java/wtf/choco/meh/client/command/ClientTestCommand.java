@@ -1,12 +1,15 @@
 package wtf.choco.meh.client.command;
 
+import com.google.gson.JsonObject;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.serialization.JsonOps;
 
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.feature.Features;
@@ -83,7 +86,7 @@ public final class ClientTestCommand {
             return 0;
         }
 
-        String actionBar = Component.Serializer.toJson(gui.getActionBarText(), context.getSource().registryAccess());
+        String actionBar = ComponentSerialization.CODEC.encode(gui.getActionBarText(), JsonOps.COMPRESSED, new JsonObject()).toString();
         context.getSource().getClient().keyboardHandler.setClipboard(actionBar);
         context.getSource().sendFeedback(Component.literal("Copied action bar JSON to clipboard!").withStyle(ChatFormatting.GREEN));
         return 0;

@@ -9,8 +9,8 @@ import me.shedaniel.autoconfig.AutoConfig;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudLayerRegistrationCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.IdentifiedLayer;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
@@ -81,7 +81,8 @@ public final class SkyBlockPrettyHudFeature extends Feature {
 
     @Override
     protected void registerListeners() {
-        HudLayerRegistrationCallback.EVENT.register(drawer -> drawer.attachLayerAfter(IdentifiedLayer.HOTBAR_AND_BARS, new PrettySkyBlockHudLayer(this)));
+        HudElementRegistry.attachElementAfter(VanillaHudElements.HEALTH_BAR, SkyBlockPrettyHudElement.ID, new SkyBlockPrettyHudElement(this));
+
         ClientReceiveMessageEvents.MODIFY_GAME.register(this::onModifyMessage);
         HypixelServerEvents.SERVER_LOCATION_CHANGED.register(this::onServerLocationChange);
         ClientPlayConnectionEvents.JOIN.register(this::onJoin);

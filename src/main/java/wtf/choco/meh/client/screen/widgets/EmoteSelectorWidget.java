@@ -1,7 +1,6 @@
 package wtf.choco.meh.client.screen.widgets;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +15,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
+
+import org.joml.Matrix3x2fStack;
 
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.emote.ChatEmote;
@@ -119,25 +120,25 @@ public final class EmoteSelectorWidget implements Renderable {
         graphics.fill(x, y, dx, dy, WIDGET_BACKGROUND_COLOR);
         graphics.fill(x, headerY, dx, y, WIDGET_HEADER_COLOR);
 
-        PoseStack stack = graphics.pose();
+        Matrix3x2fStack stack = graphics.pose();
 
         // Stack frame
-        stack.pushPose();
+        stack.pushMatrix();
 
-        stack.translate(x, headerY, 0); // Move to the top left corner of the widget header
-        stack.translate(WIDGET_WIDTH / 2, WIDGET_HEADER_HEIGHT / 2, 0); // Move to the center of the widget
-        stack.scale(0.75F, 0.75F, 0.75F); // Scale the text down (from the middle)
+        stack.translate(x, headerY); // Move to the top left corner of the widget header
+        stack.translate(WIDGET_WIDTH / 2, WIDGET_HEADER_HEIGHT / 2); // Move to the center of the widget
+        stack.scale(0.75F); // Scale the text down (from the middle)
         ChatEmote selectedEmote = knownEmotes.get(selectedEmoteIndex);
         graphics.drawCenteredString(minecraft.font, selectedEmote.getDisplayName(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
 
-        stack.popPose();
+        stack.popMatrix();
 
         // Stack frame
-        stack.pushPose();
+        stack.pushMatrix();
 
-        stack.translate(x, y, 0); // Move to the top left corner of the widget
+        stack.translate(x, y); // Move to the top left corner of the widget
 
-        stack.translate(LEFT_RIGHT_PADDING, TOP_BOTTOM_PADDING, 0);
+        stack.translate(LEFT_RIGHT_PADDING, TOP_BOTTOM_PADDING);
         cellLoop:
         for (int gridY = 0; gridY < ROWS_PER_PAGE; gridY++) {
             for (int gridX = 0; gridX < CELLS_PER_ROW; gridX++) {
@@ -148,47 +149,47 @@ public final class EmoteSelectorWidget implements Renderable {
                 }
 
                 this.renderEmoteCell(graphics, stack, knownEmotes.get(emoteIndex), emoteIndex == selectedEmoteIndex);
-                stack.translate(CELL_SIZE + CELL_PADDING, 0, 0);
+                stack.translate(CELL_SIZE + CELL_PADDING, 0);
             }
-            stack.translate(-(CELL_SIZE + CELL_PADDING) * CELLS_PER_ROW, CELL_SIZE + CELL_PADDING, 0);
+            stack.translate(-(CELL_SIZE + CELL_PADDING) * CELLS_PER_ROW, CELL_SIZE + CELL_PADDING);
         }
 
-        stack.popPose();
+        stack.popMatrix();
 
         profiler.pop();
     }
 
-    private void renderEmoteCell(GuiGraphics graphics, PoseStack stack, ChatEmote emote, boolean selected) {
+    private void renderEmoteCell(GuiGraphics graphics, Matrix3x2fStack stack, ChatEmote emote, boolean selected) {
         int color = (selected ? CELL_SELECTED_COLOR : CELL_COLOR);
         graphics.fill(0, 0, CELL_SIZE, CELL_SIZE, color);
 
         Minecraft minecraft = Minecraft.getInstance();
         ProfilerFiller profiler = Profiler.get();
         profiler.push("emoteCell");
-        stack.pushPose();
-        stack.translate(CELL_SIZE / 2, CELL_SIZE / 2, 0);
+        stack.pushMatrix();
+        stack.translate(CELL_SIZE / 2, CELL_SIZE / 2);
 
         int textWidth = minecraft.font.width(emote.getEmoteDisplayText());
         if (textWidth >= CELL_SIZE) {
             float factor = Math.min((float) textWidth / (float) CELL_SIZE, 1.45F);
             float scale = (float) Math.log(-factor + 2.2F) + 0.7F;
-            stack.scale(scale, scale, scale);
+            stack.scale(scale);
         }
 
         graphics.drawCenteredString(minecraft.font, emote.getEmoteDisplayText(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
-        stack.popPose();
+        stack.popMatrix();
 
         // Gold selection border
         if (selected) {
-            stack.pushPose();
-            stack.scale(0.5F, 0.5F, 0.5F);
+            stack.pushMatrix();
+            stack.scale(0.5F);
 
             graphics.fill(0, 0, CELL_SIZE * 2, 1, 0xFFD09E3D);
             graphics.fill(0, 0, 1, CELL_SIZE * 2, 0xFFD09E3D);
             graphics.fill(0, CELL_SIZE * 2 - 1, CELL_SIZE * 2, CELL_SIZE * 2, 0xFFD09E3D);
             graphics.fill(CELL_SIZE * 2 - 1, 0, CELL_SIZE * 2, CELL_SIZE * 2, 0xFFD09E3D);
 
-            stack.popPose();
+            stack.popMatrix();
         }
 
         profiler.pop();

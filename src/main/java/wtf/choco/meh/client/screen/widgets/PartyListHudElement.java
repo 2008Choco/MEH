@@ -1,7 +1,6 @@
 package wtf.choco.meh.client.screen.widgets;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +8,7 @@ import java.util.List;
 
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry.Translatable;
 
-import net.fabricmc.fabric.api.client.rendering.v1.IdentifiedLayer;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -20,15 +19,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3x2fStack;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.party.Party;
 import wtf.choco.meh.client.party.PartyManagerFeature;
 import wtf.choco.meh.client.party.PartyMember;
 
-public final class PartyListWidget implements IdentifiedLayer {
+public final class PartyListHudElement implements HudElement {
 
-    private static final ResourceLocation ID_PARTY_LIST = ResourceLocation.fromNamespaceAndPath("meh", "party_list");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath("meh", "party_list");
 
     public static enum Position implements Translatable {
 
@@ -50,7 +50,7 @@ public final class PartyListWidget implements IdentifiedLayer {
 
     private final PartyManagerFeature feature;
 
-    public PartyListWidget(PartyManagerFeature feature) {
+    public PartyListHudElement(PartyManagerFeature feature) {
         this.feature = feature;
     }
 
@@ -106,22 +106,17 @@ public final class PartyListWidget implements IdentifiedLayer {
                 textX = window.getGuiScaledWidth() - (ENTRY_HORIZONTAL_PADDING * 2) - SKIN_SIZE - textOffset;
             }
 
-            PoseStack stack = graphics.pose();
-            stack.pushPose();
+            Matrix3x2fStack stack = graphics.pose();
+            stack.pushMatrix();
 
             int textY = y + (SKIN_SIZE / 2);
-            stack.translate(textX + textOffset, textY, 0);
-            stack.scale(TEXT_SCALE, TEXT_SCALE, TEXT_SCALE);
+            stack.translate(textX + textOffset, textY);
+            stack.scale(TEXT_SCALE);
 
             graphics.drawString(minecraft.font, text, -textOffset, -(minecraft.font.lineHeight / 2), 0xFFFFFFFF);
 
-            stack.popPose();
+            stack.popMatrix();
         }
-    }
-
-    @Override
-    public ResourceLocation id() {
-        return ID_PARTY_LIST;
     }
 
 }

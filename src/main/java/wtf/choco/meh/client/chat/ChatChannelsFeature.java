@@ -10,10 +10,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 
@@ -277,18 +279,19 @@ public final class ChatChannelsFeature extends Feature {
         final int backgroundColor = channel.getColor() | CHANNEL_TAG_ALPHA;
 
         graphics.fill(CHANNEL_TAG_X, channelTagY, CHANNEL_TAG_X + textWidth + 3, channelTagY + channelTagHeight, backgroundColor);
-        graphics.drawString(minecraft.font, displayName, CHANNEL_NAME_X, channelNameY, 0xFFFFFF);
+        graphics.drawString(minecraft.font, displayName, CHANNEL_NAME_X, channelNameY, 0xFFFFFFFF);
 
         if (focused) {
             final int x = CHANNEL_TAG_X + textWidth + FOCUS_ICON_PADDING;
             final int y = channelTagY;
 
             // (renderType, texture, x, y, u, v, width, height, textureWidth, textureHeight)
-            graphics.blit(RenderType::guiTextured, TEXTURE_FOCUS, x, y, 0, 0, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_FOCUS, x, y, 0, 0, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE, FOCUS_ICON_SIZE);
 
             if (mouseX >= x && mouseX <= x + FOCUS_ICON_SIZE && mouseY >= y && mouseY <= y + FOCUS_ICON_SIZE) {
                 Component keybind = MEHKeybinds.isAmecsLoaded() ? MEHKeybinds.TOGGLE_FOCUS_MODE.getTranslatedKeyMessage() : Component.literal("Control + F");
-                graphics.renderTooltip(minecraft.font, Component.translatable("meh.channel.focus.tooltip", keybind), mouseX, mouseY + 8);
+                MutableComponent tooltipComponent = Component.translatable("meh.channel.focus.tooltip", keybind);
+                graphics.setTooltipForNextFrame(Tooltip.splitTooltip(minecraft, tooltipComponent), mouseX, mouseY);
             }
         }
     }
