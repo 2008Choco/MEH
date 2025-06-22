@@ -18,7 +18,6 @@ final class Patterns {
 
     // UserData
     static final Pattern PATTERN_PARTY_DISBAND_LEADER_DISBANDED = Pattern.compile("^" + userMatchString() + " has disbanded the party!");
-    static final Pattern PATTERN_PARTY_INVITE = Pattern.compile("^" + userMatchString() + " has invited you to join their party!$");
     static final Pattern PATTERN_PARTY_JOIN = Pattern.compile("^You have joined " + userMatchString() + "'s* party!$");
     static final Pattern PATTERN_PARTY_KICK = Pattern.compile("^You have been kicked from the party by " + userMatchString() + "$");
     static final Pattern PATTERN_PARTY_MEMBER_BARGE = Pattern.compile("^" + userMatchString() + " barged into the party.$");
@@ -29,7 +28,6 @@ final class Patterns {
     static final Pattern PATTERN_PARTY_MEMBER_REJOIN = Pattern.compile("^" + userMatchString() + " has rejoined.$");
 
     // BiUserData
-    static final Pattern PATTERN_PARTY_MEMBER_INVITE = Pattern.compile("^" + userMatchString() + " invited " + userMatchString("target") + " to the party! They have \\d+ seconds to accept.$");
     static final Pattern PATTERN_PARTY_MEMBER_YOINK = Pattern.compile("^" + userMatchString("target") + " was yoinked into the party by " + userMatchString() + "$");
     static final Pattern PATTERN_PARTY_TRANSFER = Pattern.compile("^The party was transferred to " + userMatchString("target") + " by " + userMatchString() + "$");
 

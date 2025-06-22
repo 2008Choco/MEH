@@ -25,12 +25,6 @@ public final class ChatExtractors {
      */
     public static final ChatExtractor<UserData> PARTY_DISBAND_LEADER_DISBANDED = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_DISBAND_LEADER_DISBANDED, UserData::fromMatcher);
     /**
-     * Extracts the rank and username of the player that sent the invitation.
-     *
-     * @see UserData
-     */
-    public static final ChatExtractor<UserData> PARTY_INVITE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_INVITE, UserData::fromMatcher);
-    /**
      * Extracts the rank and username of the party leader.
      *
      * @see UserData
@@ -94,13 +88,6 @@ public final class ChatExtractors {
      * @see BiUserData
      */
     public static final ChatExtractor<BiUserData> PARTY_TRANSFER = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_TRANSFER, BiUserData::fromMatcher);
-    /**
-     * Extracts the rank and username of the member that was invited ({@link BiUserData#targetUser()})
-     * and the user that sent the invitation ({@link BiUserData#user()}).
-     *
-     * @see BiUserData
-     */
-    public static final ChatExtractor<BiUserData> PARTY_USER_INVITE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_MEMBER_INVITE, BiUserData::fromMatcher);
 
     // Matchers
     public static final ChatMatcher PARTY_BARGE = new StringChatMatcher(Patterns.STRING_PARTY_BARGE);

@@ -91,8 +91,6 @@
   "mnemonic.meh.gc": "GC",
   "mnemonic.meh.gg": "GG",
   "open_custom_status_screen": "Open Custom Status Screen",
-  "party_invite_accept": "Accept Party Invite",
-  "party_invite_decline": "Decline Party Invite",
   "text.autoconfig.meh.option.KnownChannel": "Known Channel",
   "text.autoconfig.meh.option.KnownChannel.color": "Channel Color",
   "text.autoconfig.meh.option.KnownChannel.command_prefix": "Command Prefix",

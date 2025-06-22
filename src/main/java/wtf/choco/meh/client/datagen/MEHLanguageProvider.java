@@ -58,8 +58,6 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
 
         // Keybinds
         builder.add(MEHKeybinds.CATEGORY_MEH, "MEH");
-        this.add(builder, MEHKeybinds.PARTY_INVITE_ACCEPT, "Accept Party Invite");
-        this.add(builder, MEHKeybinds.PARTY_INVITE_DECLINE, "Decline Party Invite");
         this.add(builder, MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN, "Open Custom Status Screen");
         /*
         // AMECS keybinds

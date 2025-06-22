@@ -86,17 +86,6 @@ public final class HypixelServerEvents {
     );
 
     /**
-     * Callback for when the client receives an invitation from a user to join their party.
-     */
-    public static final Event<PartyEvent.Invite> PARTY_INVITED = EventFactory.createArrayBacked(PartyEvent.Invite.class,
-            listeners -> inviter -> {
-                for (PartyEvent.Invite event : listeners) {
-                    event.onInvite(inviter);
-                }
-            }
-    );
-
-    /**
      * Callback for when the client joins another member's party.
      */
     public static final Event<PartyEvent.Join> PARTY_JOINED = EventFactory.createArrayBacked(PartyEvent.Join.class,
@@ -244,17 +233,6 @@ public final class HypixelServerEvents {
             listeners -> user -> {
                 for (PartyEvent.UserJoin event : listeners) {
                     event.onUserJoin(user);
-                }
-            }
-    );
-
-    /**
-     * Callback for when a user (excluding the client) has been invited to the party.
-     */
-    public static final Event<PartyEvent.UserInvite> PARTY_USER_INVITED = EventFactory.createArrayBacked(PartyEvent.UserInvite.class,
-            listeners -> (invited, inviter) -> {
-                for (PartyEvent.UserInvite event : listeners) {
-                    event.onUserInvite(invited, inviter);
                 }
             }
     );
