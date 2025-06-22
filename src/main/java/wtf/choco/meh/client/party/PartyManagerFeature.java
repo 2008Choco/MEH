@@ -8,7 +8,7 @@ import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
-import wtf.choco.meh.client.screen.widgets.PartyListHudElement;
+import wtf.choco.meh.client.gui.PartyListHudElement;
 
 public final class PartyManagerFeature extends Feature {
 

@@ -1,4 +1,4 @@
-package wtf.choco.meh.client.game.skyblock;
+package wtf.choco.meh.client.gui;
 
 import java.text.NumberFormat;
 
@@ -17,8 +17,9 @@ import net.minecraft.util.profiling.Profiler;
 import org.joml.Matrix3x2fStack;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.game.skyblock.SkyBlockPrettyHudFeature;
 
-public final class SkyBlockPrettyHudElement implements HudElement {
+public final class SkyBlockPrettyHudHudElement implements HudElement {
 
     public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "pretty_skyblock_hud");
 
@@ -46,7 +47,7 @@ public final class SkyBlockPrettyHudElement implements HudElement {
 
     private final SkyBlockPrettyHudFeature feature;
 
-    public SkyBlockPrettyHudElement(SkyBlockPrettyHudFeature feature) {
+    public SkyBlockPrettyHudHudElement(SkyBlockPrettyHudFeature feature) {
         this.feature = feature;
     }
 

@@ -3,7 +3,7 @@ package wtf.choco.meh.client.config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 
-import wtf.choco.meh.client.screen.widgets.PartyListHudElement;
+import wtf.choco.meh.client.gui.PartyListHudElement;
 
 public final class ConfigPartyManager {
 

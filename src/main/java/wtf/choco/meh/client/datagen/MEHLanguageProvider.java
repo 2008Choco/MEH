@@ -10,10 +10,10 @@ import net.minecraft.core.HolderLookup.Provider;
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.emote.HypixelChatEmote;
 import wtf.choco.meh.client.config.FilterType;
+import wtf.choco.meh.client.gui.PartyListHudElement;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mnemonic.Mnemonic;
 import wtf.choco.meh.client.mnemonic.Mnemonics;
-import wtf.choco.meh.client.screen.widgets.PartyListHudElement;
 import wtf.choco.meh.client.server.HypixelServerType;
 
 public final class MEHLanguageProvider extends FabricLanguageProvider {

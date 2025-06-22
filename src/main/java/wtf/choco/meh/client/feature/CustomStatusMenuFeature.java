@@ -7,8 +7,8 @@ import net.minecraft.network.chat.Component;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
+import wtf.choco.meh.client.gui.screens.CustomStatusScreen;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
-import wtf.choco.meh.client.screen.CustomStatusScreen;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class CustomStatusMenuFeature extends Feature {

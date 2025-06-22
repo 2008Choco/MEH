@@ -26,6 +26,7 @@ import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
+import wtf.choco.meh.client.gui.SkyBlockPrettyHudHudElement;
 import wtf.choco.meh.client.mixinapi.GuiExtensions;
 import wtf.choco.meh.client.server.HypixelServerType;
 
@@ -81,7 +82,7 @@ public final class SkyBlockPrettyHudFeature extends Feature {
 
     @Override
     protected void registerListeners() {
-        HudElementRegistry.attachElementAfter(VanillaHudElements.HEALTH_BAR, SkyBlockPrettyHudElement.ID, new SkyBlockPrettyHudElement(this));
+        HudElementRegistry.attachElementAfter(VanillaHudElements.HEALTH_BAR, SkyBlockPrettyHudHudElement.ID, new SkyBlockPrettyHudHudElement(this));
 
         ClientReceiveMessageEvents.MODIFY_GAME.register(this::onModifyMessage);
         HypixelServerEvents.SERVER_LOCATION_CHANGED.register(this::onServerLocationChange);

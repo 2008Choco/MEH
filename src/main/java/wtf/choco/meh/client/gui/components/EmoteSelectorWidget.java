@@ -1,4 +1,4 @@
-package wtf.choco.meh.client.screen.widgets;
+package wtf.choco.meh.client.gui.components;
 
 import com.mojang.blaze3d.platform.InputConstants;
 

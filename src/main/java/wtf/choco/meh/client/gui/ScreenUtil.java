@@ -1,4 +1,4 @@
-package wtf.choco.meh.client.util;
+package wtf.choco.meh.client.gui;
 
 import net.minecraft.client.gui.screens.ChatScreen;
 

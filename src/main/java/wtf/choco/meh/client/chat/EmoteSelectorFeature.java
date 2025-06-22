@@ -10,10 +10,10 @@ import net.minecraft.client.gui.screens.Screen;
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.feature.Feature;
+import wtf.choco.meh.client.gui.ScreenUtil;
+import wtf.choco.meh.client.gui.components.EmoteSelectorWidget;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 import wtf.choco.meh.client.mixin.ScreenAccessor;
-import wtf.choco.meh.client.screen.widgets.EmoteSelectorWidget;
-import wtf.choco.meh.client.util.ScreenUtil;
 
 public final class EmoteSelectorFeature extends Feature {
 
