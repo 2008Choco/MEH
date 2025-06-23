@@ -9,8 +9,6 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
-import net.minecraft.resources.ResourceLocation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +20,6 @@ import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.feature.Features;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mnemonic.MnemonicHandler;
-import wtf.choco.meh.client.model.property.ItemModelPropertyHypixelServerType;
-import wtf.choco.meh.client.model.property.ItemModelPropertyMEHFeatureEnabled;
 import wtf.choco.meh.client.registry.MEHRegistries;
 import wtf.choco.meh.client.server.CustomStatusStorage;
 import wtf.choco.meh.client.server.HypixelServerState;
@@ -42,7 +38,6 @@ public final class MEHClient implements ClientModInitializer {
     private final HypixelServerState hypixelServerState = new HypixelServerState();
     private final CustomStatusStorage statusStorage = new CustomStatusStorage(STATUS_STORAGE_PATH);
 
-    @SuppressWarnings("deprecation") // ItemModelProperty implementations
     @Override
     public void onInitializeClient() {
         instance = this;
@@ -63,9 +58,6 @@ public final class MEHClient implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientTestCommand.register(dispatcher));
 
         this.statusStorage.readFromFile();
-
-        ConditionalItemModelProperties.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MOD_ID, "hypixel_server_type"), ItemModelPropertyHypixelServerType.MAP_CODEC);
-        ConditionalItemModelProperties.ID_MAPPER.put(ResourceLocation.fromNamespaceAndPath(MOD_ID, "meh_feature_enabled"), ItemModelPropertyMEHFeatureEnabled.MAP_CODEC);
     }
 
     public MnemonicHandler getMnemonicHandler() {
