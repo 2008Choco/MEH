@@ -26,13 +26,13 @@ public final class RetexturedKnivesFeature extends Feature {
 
     @Override
     public boolean isFeatureEnabled(MEHConfig config) {
+        if (!config.getMurderMysteryConfig().isRetexturedMurdererKnives()) {
+            return false;
+        }
+
         // Always render in a development environment
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             return true;
-        }
-
-        if (!config.getMurderMysteryConfig().isRetexturedMurdererKnives()) {
-            return false;
         }
 
         // Otherwise, only render in Murder Mystery

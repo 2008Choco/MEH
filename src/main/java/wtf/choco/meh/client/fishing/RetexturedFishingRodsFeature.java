@@ -23,13 +23,13 @@ public final class RetexturedFishingRodsFeature extends Feature {
 
     @Override
     public boolean isFeatureEnabled(MEHConfig config) {
+        if (!config.getMainLobbyFishingConfig().isRetexturedFishingRodsEnabled()) {
+            return false;
+        }
+
         // Always render in a development environment
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             return true;
-        }
-
-        if (!config.getMainLobbyFishingConfig().isRetexturedFishingRodsEnabled()) {
-            return false;
         }
 
         // Otherwise, only render in the main lobby
