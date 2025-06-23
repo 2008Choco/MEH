@@ -21,13 +21,13 @@ import wtf.choco.meh.client.game.skyblock.SkyBlockPrettyHudFeature;
 
 public final class SkyBlockPrettyHudHudElement implements HudElement {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "pretty_skyblock_hud");
+    public static final ResourceLocation ID = MEHClient.key("pretty_skyblock_hud");
 
-    private static final ResourceLocation SPRITE_ARMOR_FULL = ResourceLocation.withDefaultNamespace("hud/armor_full"); // Vanilla sprite
-    private static final ResourceLocation SPRITE_HEALTH_CONTAINER = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "hud/health_container");
-    private static final ResourceLocation SPRITE_HEALTH_FULL = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "hud/health_full");
-    private static final ResourceLocation SPRITE_MANA_CONTAINER = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "hud/mana_container");
-    private static final ResourceLocation SPRITE_MANA_FULL = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "hud/mana_full");
+    private static final ResourceLocation SPRITE_ARMOR_FULL = MEHClient.key("hud/armor_full"); // Vanilla sprite
+    private static final ResourceLocation SPRITE_HEALTH_CONTAINER = MEHClient.key("hud/health_container");
+    private static final ResourceLocation SPRITE_HEALTH_FULL = MEHClient.key("hud/health_full");
+    private static final ResourceLocation SPRITE_MANA_CONTAINER = MEHClient.key("hud/mana_container");
+    private static final ResourceLocation SPRITE_MANA_FULL = MEHClient.key("hud/mana_full");
 
     private static final NumberFormat FORMAT = NumberFormat.getIntegerInstance();
 

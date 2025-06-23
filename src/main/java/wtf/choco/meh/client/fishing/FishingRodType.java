@@ -67,7 +67,7 @@ public enum FishingRodType implements Predicate<Component> {
      */
     public ResourceLocation getItemModelLocation() {
         if (itemModelLocation == null) {
-            this.itemModelLocation = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, name().toLowerCase());
+            this.itemModelLocation = MEHClient.key(name().toLowerCase());
         }
 
         return itemModelLocation;
@@ -106,7 +106,7 @@ public enum FishingRodType implements Predicate<Component> {
      */
     public ResourceLocation getTextureLocation() {
         if (textureLocation == null) {
-            this.textureLocation = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, name().toLowerCase()).withPrefix(TEXTURE_LOCATION_PREFIX);
+            this.textureLocation = MEHClient.key(name().toLowerCase()).withPrefix(TEXTURE_LOCATION_PREFIX);
         }
 
         return textureLocation;

@@ -9,6 +9,7 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.resources.ResourceLocation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +79,10 @@ public final class MEHClient implements ClientModInitializer {
 
     public static MEHConfig getConfig() {
         return config.getConfig();
+    }
+
+    public static ResourceLocation key(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
 }

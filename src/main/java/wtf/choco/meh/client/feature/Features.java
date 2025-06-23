@@ -4,7 +4,6 @@ import java.util.function.Function;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
@@ -43,7 +42,7 @@ public final class Features {
 
     private static <F extends Feature> F register(String id, Function<MEHClient, F> featureConstructor) {
         MEHClient mod = MEHClient.getInstance();
-        ResourceKey<Feature> key = ResourceKey.create(MEHRegistries.FEATURE.key(), ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, id));
+        ResourceKey<Feature> key = ResourceKey.create(MEHRegistries.FEATURE.key(), MEHClient.key(id));
         F feature = featureConstructor.apply(mod);
         Registry.register(MEHRegistries.FEATURE, key, feature);
         return feature;

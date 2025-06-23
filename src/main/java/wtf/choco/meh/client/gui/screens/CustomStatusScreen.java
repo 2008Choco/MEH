@@ -31,12 +31,12 @@ import wtf.choco.meh.client.util.Components;
 
 public final class CustomStatusScreen extends Screen {
 
-    private static final ResourceLocation BACKGROUND_LOCATION = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "textures/gui/custom_status_screen.png");
+    private static final ResourceLocation BACKGROUND_LOCATION = MEHClient.key("textures/gui/custom_status_screen.png");
 
-    private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "container/scroller");
-    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "container/scroller_disabled");
-    private static final ResourceLocation SIDEBAR_TAB_SPRITE = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "container/sidebar_tab");
-    private static final ResourceLocation SIDEBAR_TEXT_FIELD_SPRITE = ResourceLocation.fromNamespaceAndPath(MEHClient.MOD_ID, "container/sidebar_text_field");
+    private static final ResourceLocation SCROLLER_SPRITE = MEHClient.key("container/scroller");
+    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = MEHClient.key("container/scroller_disabled");
+    private static final ResourceLocation SIDEBAR_TAB_SPRITE = MEHClient.key("container/sidebar_tab");
+    private static final ResourceLocation SIDEBAR_TEXT_FIELD_SPRITE = MEHClient.key("container/sidebar_text_field");
 
     private static final int MAX_STATUS_LENGTH = 256 - "/customstatus ".length();
 

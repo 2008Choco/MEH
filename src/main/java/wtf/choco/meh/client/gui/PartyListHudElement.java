@@ -28,7 +28,7 @@ import wtf.choco.meh.client.party.PartyMember;
 
 public final class PartyListHudElement implements HudElement {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath("meh", "party_list");
+    public static final ResourceLocation ID = MEHClient.key("party_list");
 
     public static enum Position implements Translatable {
 
