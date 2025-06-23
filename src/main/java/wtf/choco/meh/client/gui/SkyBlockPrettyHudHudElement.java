@@ -23,7 +23,7 @@ public final class SkyBlockPrettyHudHudElement implements HudElement {
 
     public static final ResourceLocation ID = MEHClient.key("pretty_skyblock_hud");
 
-    private static final ResourceLocation SPRITE_ARMOR_FULL = MEHClient.key("hud/armor_full"); // Vanilla sprite
+    private static final ResourceLocation SPRITE_ARMOR_FULL = ResourceLocation.withDefaultNamespace("hud/armor_full"); // Vanilla sprite
     private static final ResourceLocation SPRITE_HEALTH_CONTAINER = MEHClient.key("hud/health_container");
     private static final ResourceLocation SPRITE_HEALTH_FULL = MEHClient.key("hud/health_full");
     private static final ResourceLocation SPRITE_MANA_CONTAINER = MEHClient.key("hud/mana_container");
