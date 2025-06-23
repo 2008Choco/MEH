@@ -1,5 +1,7 @@
 package wtf.choco.meh.client.chat;
 
+import java.util.function.Predicate;
+
 import net.minecraft.client.Minecraft;
 
 import wtf.choco.meh.client.MEHClient;
@@ -8,24 +10,25 @@ import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.MEHEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.mnemonic.Mnemonic;
+import wtf.choco.meh.client.mnemonic.Mnemonics;
 
-abstract class MnemonicChatFeature extends Feature {
+public final class MnemonicChatFeature extends Feature {
 
     private final Mnemonic mnemonic;
     private final String message;
+    private final Predicate<ConfigMnemonics> enabled;
 
-    public MnemonicChatFeature(MEHClient mod, Mnemonic mnemonic, String message) {
+    private MnemonicChatFeature(MEHClient mod, Mnemonic mnemonic, String message, Predicate<ConfigMnemonics> enabled) {
         super(mod);
         this.mnemonic = mnemonic;
         this.message = message;
+        this.enabled = enabled;
     }
 
     @Override
     protected final boolean isFeatureEnabled(MEHConfig config) {
-        return isMnemonicEnabled(config.getMnemonicsConfig());
+        return enabled.test(config.getMnemonicsConfig());
     }
-
-    protected abstract boolean isMnemonicEnabled(ConfigMnemonics config);
 
     @Override
     protected void registerListeners() {
@@ -42,6 +45,14 @@ abstract class MnemonicChatFeature extends Feature {
         minecraft.player.connection.sendChat(message);
         ChatChannelsFeature.dontSendToChannel = false;
         return true;
+    }
+
+    public static MnemonicChatFeature gg(MEHClient mod) {
+        return new MnemonicChatFeature(mod, Mnemonics.GG, "gg", ConfigMnemonics::isGGEnabled);
+    }
+
+    public static MnemonicChatFeature gc(MEHClient mod) {
+        return new MnemonicChatFeature(mod, Mnemonics.GC, "gc", ConfigMnemonics::isGCEnabled);
     }
 
 }
