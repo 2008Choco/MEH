@@ -147,6 +147,8 @@ public final class SkyBlockPrettyHudFeature extends Feature {
     @SuppressWarnings("unused") // listener, sender, minecraft
     private void onJoin(ClientPacketListener listener, PacketSender sender, Minecraft minecraft) {
         if (isEnabled()) {
+            this.refreshState(true);
+
             // On first join, attributes aren't yet calculated, so Hypixel sends some preliminary numbers (like default health, defense of only the equipped armor, and reduced mana)
             // We'll just ignore the first message sent to us so it doesn't flicker from high to low between server changes
             this.ignoreNextUpdate = true;
