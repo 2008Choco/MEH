@@ -26,6 +26,7 @@
             "wtf.choco.meh.client.config.MEHModMenuIntegration"
         ]
     },
+    "accessWidener": "meh.accesswidener",
     "mixins": [
         {
             "config": "meh.client.mixins.json",
@@ -47,6 +48,9 @@
         "loom:injected_interfaces": {
             "net/minecraft/client/gui/components/ChatComponent": [
                 "wtf/choco/meh/client/chat/filter/ChatFilterable"
+            ],
+            "net/minecraft/client/gui/contextualbar/ContextualBarRenderer": [
+                "wtf/choco/meh/client/mixinapi/MEHContextualBarRenderer"
             ]
         },
         "modmenu": {

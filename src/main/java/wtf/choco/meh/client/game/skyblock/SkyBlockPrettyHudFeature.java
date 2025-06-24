@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import me.shedaniel.autoconfig.AutoConfig;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
@@ -15,6 +16,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -24,9 +26,11 @@ import org.jetbrains.annotations.Nullable;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
+import wtf.choco.meh.client.event.GuiEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.gui.SkyBlockPrettyHudHudElement;
+import wtf.choco.meh.client.gui.contextualbar.SkillExperienceBarRenderer;
 import wtf.choco.meh.client.mixinapi.GuiExtensions;
 import wtf.choco.meh.client.server.HypixelServerType;
 
@@ -50,6 +54,20 @@ public final class SkyBlockPrettyHudFeature extends Feature {
             new PatternStripper(Pattern.compile("\\s*" + SECTION_CHAR + "b(?<current>\\d+)\\/(?<max>\\d+)" + ICON_MANA + " Mana\\s*"), (result, feature) -> {
                 feature.currentMana = NumberUtils.toInt(result.group("current"), 0);
                 feature.maxMana = NumberUtils.toInt(result.group("max"), 0);
+            }),
+            new PatternStripper(Pattern.compile("\\s*\\+[\\d+\\.]+\\s+(?<skill>[\\w\\s]+)\\s+\\((?<current>[\\d,k]+)/(?<required>[\\d,k]+)\\)\\s*"), (result, feature) -> {
+                int current = parseIntFromFormattedString(result.group("current"));
+                int required = parseIntFromFormattedString(result.group("required"));
+                feature.currentSkillExperienceProgress = (float) current / required;
+                SkyBlockSkillType skill = SkyBlockSkillType.getByName(result.group("skill"));
+                feature.skillExperienceBarRenderer.setColor(skill != null ? skill.getExperienceBarColor() : 0xFFFFFF);
+                feature.experienceBarStayTicks = 60;
+            }),
+            new PatternStripper(Pattern.compile("\\s*\\+[\\d+\\.]+\\s+(?<skill>[\\w\\s]+)\\s+\\((?<percent>[\\d\\.]+)%\\)\\s*"), (result, feature) -> {
+                feature.currentSkillExperienceProgress = NumberUtils.toFloat(result.group("percent")) / 100.0F;
+                SkyBlockSkillType skill = SkyBlockSkillType.getByName(result.group("skill"));
+                feature.skillExperienceBarRenderer.setColor(skill != null ? skill.getExperienceBarColor() : 0xFFFFFF);
+                feature.experienceBarStayTicks = 60;
             })
     };
 
@@ -60,6 +78,11 @@ public final class SkyBlockPrettyHudFeature extends Feature {
     private int currentDefense;
     private int currentMana;
     private int maxMana;
+
+    private float currentSkillExperienceProgress;
+    private int experienceBarStayTicks = 0;
+
+    private final SkillExperienceBarRenderer skillExperienceBarRenderer = new SkillExperienceBarRenderer(this);
 
     public SkyBlockPrettyHudFeature(MEHClient mod) {
         super(mod);
@@ -91,6 +114,19 @@ public final class SkyBlockPrettyHudFeature extends Feature {
             this.refreshState(getMod().getHypixelServerState().isConnectedToHypixel() && isFeatureEnabled(config));
             return InteractionResult.SUCCESS;
         });
+
+        GuiEvents.CONTEXTUAL_BAR_OVERRIDE.register((vanillaInfo, vanillaRenderer) -> {
+            if (vanillaInfo != Gui.ContextualInfo.EMPTY && experienceBarStayTicks > 0) {
+                return skillExperienceBarRenderer;
+            }
+
+            return vanillaRenderer;
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (experienceBarStayTicks > 0) {
+                this.experienceBarStayTicks--;
+            }
+        });
     }
 
     public int getCurrentHealth() {
@@ -113,6 +149,10 @@ public final class SkyBlockPrettyHudFeature extends Feature {
         return maxMana;
     }
 
+    public float getCurrentSkillExperienceProgress() {
+        return currentSkillExperienceProgress;
+    }
+
     private Component onModifyMessage(Component message, boolean overlay) {
         if (!isEnabled() || !overlay) {
             return message;
@@ -123,7 +163,13 @@ public final class SkyBlockPrettyHudFeature extends Feature {
         for (PatternStripper pattern : PATTERNS) {
             messageAsString = pattern.pattern().matcher(messageAsString).replaceAll(result -> {
                 if (!ignoreNextUpdate) {
-                    pattern.onMatch().accept(result, this);
+                    try {
+                        pattern.onMatch().accept(result, this);
+                    } catch (Exception e) {
+                        MEHClient.LOGGER.error("Failed to handle matched result of pattern \"%s\" for input string \"%s\"", pattern.pattern().pattern(), result.group());
+                        e.printStackTrace();
+                        return result.group();
+                    }
                 }
 
                 return "";
@@ -157,6 +203,23 @@ public final class SkyBlockPrettyHudFeature extends Feature {
 
     private void refreshState(boolean hideHealthInformation) {
         GuiExtensions.get(Minecraft.getInstance().gui).setHideHealthInformation(hideHealthInformation);
+    }
+
+    private static int parseIntFromFormattedString(String input) {
+        boolean thousands = input.endsWith("k");
+        boolean millions = input.endsWith("M");
+        if (thousands || millions) {
+            input = input.substring(0, input.length() - 1);
+        }
+
+        int result = NumberUtils.toInt(input.replace(",", ""));
+        if (thousands) {
+            result *= 1_000;
+        } else if (millions) {
+            result *= 1_000_000;
+        }
+
+        return result;
     }
 
 }

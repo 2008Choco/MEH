@@ -1,19 +1,40 @@
 package wtf.choco.meh.client.mixin;
 
+import java.util.Map;
+import java.util.function.Supplier;
+
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 import net.minecraft.world.entity.player.Player;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import wtf.choco.meh.client.event.GuiEvents;
 import wtf.choco.meh.client.mixinapi.GuiExtensions;
 
 @Mixin(Gui.class)
 public abstract class GuiMixin implements GuiExtensions {
+
+    @Unique
+    @Nullable
+    private ContextualBarRenderer contextualBarRendererOverride;
+    @Final
+    @Shadow
+    private Pair<Gui.ContextualInfo, ContextualBarRenderer> contextualInfoBar;
+    @Final
+    @Shadow
+    private Map<Gui.ContextualInfo, Supplier<ContextualBarRenderer>> contextualInfoBarRenderers;
 
     @Unique
     private static boolean hideHealthInformation;
@@ -46,5 +67,56 @@ public abstract class GuiMixin implements GuiExtensions {
             callback.cancel();
         }
     }
+
+    @Redirect(
+            method = "renderHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V",
+            at = @At(
+                value = "INVOKE",
+                target = "Lnet/minecraft/client/gui/Gui;nextContextualInfoState()Lnet/minecraft/client/gui/Gui$ContextualInfo;"
+            )
+    )
+    @SuppressWarnings("unused") // gui
+    private Gui.ContextualInfo redirectNextContextualInfoState(Gui gui) {
+        Gui.ContextualInfo vanillaInfo = nextContextualInfoState();
+        ContextualBarRenderer vanillaRenderer = contextualInfoBarRenderers.get(vanillaInfo).get();
+
+        ContextualBarRenderer rendererOverride = GuiEvents.CONTEXTUAL_BAR_OVERRIDE.invoker().getContextualBarRenderer(vanillaInfo, vanillaRenderer);
+        if (rendererOverride != vanillaRenderer) {
+            this.contextualBarRendererOverride = rendererOverride;
+            return Gui.ContextualInfo.EMPTY; // Use "empty" so vanilla doesn't render a bar. We're going to render our own
+        }
+
+        this.contextualBarRendererOverride = null;
+        return vanillaInfo;
+    }
+
+    @Redirect(
+            method = "renderHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V",
+            at = @At(
+                value = "INVOKE",
+                target = "Lorg/apache/commons/lang3/tuple/Pair;getValue()Ljava/lang/Object;"
+            ),
+            require = 2
+    )
+    private Object redirectGetValue(Pair<?, ?> pair) {
+        return (contextualBarRendererOverride != null) ? contextualBarRendererOverride : pair.getValue();
+    }
+
+    @Redirect(
+            method = "renderHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V",
+            at = @At(
+                value = "INVOKE",
+                target = "Lnet/minecraft/client/gui/contextualbar/ContextualBarRenderer;renderExperienceLevel(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Font;I)V"
+            )
+    )
+    private void redirectRenderExperienceLevel(GuiGraphics graphics, Font font, int level) {
+        ContextualBarRenderer currentRenderer = (contextualBarRendererOverride != null) ? contextualBarRendererOverride : contextualInfoBar.getValue();
+        if (currentRenderer != null && currentRenderer.shouldRenderExperienceLevel()) {
+            ContextualBarRenderer.renderExperienceLevel(graphics, font, level);
+        }
+    }
+
+    @Shadow
+    public abstract Gui.ContextualInfo nextContextualInfoState();
 
 }

@@ -6,6 +6,7 @@
         "AbstractSoundInstanceAccessor",
         "ChatComponentMixin",
         "ChatScreenAccessor",
+        "ContextualBarRendererMixin",
         "GuiAccessor",
         "GuiMixin",
         "ItemModelResolverMixin",
