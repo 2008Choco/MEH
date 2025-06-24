@@ -60,6 +60,14 @@ public abstract class GuiMixin implements GuiExtensions {
         }
     }
 
+    @SuppressWarnings("unused") // graphics
+    @Inject(method = "renderVehicleHealth(Lnet/minecraft/client/gui/GuiGraphics;)V", at = @At("HEAD"), cancellable = true)
+    private void onRenderVehicleHealth(GuiGraphics graphics, CallbackInfo callback) {
+        if (hideHealthInformation) {
+            callback.cancel();
+        }
+    }
+
     @SuppressWarnings("unused") // graphics, player, top, right, callback
     @Inject(method = "renderFood", at = @At("HEAD"), cancellable = true)
     private void onRenderFood(GuiGraphics graphics, Player player, int top, int right, CallbackInfo callback) {
