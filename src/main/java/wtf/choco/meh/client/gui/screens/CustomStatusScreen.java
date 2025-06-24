@@ -309,7 +309,7 @@ public final class CustomStatusScreen extends Screen {
         pose.translate(x, y);
         pose.scale(scale);
         pose.translate(-x, -y);
-        graphics.fill(centeredX - 2, y, centeredX + textWidth + 2, y + minecraft.font.lineHeight, backgroundColor);
+        graphics.fill(centeredX - 2, y - 2, centeredX + textWidth + 2, y + minecraft.font.lineHeight, backgroundColor);
         graphics.drawString(font, text, centeredX, y, 0xFFFFFFFF);
         pose.popMatrix();
     }
