@@ -8,6 +8,8 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import org.jetbrains.annotations.Nullable;
 
 import wtf.choco.meh.client.chat.extractor.UserData;
+import wtf.choco.meh.client.fishing.CatchType;
+import wtf.choco.meh.client.fishing.MythicalFishType;
 import wtf.choco.meh.client.party.PartyRole;
 import wtf.choco.meh.client.server.HypixelServerType;
 
@@ -245,6 +247,30 @@ public final class HypixelServerEvents {
             listeners -> (yoinked, yoinker) -> {
                 for (PartyEvent.UserYoink event : listeners) {
                     event.onUserYoink(yoinked, yoinker);
+                }
+            }
+    );
+
+    public static final Event<FishingEvent.GenericCatch> FISHING_GENERIC_CATCH = EventFactory.createArrayBacked(FishingEvent.GenericCatch.class,
+            listeners -> (catchType, name) -> {
+                for (FishingEvent.GenericCatch event : listeners) {
+                    event.onCatch(catchType, name);
+                }
+            }
+    );
+
+    public static final Event<FishingEvent.SpecialTreasureCatch> FISHING_SPECIAL_TREASURE_CATCH = EventFactory.createArrayBacked(FishingEvent.SpecialTreasureCatch.class,
+            listeners -> (catchType, name, quantity) -> {
+                for (FishingEvent.SpecialTreasureCatch event : listeners) {
+                    event.onCatchSpecialTreasure(catchType, name, quantity);
+                }
+            }
+    );
+
+    public static final Event<FishingEvent.MythicalFishCatch> FISHING_MYTHICAL_FISH_CATCH = EventFactory.createArrayBacked(FishingEvent.MythicalFishCatch.class,
+            listeners -> (catchType, fishType, weight) -> {
+                for (FishingEvent.MythicalFishCatch event : listeners) {
+                    event.onMythicalFishCatch(catchType, fishType, weight);
                 }
             }
     );
@@ -556,6 +582,37 @@ public final class HypixelServerEvents {
              * @param yoinker the Hypixel Admin that performed the yoink
              */
             public void onUserYoink(UserData yoinked, UserData yoinker);
+
+        }
+
+    }
+
+    /**
+     * Contains events related to Hypixel's main lobby fishing.
+     */
+    public final class FishingEvent {
+
+        // TODO: I'd like to replace "name" for all of these events with actual constants, but we'll see...
+        private FishingEvent() { }
+
+        @FunctionalInterface
+        public interface GenericCatch {
+
+            public void onCatch(CatchType catchType, String name);
+
+        }
+
+        @FunctionalInterface
+        public interface SpecialTreasureCatch {
+
+            public void onCatchSpecialTreasure(CatchType catchType, String name, int quantity);
+
+        }
+
+        @FunctionalInterface
+        public interface MythicalFishCatch {
+
+            public void onMythicalFishCatch(CatchType catchType, MythicalFishType fishType, int weight);
 
         }
 

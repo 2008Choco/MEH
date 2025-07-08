@@ -2,6 +2,8 @@ package wtf.choco.meh.client.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
+import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry.Translatable;
+
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.client.KeyMapping;
@@ -9,7 +11,9 @@ import net.minecraft.core.HolderLookup.Provider;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.emote.HypixelChatEmote;
+import wtf.choco.meh.client.config.BooleanOperator;
 import wtf.choco.meh.client.config.FilterType;
+import wtf.choco.meh.client.fishing.CatchType;
 import wtf.choco.meh.client.gui.PartyListHudElement;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mnemonic.Mnemonic;
@@ -55,12 +59,21 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add("gui.meh.custom_status.edit_box.status_text.narration", "Status Text");
         builder.add("gui.meh.custom_status.edit_box.status_text.hint", "Status text...");
         builder.add("gui.meh.custom_status.not_in_lobby", "You can only open the Custom Status screen when in a lobby!");
+        builder.add("gui.meh.fishing_stats.caught", "%s Caught:");
+        builder.add("gui.meh.fishing_stats.header", "Fishing Stats");
 
         // Keybinds
         builder.add(MEHKeybinds.CATEGORY_MEH, "MEH");
         this.add(builder, MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN, "Open Custom Status Screen");
 
         // Constants
+        this.add(builder, CatchType.CREATURES, "Creatures");
+        this.add(builder, CatchType.FISH, "Fish");
+        this.add(builder, CatchType.JUNK, "Junk");
+        this.add(builder, CatchType.MYTHICAL_FISH, "Mythical Fish");
+        this.add(builder, CatchType.PLANTS, "Plants");
+        this.add(builder, CatchType.SPECIAL_FISH, "Special Fish");
+        this.add(builder, CatchType.TREASURE, "Treasure");
         this.add(builder, HypixelChatEmote.ARROW, "Arrow");
         this.add(builder, HypixelChatEmote.CAT, "Cat");
         this.add(builder, HypixelChatEmote.COUNTING, "Counting");
@@ -125,6 +138,8 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, FilterType.REGEX, "RegEx");
         this.add(builder, FilterType.REGEX_EXACT, "RegEx (Exact)");
         this.add(builder, FilterType.STARTS_WITH, "Starts With");
+        this.add(builder, BooleanOperator.AND, "AND");
+        this.add(builder, BooleanOperator.OR, "OR");
         this.add(builder, PartyListHudElement.Position.TOP_LEFT, "Top Left");
         this.add(builder, PartyListHudElement.Position.TOP_RIGHT, "Top Right");
         this.add(builder, Mnemonics.GC, "GC");
@@ -174,6 +189,17 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.addOption(builder, "KnownChannel.id", "Channel Id");
         this.addOption(builder, "KnownChannel.name", "Channel Name");
         this.addOption(builder, "main_lobby_fishing", "Main Lobby Fishing", "Enhancements to Hypixel's main lobby fishing experience.");
+        this.addOption(builder, "main_lobby_fishing.fishing_stat_overlay", "Stat Overlay",
+            "Display fishing stats on your screen when fishing in the main lobby.",
+            "You must speak to the Dockmaster before you can see your stats!"
+        );
+        this.addOption(builder, "main_lobby_fishing.fishing_stat_overlay.when_fishing", "When Fishing", "Display the stat overlay when Hypixel considers you 'fishing'.");
+        this.addOption(builder, "main_lobby_fishing.fishing_stat_overlay.when_holding_rod", "When Holding Rod", "Display the stat overlay when holding a fishing rod.");
+        this.addOption(builder, "main_lobby_fishing.fishing_stat_overlay.condition_operator", "Condition Operator",
+            "The boolean operator to apply to the above conditions.",
+            "AND: All above conditions must be met.",
+            "OR: One or more of the above conditions must be met."
+        );
         this.addOption(builder, "main_lobby_fishing.retextured_fishing_rods", "Retextured Fishing Rods", "Fishing rods used in main lobby fishing will use custom textures.");
         this.addOption(builder, "mnemonics", "Mnemonics", "Quick, short-hand key combinations that perform some action.");
         this.addOption(builder, "mnemonics.gc", "Good Catch! (gc)",
@@ -195,6 +221,10 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add(keybind.getName(), name);
     }
 
+    private void add(TranslationBuilder builder, CatchType catchType, String name) {
+        builder.add(catchType.getDescriptionKey(), name);
+    }
+
     private void add(TranslationBuilder builder, HypixelChatEmote emote, String name) {
         builder.add(emote.getDescriptionKey(), name);
     }
@@ -207,8 +237,8 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add(position.getKey(), name);
     }
 
-    private void add(TranslationBuilder builder, FilterType filterType, String name) {
-        builder.add(filterType.getKey(), name);
+    private void add(TranslationBuilder builder, Translatable translatable, String name) {
+        builder.add(translatable.getKey(), name);
     }
 
     private void add(TranslationBuilder builder, Mnemonic mnemonic, String name) {

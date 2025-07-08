@@ -9,6 +9,7 @@ import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.ChatChannelsFeature;
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.MnemonicChatFeature;
+import wtf.choco.meh.client.fishing.FishingStatOverlayFeature;
 import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
 import wtf.choco.meh.client.game.housing.HousingAutoDisableFlightFeature;
 import wtf.choco.meh.client.game.housing.HousingAutoNightVisionFeature;
@@ -23,6 +24,7 @@ public final class Features {
     public static final ChatChannelsFeature CHAT_CHANNELS = register("chat_channels", ChatChannelsFeature::new);
     public static final CustomStatusMenuFeature CUSTOM_STATUS_MENU = register("custom_status_menu", CustomStatusMenuFeature::new);
     public static final EmoteSelectorFeature EMOTE_SELECTOR = register("emote_selector", EmoteSelectorFeature::new);
+    public static final FishingStatOverlayFeature FISHING_STAT_OVERLAY = register("fishing_stat_overlay", FishingStatOverlayFeature::new);
     public static final HousingAutoDisableFlightFeature HOUSING_AUTO_DISABLE_FLIGHT = register("housing_auto_disable_flight", HousingAutoDisableFlightFeature::new);
     public static final HousingAutoNightVisionFeature HOUSING_AUTO_NIGHT_VISION = register("housing_auto_night_vision", HousingAutoNightVisionFeature::new);
     public static final MnemonicChatFeature MNEMONIC_GC = register("mnemonic_gc", MnemonicChatFeature::gc);

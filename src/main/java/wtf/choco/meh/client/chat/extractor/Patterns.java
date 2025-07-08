@@ -31,6 +31,17 @@ final class Patterns {
     static final Pattern PATTERN_PARTY_MEMBER_YOINK = Pattern.compile("^" + userMatchString("target") + " was yoinked into the party by " + userMatchString() + "$");
     static final Pattern PATTERN_PARTY_TRANSFER = Pattern.compile("^The party was transferred to " + userMatchString("target") + " by " + userMatchString() + "$");
 
+    // String
+    static final Pattern PATTERN_FISHING_CAUGHT_GENERIC = Pattern.compile("^You caught(?: an?)? (?<string>[^\\d].+)!"); // Fish (yellow), Plant (dark green), Creature (aqua)
+    static final Pattern PATTERN_FISHING_CAUGHT_JUNK = Pattern.compile("^Oh no, you caught(?: an?)? (?<string>.+)!");
+    static final Pattern PATTERN_FISHING_CAUGHT_TREASURE = Pattern.compile("^You caught(?: an?)? (?<string>.+), that's a treasure!");
+
+    // QuantitativeTreasureCatchData
+    static final Pattern PATTERN_FISHING_CAUGHT_QUANTITATIVE_TREASURE = Pattern.compile("^You caught (?<quantity>\\d{1,3}) (?<name>.+)!"); // i.e. "experience" or "coins"
+
+    // MythicalFishCatchData
+    static final Pattern PATTERN_FISHING_CAUGHT_MYTHICAL_FISH = Pattern.compile("^You caught(?: an?)? (?<weight>\\d+)kg (?<name>.+)!");
+
     // Strings
     static final String STRING_PARTY_BARGE = "You have successfully barged into the party.";
     static final String STRING_PARTY_DISBAND_EMPTY = "The party was disbanded because all invites expired and the party was empty.";

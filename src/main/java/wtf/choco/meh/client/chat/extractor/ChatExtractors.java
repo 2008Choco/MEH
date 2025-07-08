@@ -1,9 +1,14 @@
 package wtf.choco.meh.client.chat.extractor;
 
+import java.util.function.Function;
+import java.util.regex.Matcher;
+
 /**
  * An object holding constants of common {@link ChatExtractor} implementations used by MEH.
  */
 public final class ChatExtractors {
+
+    private static final Function<Matcher, String> STRING_EXTRACTOR = matcher -> matcher.group("string");
 
     // PrivateMessageData
     /**
@@ -16,6 +21,32 @@ public final class ChatExtractors {
      * @see PartyRoleChangeData
      */
     public static final ChatExtractor<PartyRoleChangeData> PARTY_ROLE_CHANGE = new RegExChatExtractor<>(Patterns.PATTERN_PARTY_ROLE_CHANGE, PartyRoleChangeData::fromMatcher);
+
+    // String
+    /**
+     * Extracts the name of the fish that was caught.
+     */
+    public static final ChatExtractor<String> FISHING_CAUGHT_GENERIC = new RegExChatExtractor<>(Patterns.PATTERN_FISHING_CAUGHT_GENERIC, STRING_EXTRACTOR);
+    /**
+     * Extracts the name of the junk that was caught.
+     */
+    public static final ChatExtractor<String> FISHING_CAUGHT_JUNK = new RegExChatExtractor<>(Patterns.PATTERN_FISHING_CAUGHT_JUNK, STRING_EXTRACTOR);
+    /**
+     * Extracts the name of the treasure that was caught.
+     */
+    public static final ChatExtractor<String> FISHING_CAUGHT_TREASURE = new RegExChatExtractor<>(Patterns.PATTERN_FISHING_CAUGHT_TREASURE, STRING_EXTRACTOR);
+
+    // QuantitativeTreasureCatchData
+    /**
+     * @see QuantitativeTreasureCatchData
+     */
+    public static final ChatExtractor<QuantitativeTreasureCatchData> FISHING_CAUGHT_QUANTITATIVE_TREASURE = new RegExChatExtractor<>(Patterns.PATTERN_FISHING_CAUGHT_QUANTITATIVE_TREASURE, QuantitativeTreasureCatchData::fromMatcher);
+
+    // MythicalFishCatchData
+    /**
+     * See MythicalFishCatchData
+     */
+    public static final ChatExtractor<MythicalFishCatchData> FISHING_CAUGHT_MYTHICAL_FISH = new RegExChatExtractor<>(Patterns.PATTERN_FISHING_CAUGHT_MYTHICAL_FISH, MythicalFishCatchData::fromMatcher);
 
     // UserData
     /**

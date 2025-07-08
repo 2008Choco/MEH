@@ -90,7 +90,7 @@ public final class HypixelScoreboard {
      */
     @Nullable
     public String getLine(int lineNumber) {
-        HypixelScoreboardLine line = HypixelScoreboardLine.getByLineNumber(getMaxLine() - lineNumber + 1);
+        HypixelScoreboardLine line = lineFromTopDownLineNumber(lineNumber);
         if (line == null) {
             throw new IllegalArgumentException("No line exists for line number " + lineNumber);
         }
@@ -104,6 +104,31 @@ public final class HypixelScoreboard {
         }
 
         return text;
+    }
+
+    public boolean containsTextOnAnyLine(String text) {
+        this.lock.readLock().lock();
+        try {
+            for (int i = 1; i <= getMaxLine(); i++) {
+                HypixelScoreboardLine line = lineFromTopDownLineNumber(i);
+                if (line == null) {
+                    break;
+                }
+
+                String lineText = ChatFormatting.stripFormatting(entries.getOrDefault(line, null));
+                if (lineText == null) {
+                    continue;
+                }
+
+                if (lineText.contains(text)) {
+                    return true;
+                }
+            }
+        } finally {
+            this.lock.readLock().unlock();
+        }
+
+        return false;
     }
 
     /**
@@ -225,6 +250,11 @@ public final class HypixelScoreboard {
         }
 
         this.refresh(level);
+    }
+
+    @Nullable
+    private HypixelScoreboardLine lineFromTopDownLineNumber(int lineNumber) {
+        return HypixelScoreboardLine.getByLineNumber(getMaxLine() - lineNumber + 1);
     }
 
 }

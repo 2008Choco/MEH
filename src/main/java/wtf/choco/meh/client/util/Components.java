@@ -49,6 +49,30 @@ public final class Components {
         return false;
     }
 
+    public static boolean hasFormattingAnywhere(Component component, ChatFormatting format) {
+        return component.visit((style, content) -> {
+            if (format.isColor()) {
+                TextColor color = style.getColor();
+                if (color != null) {
+                    ChatFormatting componentFormatting = COLOR_TO_LEGACY_FORMATTING.get(color);
+                    if (componentFormatting == format) {
+                        return Optional.of(true);
+                    }
+                }
+
+                return Optional.empty();
+            } else if (format == ChatFormatting.BOLD && style.isBold()
+                    || format == ChatFormatting.ITALIC && style.isItalic()
+                    || format == ChatFormatting.UNDERLINE && style.isUnderlined()
+                    || format == ChatFormatting.STRIKETHROUGH && style.isStrikethrough()
+                    || format == ChatFormatting.OBFUSCATED && style.isObfuscated()) {
+                return Optional.of(true);
+            }
+
+            return Optional.empty();
+        }, Style.EMPTY).orElse(false);
+    }
+
     // Taken in part from CraftBukkit, but modified to work a bit more flexibly and in full Mojmaps
     public static String toLegacyText(Component component, char colorChar) {
         if (component == null) {
