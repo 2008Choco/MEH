@@ -2,10 +2,12 @@ package wtf.choco.meh.client.chat.emote;
 
 import net.minecraft.network.chat.Component;
 
+import wtf.choco.meh.client.util.Translatable;
+
 /**
  * Represents an emote that can be sent in chat.
  */
-public interface ChatEmote {
+public interface ChatEmote extends Translatable {
 
     /**
      * Get the text that can/will be inserted into the chat box when the emote is selected
@@ -32,12 +34,5 @@ public interface ChatEmote {
     public default Component getEmoteDisplayText() {
         return Component.literal(getInputText());
     }
-
-    /**
-     * Get the display name of this emote.
-     *
-     * @return the display name
-     */
-    public Component getDisplayName();
 
 }

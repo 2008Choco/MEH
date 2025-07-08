@@ -155,21 +155,12 @@ public enum HypixelChatEmote implements ChatEmote {
         return getRequiredRankedGifts() == 0;
     }
 
-    private String getOrCreateDescriptionKey() {
+    public String getDescriptionKey() {
         if (descriptionKey == null) {
             this.descriptionKey = "meh.hypixel.emote." + name().toLowerCase();
         }
 
         return descriptionKey;
-    }
-
-    public String getDescriptionKey() {
-        return getOrCreateDescriptionKey();
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return Component.translatable(getDescriptionKey());
     }
 
 }

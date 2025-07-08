@@ -3,7 +3,9 @@ package wtf.choco.meh.client.fishing;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
-public enum CatchType {
+import wtf.choco.meh.client.util.Translatable;
+
+public enum CatchType implements Translatable {
 
     FISH(ChatFormatting.YELLOW),
     JUNK(ChatFormatting.RED),

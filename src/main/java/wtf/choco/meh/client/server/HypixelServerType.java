@@ -6,13 +6,14 @@ import com.mojang.serialization.Codec;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
+
+import wtf.choco.meh.client.util.Translatable;
 
 /**
  * A type of server on the Hypixel network.
  */
-public enum HypixelServerType implements StringRepresentable {
+public enum HypixelServerType implements StringRepresentable, Translatable {
 
     MAIN_LOBBY("HYPIXEL"),
     TOURNAMENT_LOBBY("TOURNAMENT HALL"),
@@ -83,30 +84,17 @@ public enum HypixelServerType implements StringRepresentable {
         return scoreboardTitle;
     }
 
-    private String getOrCreateTranslationKey() {
-        if (translationKey == null) {
-            this.translationKey = "meh.hypixel.server." + name().toLowerCase();
-        }
-
-        return translationKey;
-    }
-
     /**
      * Get the translation key for this server type's display name.
      *
      * @return the translation key
      */
     public String getDescriptionKey() {
-        return getOrCreateTranslationKey();
-    }
+        if (translationKey == null) {
+            this.translationKey = "meh.hypixel.server." + name().toLowerCase();
+        }
 
-    /**
-     * Get the display name for this server type.
-     *
-     * @return the display name
-     */
-    public Component getDisplayName() {
-        return Component.translatable(getDescriptionKey());
+        return translationKey;
     }
 
     @Override

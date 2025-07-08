@@ -6,15 +6,16 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import net.minecraft.Util;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import org.spongepowered.include.com.google.common.base.Preconditions;
 
+import wtf.choco.meh.client.util.Translatable;
+
 /**
  * Represents a sequence of keys that may be pressed in order to perform an action.
  */
-public final class Mnemonic {
+public final class Mnemonic implements Translatable {
 
     private static final long DEFAULT_COOLDOWN = 10;
     private static final TimeUnit DEFAULT_COOLDOWN_UNIT = TimeUnit.SECONDS;
@@ -31,31 +32,17 @@ public final class Mnemonic {
         this.cooldownMillis = cooldownUnit.toMillis(cooldown);
     }
 
-    private String getOrCreateDescriptionKey() {
-        if (descriptionKey == null) {
-            this.descriptionKey = Util.makeDescriptionId("mnemonic", id);
-        }
-
-        return descriptionKey;
-    }
-
     /**
      * Get the description key of this mnemonic.
      *
      * @return the description key
      */
     public String getDescriptionKey() {
-        return getOrCreateDescriptionKey();
-    }
+        if (descriptionKey == null) {
+            this.descriptionKey = Util.makeDescriptionId("mnemonic", id);
+        }
 
-    /**
-     * Get the display name of this mnemonic as a translatable component using the
-     * {@link #getDescriptionKey()}.
-     *
-     * @return the display name
-     */
-    public Component getDisplayName() {
-        return Component.translatable(getDescriptionKey());
+        return descriptionKey;
     }
 
     /**

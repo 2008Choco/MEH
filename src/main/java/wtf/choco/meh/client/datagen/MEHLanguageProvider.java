@@ -23,7 +23,6 @@ import wtf.choco.meh.client.fishing.QuantifiedTreasureType;
 import wtf.choco.meh.client.fishing.Treasure;
 import wtf.choco.meh.client.gui.PartyListHudElement;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
-import wtf.choco.meh.client.mnemonic.Mnemonic;
 import wtf.choco.meh.client.mnemonic.Mnemonics;
 import wtf.choco.meh.client.server.HypixelServerType;
 import wtf.choco.meh.client.util.Translatable;
@@ -327,32 +326,12 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add(keybind.getName(), name);
     }
 
-    private void add(TranslationBuilder builder, CatchType catchType, String name) {
-        builder.add(catchType.getDescriptionKey(), name);
-    }
-
-    private void add(TranslationBuilder builder, HypixelChatEmote emote, String name) {
-        builder.add(emote.getDescriptionKey(), name);
-    }
-
-    private void add(TranslationBuilder builder, HypixelServerType serverType, String name) {
-        builder.add(serverType.getDescriptionKey(), name);
-    }
-
-    private void add(TranslationBuilder builder, PartyListHudElement.Position position, String name) {
-        builder.add(position.getKey(), name);
-    }
-
     private void add(TranslationBuilder builder, Translatable translatable, String name) {
         builder.add(translatable.getDescriptionKey(), name);
     }
 
     private void add(TranslationBuilder builder, me.shedaniel.clothconfig2.gui.entries.SelectionListEntry.Translatable translatable, String name) {
         builder.add(translatable.getKey(), name);
-    }
-
-    private void add(TranslationBuilder builder, Mnemonic mnemonic, String name) {
-        builder.add(mnemonic.getDescriptionKey(), name);
     }
 
     private void addOption(TranslationBuilder builder, String path, String name, String... tooltip) {
