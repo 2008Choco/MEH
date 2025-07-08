@@ -2,8 +2,6 @@ package wtf.choco.meh.client.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
-import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry.Translatable;
-
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.client.KeyMapping;
@@ -14,11 +12,21 @@ import wtf.choco.meh.client.chat.emote.HypixelChatEmote;
 import wtf.choco.meh.client.config.BooleanOperator;
 import wtf.choco.meh.client.config.FilterType;
 import wtf.choco.meh.client.fishing.CatchType;
+import wtf.choco.meh.client.fishing.Creature;
+import wtf.choco.meh.client.fishing.Fish;
+import wtf.choco.meh.client.fishing.FishRarity;
+import wtf.choco.meh.client.fishing.FishingEnvironment;
+import wtf.choco.meh.client.fishing.Junk;
+import wtf.choco.meh.client.fishing.MythicalFishType;
+import wtf.choco.meh.client.fishing.Plant;
+import wtf.choco.meh.client.fishing.QuantifiedTreasureType;
+import wtf.choco.meh.client.fishing.Treasure;
 import wtf.choco.meh.client.gui.PartyListHudElement;
 import wtf.choco.meh.client.keybind.MEHKeybinds;
 import wtf.choco.meh.client.mnemonic.Mnemonic;
 import wtf.choco.meh.client.mnemonic.Mnemonics;
 import wtf.choco.meh.client.server.HypixelServerType;
+import wtf.choco.meh.client.util.Translatable;
 
 public final class MEHLanguageProvider extends FabricLanguageProvider {
 
@@ -74,6 +82,104 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, CatchType.PLANTS, "Plants");
         this.add(builder, CatchType.SPECIAL_FISH, "Special Fish");
         this.add(builder, CatchType.TREASURE, "Treasure");
+        this.add(builder, Creature.BLAZE, "Blaze");
+        this.add(builder, Creature.CAVE_SPIDER, "Cave Spider");
+        this.add(builder, Creature.CHICKEN, "Chicken");
+        this.add(builder, Creature.COW, "Cow");
+        this.add(builder, Creature.CREEPER, "Creeper");
+        this.add(builder, Creature.MAGMA_CUBE, "Magma Cube");
+        this.add(builder, Creature.PIG, "Pig");
+        this.add(builder, Creature.PIG_ZOMBIE, "Pig Zombie");
+        this.add(builder, Creature.SHEEP, "Sheep");
+        this.add(builder, Creature.SKELETON, "Skeleton");
+        this.add(builder, Creature.SLIME, "Slime");
+        this.add(builder, Creature.SPIDER, "Spider");
+        this.add(builder, Creature.SQUID, "Squid");
+        this.add(builder, Creature.ZOMBIE, "Zombie");
+        this.add(builder, Fish.CHARRED_PUFFERFISH, "Charred Pufferfish");
+        this.add(builder, Fish.CLOWNFISH, "Clownfish");
+        this.add(builder, Fish.COD, "Cod");
+        this.add(builder, Fish.COOKED_COD, "Cooked Cod");
+        this.add(builder, Fish.COOKED_SALMON, "Cooked Salmon");
+        this.add(builder, Fish.PERCH, "Perch");
+        this.add(builder, Fish.PIKE, "Pike");
+        this.add(builder, Fish.PUFFERFISH, "Pufferfish");
+        this.add(builder, Fish.SALMON, "Salmon");
+        this.add(builder, Fish.SECRET_FISH, "Secret Fish");
+        this.add(builder, Fish.TROUT, "Trout");
+        this.add(builder, FishingEnvironment.ICE, "Ice");
+        this.add(builder, FishingEnvironment.LAVA, "Lava");
+        this.add(builder, FishingEnvironment.WATER, "Water");
+        this.add(builder, FishRarity.COMMON, "Common");
+        this.add(builder, FishRarity.RARE, "Rare");
+        this.add(builder, FishRarity.ULTRA_RARE, "Ultra Rare");
+        this.add(builder, FishRarity.UNCOMMON, "Uncommon");
+        this.add(builder, Junk.BONE, "Bone");
+        this.add(builder, Junk.BOWL, "Bowl");
+        this.add(builder, Junk.BROKEN_FISHING_ROD, "Broken Fishing Rod");
+        this.add(builder, Junk.BURNED_FLESH, "Burned Flesh");
+        this.add(builder, Junk.CHARCOAL, "Charcoal");
+        this.add(builder, Junk.CLUMP_OF_LEAVES, "Clump of Leaves");
+        this.add(builder, Junk.COAL, "Coal");
+        this.add(builder, Junk.FERMENTED_SPIDER_EYE, "Fermented Spider Eye");
+        this.add(builder, Junk.FROZEN_FLESH, "Frozen Flesh");
+        this.add(builder, Junk.ICE_SHARD, "Ice Shard");
+        this.add(builder, Junk.INK_SAC, "Ink Sac");
+        this.add(builder, Junk.LAVA_BUCKET, "Lava Bucket");
+        this.add(builder, Junk.LEATHER, "Leather");
+        this.add(builder, Junk.LEATHER_BOOTS, "Leather Boots");
+        this.add(builder, Junk.LILY_PAD, "Lily Pad");
+        this.add(builder, Junk.NETHER_BRICK, "Nether Brick");
+        this.add(builder, Junk.ROTTEN_FLESH, "Rotten Flesh");
+        this.add(builder, Junk.SNOWBALL, "Snowball");
+        this.add(builder, Junk.SOGGY_PAPER, "Soggy Paper");
+        this.add(builder, Junk.STEAK, "Steak");
+        this.add(builder, Junk.STICK, "Stick");
+        this.add(builder, Junk.STRING, "String");
+        this.add(builder, Junk.WATER_BOTTLE, "Water Bottle");
+        this.add(builder, MythicalFishType.AUTOMATON_OF_DAEDALUS, "Automaton of Daedalus");
+        this.add(builder, MythicalFishType.DUST_OF_SELENE, "Dust of Selene");
+        this.add(builder, MythicalFishType.EMBER_OF_HELIOS, "Ember of Helios");
+        this.add(builder, MythicalFishType.HEART_OF_APHRODITE, "Heart of Aphrodite");
+        this.add(builder, MythicalFishType.SHADOW_OF_NYX, "Shadow of Nyx");
+        this.add(builder, MythicalFishType.SPARK_OF_ZEUS, "Spark of Zeus");
+        this.add(builder, MythicalFishType.SPIRIT_OF_DEMETER, "Spirit of Demeter");
+        this.add(builder, MythicalFishType.WRATH_OF_HADES, "Wrath of Hades");
+        this.add(builder, Plant.BAKED_POTATO, "Baked Potato");
+        this.add(builder, Plant.BAMBOO, "Bamboo");
+        this.add(builder, Plant.CHARRED_BERRIES, "Charred Berries");
+        this.add(builder, Plant.DRIED_KELP, "Dried Kelp");
+        this.add(builder, Plant.FROZEN_KELP, "Frozen Kelp");
+        this.add(builder, Plant.GLISTERING_MELON, "Glistering Melon");
+        this.add(builder, Plant.GLOW_BERRIES, "Glow Berries");
+        this.add(builder, Plant.KELP, "Kelp");
+        this.add(builder, Plant.MELON, "Melon");
+        this.add(builder, Plant.NETHER_WART, "Nether Wart");
+        this.add(builder, Plant.POTATO, "Potato");
+        this.add(builder, Plant.SWEET_BERRIES, "Sweet Berries");
+        this.add(builder, Plant.WARPED_ROOTS, "Warped Roots");
+        this.add(builder, Plant.WHEAT, "Wheat");
+        this.add(builder, QuantifiedTreasureType.EVENT_EXPERIENCE, "Event Experience");
+        this.add(builder, QuantifiedTreasureType.GUILD_EXPERIENCE, "Guild Experience");
+        this.add(builder, QuantifiedTreasureType.HYPIXEL_EXPERIENCE, "Hypixel Experience");
+        this.add(builder, Treasure.BLAZE_POWDER, "Blaze Powder");
+        this.add(builder, Treasure.BLAZE_ROD, "Blaze Rod");
+        this.add(builder, Treasure.CHAINMAIL_CHESTPLATE, "Chainmail Chestplate");
+        this.add(builder, Treasure.COMPASS, "Compass");
+        this.add(builder, Treasure.DIAMOND, "Diamond");
+        this.add(builder, Treasure.DIAMOND_SWORD, "Diamond Sword");
+        this.add(builder, Treasure.EMERALD, "Emerald");
+        this.add(builder, Treasure.ENCHANTED_BOOK, "Enchanted Book");
+        this.add(builder, Treasure.ENCHANTED_FISHING_ROD, "Enchanted Fishing Rod");
+        this.add(builder, Treasure.EYE_OF_ENDER, "Eye of Ender");
+        this.add(builder, Treasure.GOLD_PICKAXE, "Gold Pickaxe");
+        this.add(builder, Treasure.GOLD_SWORD, "Gold Sword");
+        this.add(builder, Treasure.IRON_SWORD, "Iron Sword");
+        this.add(builder, Treasure.MAGMA_CREAM, "Magma Cream");
+        this.add(builder, Treasure.MOLTEN_GOLD, "Molten Gold");
+        this.add(builder, Treasure.NAME_TAG, "Name Tag");
+        this.add(builder, Treasure.NAUTILUS_SHELL, "Nautilus Shell");
+        this.add(builder, Treasure.SADDLE, "Saddle");
         this.add(builder, HypixelChatEmote.ARROW, "Arrow");
         this.add(builder, HypixelChatEmote.CAT, "Cat");
         this.add(builder, HypixelChatEmote.COUNTING, "Counting");
@@ -238,6 +344,10 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
     }
 
     private void add(TranslationBuilder builder, Translatable translatable, String name) {
+        builder.add(translatable.getDescriptionKey(), name);
+    }
+
+    private void add(TranslationBuilder builder, me.shedaniel.clothconfig2.gui.entries.SelectionListEntry.Translatable translatable, String name) {
         builder.add(translatable.getKey(), name);
     }
 

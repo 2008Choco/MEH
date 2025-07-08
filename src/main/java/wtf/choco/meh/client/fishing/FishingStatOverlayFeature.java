@@ -91,9 +91,7 @@ public final class FishingStatOverlayFeature extends Feature {
         HudElementRegistry.addLast(FishingStatsHudElement.ID, fishingStatsElement);
 
         MenuEvents.SLOT_ITEM_STACK_CHANGE.register(this::onSlotItemStackChange);
-        HypixelServerEvents.FISHING_GENERIC_CATCH.register((catchType, name) -> onCatch(catchType));
-        HypixelServerEvents.FISHING_SPECIAL_TREASURE_CATCH.register((catchType, name, quantity) -> onCatch(catchType));
-        HypixelServerEvents.FISHING_MYTHICAL_FISH_CATCH.register((catchType, fishType, weight) -> onCatch(catchType));
+        HypixelServerEvents.FISHING_CATCH.register(this::onCatch);
         MEHEvents.HYPIXEL_SCOREBOARD_REFRESH.register(this::onScoreboardRefresh);
     }
 
@@ -109,8 +107,8 @@ public final class FishingStatOverlayFeature extends Feature {
         }
     }
 
-    private void onCatch(CatchType catchType) {
-        this.catches.merge(catchType, 1, Integer::sum);
+    private void onCatch(FishingCatch fishingCatch) {
+        this.catches.merge(fishingCatch.getType(), 1, Integer::sum);
     }
 
     private void onScoreboardRefresh(HypixelScoreboard scoreboard) {

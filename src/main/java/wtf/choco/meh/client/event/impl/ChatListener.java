@@ -25,8 +25,16 @@ import wtf.choco.meh.client.chat.extractor.PrivateMessageData;
 import wtf.choco.meh.client.chat.extractor.QuantitativeTreasureCatchData;
 import wtf.choco.meh.client.chat.extractor.UserData;
 import wtf.choco.meh.client.event.HypixelServerEvents;
-import wtf.choco.meh.client.fishing.CatchType;
+import wtf.choco.meh.client.fishing.Creature;
+import wtf.choco.meh.client.fishing.Fish;
+import wtf.choco.meh.client.fishing.FishingCatch;
+import wtf.choco.meh.client.fishing.Junk;
+import wtf.choco.meh.client.fishing.MythicalFish;
 import wtf.choco.meh.client.fishing.MythicalFishType;
+import wtf.choco.meh.client.fishing.Plant;
+import wtf.choco.meh.client.fishing.QuantifiedTreasure;
+import wtf.choco.meh.client.fishing.QuantifiedTreasureType;
+import wtf.choco.meh.client.fishing.Treasure;
 import wtf.choco.meh.client.party.PartyRole;
 import wtf.choco.meh.client.util.Components;
 
@@ -140,37 +148,44 @@ public final class ChatListener {
     }
 
     private static void handleFishingCaughtJunk(String name) {
-        HypixelServerEvents.FISHING_GENERIC_CATCH.invoker().onCatch(CatchType.JUNK, name);
+        Junk junk = Junk.getByName(name);
+        if (junk != null) {
+            HypixelServerEvents.FISHING_CATCH.invoker().onCatch(junk);
+        }
     }
 
     private static void handleFishingCaughtQuantitativeTreasure(QuantitativeTreasureCatchData data) {
-        HypixelServerEvents.FISHING_SPECIAL_TREASURE_CATCH.invoker().onCatchSpecialTreasure(CatchType.TREASURE, data.name(), data.quantity());
+        QuantifiedTreasureType type = QuantifiedTreasureType.getByName(data.name());
+        HypixelServerEvents.FISHING_CATCH.invoker().onCatch(new QuantifiedTreasure(type, data.quantity()));
     }
 
     private static void handleFishingCaughtTreasure(String name) {
-        HypixelServerEvents.FISHING_GENERIC_CATCH.invoker().onCatch(CatchType.TREASURE, name);
+        Treasure treasure = Treasure.getByName(name);
+        if (treasure != null) {
+            HypixelServerEvents.FISHING_CATCH.invoker().onCatch(treasure);
+        }
     }
 
     private static void handleFishingCaughtGeneric(Component message, String name) {
-        CatchType catchType = null;
+        FishingCatch fishingCatch = null;
 
         if (Components.hasFormattingAnywhere(message, ChatFormatting.YELLOW)) {
-            catchType = CatchType.FISH;
+            fishingCatch = Fish.getByName(name);
         } else if (Components.hasFormattingAnywhere(message, ChatFormatting.DARK_GREEN)) {
-            catchType = CatchType.PLANTS;
+            fishingCatch = Plant.getByName(name);
         } else if (Components.hasFormattingAnywhere(message, ChatFormatting.AQUA)) {
-            catchType = CatchType.CREATURES;
+            fishingCatch = Creature.getByName(name);
         }
 
-        if (catchType != null) {
-            HypixelServerEvents.FISHING_GENERIC_CATCH.invoker().onCatch(catchType, name);
+        if (fishingCatch != null) {
+            HypixelServerEvents.FISHING_CATCH.invoker().onCatch(fishingCatch);
         }
     }
 
     private static void handleFishingCaughtMythicalFish(MythicalFishCatchData data) {
         MythicalFishType fishType = MythicalFishType.getByName(data.name());
         if (fishType != null) {
-            HypixelServerEvents.FISHING_MYTHICAL_FISH_CATCH.invoker().onMythicalFishCatch(CatchType.MYTHICAL_FISH, fishType, data.weight());
+            HypixelServerEvents.FISHING_CATCH.invoker().onCatch(new MythicalFish(fishType, data.weight()));
         }
     }
 

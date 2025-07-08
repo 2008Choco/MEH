@@ -8,8 +8,7 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import org.jetbrains.annotations.Nullable;
 
 import wtf.choco.meh.client.chat.extractor.UserData;
-import wtf.choco.meh.client.fishing.CatchType;
-import wtf.choco.meh.client.fishing.MythicalFishType;
+import wtf.choco.meh.client.fishing.FishingCatch;
 import wtf.choco.meh.client.party.PartyRole;
 import wtf.choco.meh.client.server.HypixelServerType;
 
@@ -251,26 +250,10 @@ public final class HypixelServerEvents {
             }
     );
 
-    public static final Event<FishingEvent.GenericCatch> FISHING_GENERIC_CATCH = EventFactory.createArrayBacked(FishingEvent.GenericCatch.class,
-            listeners -> (catchType, name) -> {
-                for (FishingEvent.GenericCatch event : listeners) {
-                    event.onCatch(catchType, name);
-                }
-            }
-    );
-
-    public static final Event<FishingEvent.SpecialTreasureCatch> FISHING_SPECIAL_TREASURE_CATCH = EventFactory.createArrayBacked(FishingEvent.SpecialTreasureCatch.class,
-            listeners -> (catchType, name, quantity) -> {
-                for (FishingEvent.SpecialTreasureCatch event : listeners) {
-                    event.onCatchSpecialTreasure(catchType, name, quantity);
-                }
-            }
-    );
-
-    public static final Event<FishingEvent.MythicalFishCatch> FISHING_MYTHICAL_FISH_CATCH = EventFactory.createArrayBacked(FishingEvent.MythicalFishCatch.class,
-            listeners -> (catchType, fishType, weight) -> {
-                for (FishingEvent.MythicalFishCatch event : listeners) {
-                    event.onMythicalFishCatch(catchType, fishType, weight);
+    public static final Event<FishingEvent.Catch> FISHING_CATCH = EventFactory.createArrayBacked(FishingEvent.Catch.class,
+            listeners -> (fishingCatch) -> {
+                for (FishingEvent.Catch event : listeners) {
+                    event.onCatch(fishingCatch);
                 }
             }
     );
@@ -592,27 +575,12 @@ public final class HypixelServerEvents {
      */
     public final class FishingEvent {
 
-        // TODO: I'd like to replace "name" for all of these events with actual constants, but we'll see...
         private FishingEvent() { }
 
         @FunctionalInterface
-        public interface GenericCatch {
+        public interface Catch {
 
-            public void onCatch(CatchType catchType, String name);
-
-        }
-
-        @FunctionalInterface
-        public interface SpecialTreasureCatch {
-
-            public void onCatchSpecialTreasure(CatchType catchType, String name, int quantity);
-
-        }
-
-        @FunctionalInterface
-        public interface MythicalFishCatch {
-
-            public void onMythicalFishCatch(CatchType catchType, MythicalFishType fishType, int weight);
+            public void onCatch(FishingCatch fishingCatch);
 
         }
 

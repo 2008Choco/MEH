@@ -23,7 +23,7 @@ public enum CatchType {
 
     public String getDescriptionKey() {
         if (descriptionKey == null) {
-            this.descriptionKey = "meh.hypixel.catch_type." + name().toLowerCase();
+            this.descriptionKey = "meh.hypixel.fishing.catch_type." + name().toLowerCase();
         }
 
         return descriptionKey;
