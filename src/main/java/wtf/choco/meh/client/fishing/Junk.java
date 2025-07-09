@@ -22,7 +22,7 @@ public enum Junk implements FishingCatch {
     LILY_PAD("lily pad", FishingEnvironment.WATER),
     WATER_BOTTLE("water bottle", FishingEnvironment.WATER),
     BROKEN_FISHING_ROD("broken fishing rod", FishingEnvironment.WATER),
-    SOGGY_PAPER("soggy paper", FishingEnvironment.WATER),
+    SOGGY_PIECE_OF_PAPER("soggy piece of paper", FishingEnvironment.WATER),
     COAL("coal", FishingEnvironment.LAVA),
     CHARCOAL("charcoal", FishingEnvironment.LAVA),
     NETHER_BRICK("nether brick", FishingEnvironment.LAVA),

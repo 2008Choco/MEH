@@ -21,7 +21,7 @@ public enum Fish implements FishingCatch {
     TROUT("trout", FishingEnvironment.ICE),
     PERCH("perch", FishingEnvironment.ICE),
     PIKE("pike", FishingEnvironment.ICE),
-    SECRET_FISH("secret fish", FishingEnvironment.ICE);
+    SECRET_FISH("secret fish", FishingEnvironment.WATER, FishingEnvironment.LAVA, FishingEnvironment.ICE);
 
     private static final Map<String, Fish> BY_NAME = new HashMap<>();
 
@@ -34,11 +34,16 @@ public enum Fish implements FishingCatch {
     private String descriptionKey;
 
     private final String simpleName;
-    private final Set<FishingEnvironment> environment;
+    private final Set<FishingEnvironment> environments;
+
+    private Fish(String simpleName, FishingEnvironment environment, FishingEnvironment... additionalEnvironments) {
+        this.simpleName = simpleName;
+        this.environments = ImmutableSet.copyOf(EnumSet.of(environment, additionalEnvironments));
+    }
 
     private Fish(String simpleName, FishingEnvironment environment) {
         this.simpleName = simpleName;
-        this.environment = ImmutableSet.copyOf(EnumSet.of(environment));
+        this.environments = ImmutableSet.copyOf(EnumSet.of(environment));
     }
 
     @Override
@@ -53,7 +58,7 @@ public enum Fish implements FishingCatch {
 
     @Override
     public Set<FishingEnvironment> getEnvironments() {
-        return environment;
+        return environments;
     }
 
     @Override
