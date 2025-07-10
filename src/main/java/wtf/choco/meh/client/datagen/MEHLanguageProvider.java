@@ -67,7 +67,9 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add("gui.meh.custom_status.edit_box.status_text.hint", "Status text...");
         builder.add("gui.meh.custom_status.not_in_lobby", "You can only open the Custom Status screen when in a lobby!");
         builder.add("gui.meh.fishing_stats.caught", "%s Caught:");
+        builder.add("gui.meh.fishing_stats.dock_master", "Dock Master");
         builder.add("gui.meh.fishing_stats.header", "Fishing Stats");
+        builder.add("gui.meh.fishing_stats.incomplete", "Speak to the %s to get your stats!");
 
         // Keybinds
         builder.add(MEHKeybinds.CATEGORY_MEH, "MEH");

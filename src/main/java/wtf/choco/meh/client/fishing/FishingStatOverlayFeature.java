@@ -49,6 +49,7 @@ public final class FishingStatOverlayFeature extends Feature {
     };
 
     private boolean fishing = false;
+    private boolean spokenToDockMaster = false;
     private final Object2IntMap<CatchType> catches = new Object2IntOpenHashMap<>(CatchType.values().length);
 
     private final FishingStatsHudElement fishingStatsElement = new FishingStatsHudElement(this);
@@ -84,6 +85,10 @@ public final class FishingStatOverlayFeature extends Feature {
 
     public int getCaught(CatchType type) {
         return catches.getInt(type);
+    }
+
+    public boolean hasSpokenToDockMaster() {
+        return spokenToDockMaster;
     }
 
     @Override
@@ -139,6 +144,8 @@ public final class FishingStatOverlayFeature extends Feature {
                 Minecraft.getInstance().player.displayClientMessage(Component.literal("Failed to parse \"" + line.substring(lastSpace + 1, line.length()) + "\"! This is a bug!").withStyle(ChatFormatting.RED), false);
             }
         }
+
+        this.spokenToDockMaster = true;
     }
 
 }
