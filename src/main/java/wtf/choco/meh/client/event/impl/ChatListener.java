@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
 import wtf.choco.meh.client.chat.extractor.BiUserData;
@@ -151,25 +152,38 @@ public final class ChatListener {
         Junk junk = Junk.getByName(name);
         if (junk != null) {
             HypixelServerEvents.FISHING_CATCH.invoker().onCatch(junk);
+        } else {
+            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a Junk catch but couldn't find constant: \"" + name + "\"").withStyle(ChatFormatting.RED), false);
         }
     }
 
     private static void handleFishingCaughtQuantitativeTreasure(QuantitativeTreasureCatchData data) {
         QuantifiedTreasureType type = QuantifiedTreasureType.getByName(data.name());
-        HypixelServerEvents.FISHING_CATCH.invoker().onCatch(new QuantifiedTreasure(type, data.quantity()));
+        if (type != null) {
+            HypixelServerEvents.FISHING_CATCH.invoker().onCatch(new QuantifiedTreasure(type, data.quantity()));
+        } else {
+            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a QuantitativeTresureType catch but couldn't find constant: \"" + data.name() + "\"").withStyle(ChatFormatting.RED), false);
+        }
     }
 
     private static void handleFishingCaughtTreasure(String name) {
         Treasure treasure = Treasure.getByName(name);
         if (treasure != null) {
             HypixelServerEvents.FISHING_CATCH.invoker().onCatch(treasure);
+        } else {
+            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a Treasure catch but couldn't find constant: \"" + name + "\"").withStyle(ChatFormatting.RED), false);
         }
     }
 
     private static void handleFishingCaughtGeneric(Component message, String name) {
         FishingCatch fishingCatch = null;
 
-        if (Components.hasFormattingAnywhere(message, ChatFormatting.YELLOW)) {
+        if (name.equals(Fish.SECRET_FISH.getSimpleName())) {
+            // Special case for "secret fish" which gets sent using legacy text instead of a proper component due to its hover text
+            // This is a "bug" (kind of) with Hypixel's translation system which translates the text with legacy colour codes and shoves the result
+            // into a component literal.
+            fishingCatch = Fish.SECRET_FISH;
+        } if (Components.hasFormattingAnywhere(message, ChatFormatting.YELLOW)) {
             fishingCatch = Fish.getByName(name);
         } else if (Components.hasFormattingAnywhere(message, ChatFormatting.DARK_GREEN)) {
             fishingCatch = Plant.getByName(name);
@@ -179,6 +193,8 @@ public final class ChatListener {
 
         if (fishingCatch != null) {
             HypixelServerEvents.FISHING_CATCH.invoker().onCatch(fishingCatch);
+        } else {
+            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a generic catch but couldn't map to constant: \"" + name + "\"").withStyle(ChatFormatting.RED), false);
         }
     }
 
@@ -186,6 +202,8 @@ public final class ChatListener {
         MythicalFishType fishType = MythicalFishType.getByName(data.name());
         if (fishType != null) {
             HypixelServerEvents.FISHING_CATCH.invoker().onCatch(new MythicalFish(fishType, data.weight()));
+        } else {
+            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a MythicalFishType catch but couldn't map to constant: \"" + data.name() + "\"").withStyle(ChatFormatting.RED), false);
         }
     }
 

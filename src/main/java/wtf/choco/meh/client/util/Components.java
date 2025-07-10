@@ -61,11 +61,11 @@ public final class Components {
                 }
 
                 return Optional.empty();
-            } else if (format == ChatFormatting.BOLD && style.isBold()
-                    || format == ChatFormatting.ITALIC && style.isItalic()
-                    || format == ChatFormatting.UNDERLINE && style.isUnderlined()
-                    || format == ChatFormatting.STRIKETHROUGH && style.isStrikethrough()
-                    || format == ChatFormatting.OBFUSCATED && style.isObfuscated()) {
+            } else if ((format == ChatFormatting.BOLD && style.isBold())
+                    || (format == ChatFormatting.ITALIC && style.isItalic())
+                    || (format == ChatFormatting.UNDERLINE && style.isUnderlined())
+                    || (format == ChatFormatting.STRIKETHROUGH && style.isStrikethrough())
+                    || (format == ChatFormatting.OBFUSCATED && style.isObfuscated())) {
                 return Optional.of(true);
             }
 
