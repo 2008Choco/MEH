@@ -129,12 +129,14 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, Junk.LEATHER_BOOTS, "Leather Boots");
         this.add(builder, Junk.LILY_PAD, "Lily Pad");
         this.add(builder, Junk.NETHER_BRICK, "Nether Brick");
+        this.add(builder, Junk.RABBIT_HIDE, "Rabbit Hide");
         this.add(builder, Junk.ROTTEN_FLESH, "Rotten Flesh");
         this.add(builder, Junk.SNOWBALL, "Snowball");
         this.add(builder, Junk.SOGGY_PIECE_OF_PAPER, "Soggy Piece of Paper");
         this.add(builder, Junk.STEAK, "Steak");
         this.add(builder, Junk.STICK, "Stick");
         this.add(builder, Junk.STRING, "String");
+        this.add(builder, Junk.TRIPWIRE_HOOK, "Tripwire Hook");
         this.add(builder, Junk.WATER_BOTTLE, "Water Bottle");
         this.add(builder, MythicalFishType.AUTOMATON_OF_DAEDALUS, "Automaton of Daedalus");
         this.add(builder, MythicalFishType.DUST_OF_SELENE, "Dust of Selene");
@@ -158,6 +160,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, Plant.SWEET_BERRIES, "Sweet Berries");
         this.add(builder, Plant.WARPED_ROOTS, "Warped Roots");
         this.add(builder, Plant.WHEAT, "Wheat");
+        this.add(builder, QuantifiedTreasureType.ARCADE_GAMES_COINS, "Arcade Games Coins");
         this.add(builder, QuantifiedTreasureType.EVENT_EXPERIENCE, "Event Experience");
         this.add(builder, QuantifiedTreasureType.GUILD_EXPERIENCE, "Guild Experience");
         this.add(builder, QuantifiedTreasureType.HYPIXEL_EXPERIENCE, "Hypixel Experience");

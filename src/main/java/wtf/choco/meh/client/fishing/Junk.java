@@ -23,6 +23,8 @@ public enum Junk implements FishingCatch {
     WATER_BOTTLE("water bottle", FishingEnvironment.WATER),
     BROKEN_FISHING_ROD("broken fishing rod", FishingEnvironment.WATER),
     SOGGY_PIECE_OF_PAPER("soggy piece of paper", FishingEnvironment.WATER),
+    RABBIT_HIDE("rabbit hide", FishingEnvironment.WATER),
+    TRIPWIRE_HOOK("tripwire hook", FishingEnvironment.WATER),
     COAL("coal", FishingEnvironment.LAVA),
     CHARCOAL("charcoal", FishingEnvironment.LAVA),
     NETHER_BRICK("nether brick", FishingEnvironment.LAVA),

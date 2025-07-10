@@ -11,7 +11,9 @@ import wtf.choco.meh.client.util.Translatable;
 
 public enum QuantifiedTreasureType implements Translatable {
 
-    // TODO: All variants of game coins
+    // TODO: All variants of game coins and tokens
+    ARCADE_GAMES_COINS("Arcade Games Coins"),
+
     HYPIXEL_EXPERIENCE("Hypixel Experience"),
     GUILD_EXPERIENCE("Guild Experience"),
     EVENT_EXPERIENCE("Event Experience"),
