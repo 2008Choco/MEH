@@ -126,7 +126,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, Junk.FROZEN_FLESH, "Frozen Flesh");
         this.add(builder, Junk.ICE_SHARD, "Ice Shard");
         this.add(builder, Junk.INK_SAC, "Ink Sac");
-        this.add(builder, Junk.LAVA_BUCKET, "Lava Bucket");
+        this.add(builder, Junk.BUCKET_OF_LAVA, "Bucket of Lava");
         this.add(builder, Junk.LEATHER, "Leather");
         this.add(builder, Junk.LEATHER_BOOTS, "Leather Boots");
         this.add(builder, Junk.LILY_PAD, "Lily Pad");

@@ -31,7 +31,7 @@ public enum Junk implements FishingCatch {
     STEAK("steak", FishingEnvironment.LAVA),
     BURNED_FLESH("burned flesh", FishingEnvironment.LAVA),
     FERMENTED_SPIDER_EYE("fermented spider eye", FishingEnvironment.LAVA),
-    LAVA_BUCKET("lava bucket", FishingEnvironment.LAVA),
+    BUCKET_OF_LAVA("bucket of lava", FishingEnvironment.LAVA),
     SNOWBALL("snowball", FishingEnvironment.ICE),
     ICE_SHARD("ice shard", FishingEnvironment.ICE),
     CLUMP_OF_LEAVES("clump of leaves", FishingEnvironment.ICE),
