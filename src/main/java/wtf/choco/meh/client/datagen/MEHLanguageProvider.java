@@ -118,6 +118,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, Junk.BONE, "Bone");
         this.add(builder, Junk.BOWL, "Bowl");
         this.add(builder, Junk.BROKEN_FISHING_ROD, "Broken Fishing Rod");
+        this.add(builder, Junk.BUCKET_OF_LAVA, "Bucket of Lava");
         this.add(builder, Junk.BURNED_FLESH, "Burned Flesh");
         this.add(builder, Junk.CHARCOAL, "Charcoal");
         this.add(builder, Junk.CLUMP_OF_LEAVES, "Clump of Leaves");
@@ -126,7 +127,6 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, Junk.FROZEN_FLESH, "Frozen Flesh");
         this.add(builder, Junk.ICE_SHARD, "Ice Shard");
         this.add(builder, Junk.INK_SAC, "Ink Sac");
-        this.add(builder, Junk.BUCKET_OF_LAVA, "Bucket of Lava");
         this.add(builder, Junk.LEATHER, "Leather");
         this.add(builder, Junk.LEATHER_BOOTS, "Leather Boots");
         this.add(builder, Junk.LILY_PAD, "Lily Pad");
