@@ -17,6 +17,7 @@ public enum Treasure implements FishingCatch {
     ENCHANTED_FISHING_ROD("enchanted fishing rod", FishingEnvironment.WATER, FishingEnvironment.ICE),
     DIAMOND("diamond", FishingEnvironment.WATER, FishingEnvironment.ICE),
     DIAMOND_SWORD("diamond sword", FishingEnvironment.WATER, FishingEnvironment.ICE),
+    ENCHANTED_BOW("enchanted bow", FishingEnvironment.WATER, FishingEnvironment.ICE),
     GOLD_PICKAXE("gold pickaxe", FishingEnvironment.WATER),
     COMPASS("compass", FishingEnvironment.WATER),
     EMERALD("emerald", FishingEnvironment.WATER),

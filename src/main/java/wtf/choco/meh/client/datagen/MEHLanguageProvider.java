@@ -174,6 +174,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, Treasure.DIAMOND_SWORD, "Diamond Sword");
         this.add(builder, Treasure.EMERALD, "Emerald");
         this.add(builder, Treasure.ENCHANTED_BOOK, "Enchanted Book");
+        this.add(builder, Treasure.ENCHANTED_BOW, "Enchanted Bow");
         this.add(builder, Treasure.ENCHANTED_FISHING_ROD, "Enchanted Fishing Rod");
         this.add(builder, Treasure.EYE_OF_ENDER, "Eye of Ender");
         this.add(builder, Treasure.GOLD_PICKAXE, "Gold Pickaxe");
