@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.include.com.google.common.base.Preconditions;
 
 import wtf.choco.meh.client.MEHClient;
+import wtf.choco.meh.client.fishing.FishingState;
 import wtf.choco.meh.client.party.FabricTestPartyService;
 import wtf.choco.meh.client.party.HypixelPartyService;
 import wtf.choco.meh.client.party.NoopPartyService;
@@ -31,6 +32,8 @@ public final class HypixelServerState {
     private HypixelScoreboard scoreboard = null;
     private ServerLocationProvider serverLocationProvider;
     private PartyService partyService;
+
+    private final FishingState fishingState = new FishingState();
 
     /**
      * Initialize this instance and register listeners required for it to function.
@@ -56,6 +59,8 @@ public final class HypixelServerState {
             this.partyService = new NoopPartyService();
             MEHClient.LOGGER.info("Couldn't find official Hypixel Mod API! Can't query party status.");
         }
+
+        this.fishingState.initialize();
     }
 
     @SuppressWarnings("unused")
@@ -124,6 +129,15 @@ public final class HypixelServerState {
      */
     public PartyService getPartyService() {
         return partyService;
+    }
+
+    /**
+     * Get the {@link FishingState}.
+     *
+     * @return fishing state
+     */
+    public FishingState getFishingState() {
+        return fishingState;
     }
 
 }

@@ -14,6 +14,7 @@ import net.minecraft.util.profiling.Profiler;
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.fishing.CatchType;
 import wtf.choco.meh.client.fishing.FishingStatOverlayFeature;
+import wtf.choco.meh.client.fishing.FishingState;
 
 public final class FishingStatsHudElement implements HudElement {
 
@@ -44,7 +45,8 @@ public final class FishingStatsHudElement implements HudElement {
 
         Profiler.get().push("fishingStatsHud");
 
-        Component[] lines = feature.hasSpokenToDockMaster() ? getStatsLines() : getNoStatsLines();
+        FishingState fishingState = MEHClient.getInstance().getHypixelServerState().getFishingState();
+        Component[] lines = fishingState.hasSpokenToDockMaster() ? getStatsLines(fishingState) : getNoStatsLines();
 
         Minecraft minecraft = Minecraft.getInstance();
         int linesHeight = (minecraft.font.lineHeight * lines.length) + (VERTICAL_TEXT_SPACING * (lines.length - 1));
@@ -79,14 +81,14 @@ public final class FishingStatsHudElement implements HudElement {
         return lines;
     }
 
-    private Component[] getStatsLines() {
+    private Component[] getStatsLines(FishingState fishingState) {
         CatchType[] catchTypes = CatchType.values();
         Component[] lines = new Component[catchTypes.length + 1];
 
         lines[0] = Component.translatable(TRANSLATION_KEY_FISHING_STATS_HEADER).withStyle(ChatFormatting.DARK_GRAY);
         for (int i = 0; i < catchTypes.length; i++) {
             CatchType catchType = catchTypes[i];
-            int catches = feature.getCaught(catchType);
+            int catches = fishingState.getCaughtCount(catchType);
             Component text = Component.translatable(TRANSLATION_KEY_FISH_CAUGHT, catchType.getDisplayName()).withStyle(ChatFormatting.GRAY)
                     .append(" ")
                     .append(Component.literal(NumberFormat.getIntegerInstance().format(catches)).withStyle(catchType.getColor()));
