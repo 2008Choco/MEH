@@ -11,19 +11,30 @@ import wtf.choco.meh.client.util.Translatable;
 
 public enum QuantifiedTreasureType implements Translatable {
 
-    // TODO: All variants of game coins and tokens
     ARCADE_GAMES_COINS("Arcade Games Coins"),
+    ARENA_BRAWL_COINS("Arena Brawl Coins"),
+    BLITZ_SG_COINS("Blitz SG Coins"),
+    COPS_AND_CRIMS_COINS("Cops and Crims Coins"),
+    MEGA_WALLS_COINS("Mega Walls Coins"),
+    PAINTBALL_WARFARE_COINS("Paintball Warfare Coins"),
+    QUAKECRAFT_COINS("Quakecraft Coins"),
+    SKYWARS_COINS("SkyWars Coins"),
+    SMASH_HEROES_COINS("Smash Heroes Coins"),
+    TURBO_KART_RACERS_COINS("Turbo Kart Racers Coins"),
+    UHC_CHAMPIONS_COINS("UHC Champions Coins"),
+    VAMPIREZ_COINS("VampireZ Coins"),
     WALLS_COINS("The Walls Coins"),
+    WARLORDS_COINS("Warlords Coins"),
+
+    BED_WARS_TOKENS("Bed Wars Tokens"),
+    BUILD_BATTLE_TOKENS("Build Battle Tokens"),
+    DUELS_TOKENS("Duels Tokens"),
+    MURDER_MYSTERY_TOKENS("Murder Mystery Tokens"),
+    TNT_GAMES_TOKENS("The TNT Games Tokens"),
 
     HYPIXEL_EXPERIENCE("Hypixel Experience"),
     GUILD_EXPERIENCE("Guild Experience"),
-    EVENT_EXPERIENCE("Event Experience"),
-
-    /**
-     * @deprecated This shouldn't exist. Ideally this gets removed once we know all the variants of game coin rewards!
-     */
-    @Deprecated
-    UNKNOWN("unknown");
+    EVENT_EXPERIENCE("Event Experience");
 
     private static final Map<String, QuantifiedTreasureType> BY_NAME = new HashMap<>();
 
@@ -60,7 +71,7 @@ public enum QuantifiedTreasureType implements Translatable {
     }
 
     public static QuantifiedTreasureType getByName(String name) {
-        return BY_NAME.getOrDefault(name.toLowerCase(), QuantifiedTreasureType.UNKNOWN);
+        return BY_NAME.get(name.toLowerCase());
     }
 
 }
