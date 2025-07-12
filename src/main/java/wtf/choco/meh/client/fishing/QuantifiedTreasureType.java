@@ -13,6 +13,7 @@ public enum QuantifiedTreasureType implements Translatable {
 
     // TODO: All variants of game coins and tokens
     ARCADE_GAMES_COINS("Arcade Games Coins"),
+    WALLS_COINS("The Walls Coins"),
 
     HYPIXEL_EXPERIENCE("Hypixel Experience"),
     GUILD_EXPERIENCE("Guild Experience"),

@@ -166,6 +166,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         this.add(builder, QuantifiedTreasureType.EVENT_EXPERIENCE, "Event Experience");
         this.add(builder, QuantifiedTreasureType.GUILD_EXPERIENCE, "Guild Experience");
         this.add(builder, QuantifiedTreasureType.HYPIXEL_EXPERIENCE, "Hypixel Experience");
+        this.add(builder, QuantifiedTreasureType.WALLS_COINS, "The Walls Coins");
         this.add(builder, Treasure.BLAZE_POWDER, "Blaze Powder");
         this.add(builder, Treasure.BLAZE_ROD, "Blaze Rod");
         this.add(builder, Treasure.CHAINMAIL_CHESTPLATE, "Chainmail Chestplate");
