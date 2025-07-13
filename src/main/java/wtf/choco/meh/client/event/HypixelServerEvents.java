@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import wtf.choco.meh.client.chat.extractor.UserData;
 import wtf.choco.meh.client.fishing.FishingCatch;
+import wtf.choco.meh.client.fishing.MythicalFishEntity;
 import wtf.choco.meh.client.party.PartyRole;
 import wtf.choco.meh.client.server.HypixelServerType;
 
@@ -251,9 +252,17 @@ public final class HypixelServerEvents {
     );
 
     public static final Event<FishingEvent.Catch> FISHING_CATCH = EventFactory.createArrayBacked(FishingEvent.Catch.class,
-            listeners -> (fishingCatch) -> {
+            listeners -> fishingCatch -> {
                 for (FishingEvent.Catch event : listeners) {
                     event.onCatch(fishingCatch);
+                }
+            }
+    );
+
+    public static final Event<FishingEvent.MythicalFishAppear> FISHING_MYTHICAL_FISH_APPEAR = EventFactory.createArrayBacked(FishingEvent.MythicalFishAppear.class,
+            listeners -> entity -> {
+                for (FishingEvent.MythicalFishAppear event : listeners) {
+                    event.onAppear(entity);
                 }
             }
     );
@@ -581,6 +590,13 @@ public final class HypixelServerEvents {
         public interface Catch {
 
             public void onCatch(FishingCatch fishingCatch);
+
+        }
+
+        @FunctionalInterface
+        public interface MythicalFishAppear {
+
+            public void onAppear(MythicalFishEntity entity);
 
         }
 

@@ -3,10 +3,12 @@ package wtf.choco.meh.client.mixin;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -35,6 +37,25 @@ public abstract class GuiMixin implements GuiExtensions {
     @Final
     @Shadow
     private Map<Gui.ContextualInfo, Supplier<ContextualBarRenderer>> contextualInfoBarRenderers;
+
+    @Final
+    @Shadow
+    private Component title;
+    @Final
+    @Shadow
+    private Component subtitle;
+    @Final
+    @Shadow
+    private int titleFadeInTime;
+    @Final
+    @Shadow
+    private int titleStayTime;
+    @Final
+    @Shadow
+    private int titleFadeOutTime;
+    @Final
+    @Shadow
+    private int titleTime;
 
     @Unique
     private static boolean hideHealthInformation;
@@ -124,7 +145,23 @@ public abstract class GuiMixin implements GuiExtensions {
         }
     }
 
+    @SuppressWarnings("unused") // deltaTracker
+    @Inject(method = "renderTitle(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V", cancellable = true, at = @At(
+        value = "INVOKE",
+        target = "Lnet/minecraft/client/gui/Gui;getFont()Lnet/minecraft/client/gui/Font;",
+        shift = At.Shift.BEFORE
+    ))
+    private void onRenderTitle(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callback) {
+        if (!GuiEvents.TITLE_RENDER.invoker().onTitleRender(title, subtitle, titleFadeInTime, titleStayTime, titleFadeOutTime, titleTime)) {
+            this.clearTitles();
+            callback.cancel();
+        }
+    }
+
     @Shadow
     public abstract Gui.ContextualInfo nextContextualInfoState();
+
+    @Shadow
+    public abstract void clearTitles();
 
 }

@@ -1,11 +1,17 @@
 package wtf.choco.meh.client.fishing;
 
+import com.google.gson.JsonElement;
+import com.mojang.serialization.DataResult.Error;
+import com.mojang.serialization.JsonOps;
+
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -14,12 +20,17 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
 
+import org.jetbrains.annotations.Nullable;
+
+import wtf.choco.meh.client.event.GuiEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.event.MEHClientEntityEvents;
 import wtf.choco.meh.client.event.MEHEvents;
@@ -43,11 +54,15 @@ public final class FishingState {
             CatchType.MYTHICAL_FISH
     };
 
+    private static final String SUBTITLE_MYTHICAL_FISH_APPEARED = ChatFormatting.GRAY + "A " + ChatFormatting.YELLOW + "Mythical Fish " + ChatFormatting.GRAY + "emerges from the depths!!";
+    private static final Pattern PATTERN_MYTHICAL_FISH_NAME = Pattern.compile("^\\[(\\|)+\\]$");
+
     private final Object2IntMap<CatchType> catches = new Object2IntOpenHashMap<>(CatchType.values().length);
 
     private boolean fishing = false;
     private boolean spokenToDockMaster = false;
     private Reference<FishingHook> activeFishingHook = new WeakReference<>(null);
+    private MythicalFishEntity mythicalFishEntity;
 
     public void initialize() {
         MenuEvents.SLOT_ITEM_STACK_CHANGE.register(this::onSlotItemStackChange);
@@ -55,6 +70,7 @@ public final class FishingState {
         MEHEvents.HYPIXEL_SCOREBOARD_REFRESH.register(this::onScoreboardRefresh);
         MEHClientEntityEvents.ENTITY_ADD.register(this::onFishingHookAddedToWorld);
         MEHClientEntityEvents.ENTITY_REMOVE.register(this::onFishingHookRemovedFromWorld);
+        GuiEvents.TITLE_RENDER.register(this::onReceiveMythicalFishTitle);
     }
 
     public int getCaughtCount(CatchType type) {
@@ -87,6 +103,10 @@ public final class FishingState {
 
     private void onCatch(FishingCatch fishingCatch) {
         this.catches.merge(fishingCatch.getType(), 1, Integer::sum);
+
+        if (fishingCatch.getType() == CatchType.MYTHICAL_FISH) {
+            this.mythicalFishEntity = null;
+        }
     }
 
     private void onScoreboardRefresh(HypixelScoreboard scoreboard) {
@@ -105,6 +125,60 @@ public final class FishingState {
         if (fishingHook != null && entity.getUUID().equals(fishingHook.getUUID())) {
             this.activeFishingHook.clear();
         }
+
+        if (mythicalFishEntity != null) {
+            ArmorStand armorStand = mythicalFishEntity.armorStand().get();
+            if (armorStand != null && entity.getUUID().equals(armorStand.getUUID())) {
+                this.mythicalFishEntity = null;
+            }
+        }
+    }
+
+    @SuppressWarnings("unused") // fadeInTicks, stayTicks, fadeOutTicks, titleTicks
+    private boolean onReceiveMythicalFishTitle(Component title, @Nullable Component subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks, int titleTicks) {
+        if (mythicalFishEntity != null) {
+            return true;
+        }
+
+        if (subtitle == null || !subtitle.getString().equals(SUBTITLE_MYTHICAL_FISH_APPEARED)) {
+            return true;
+        }
+
+        MythicalFishEntity entity = findNearbyMythicalFish();
+        if (entity == null) {
+            return true;
+        }
+
+        this.mythicalFishEntity = entity;
+        HypixelServerEvents.FISHING_MYTHICAL_FISH_APPEAR.invoker().onAppear(entity);
+        return true;
+    }
+
+    private MythicalFishEntity findNearbyMythicalFish() {
+        FishingHook fishingHook = activeFishingHook.get();
+        if (fishingHook == null) {
+            return null;
+        }
+
+        List<ArmorStand> entities = fishingHook.level().getEntitiesOfClass(ArmorStand.class, fishingHook.getBoundingBox().inflate(5), entity -> {
+            Component name = entity.getCustomName();
+            return name != null && PATTERN_MYTHICAL_FISH_NAME.matcher(name.getString()).matches();
+        });
+        entities.sort(Comparator.comparing(entity -> entity.distanceToSqr(fishingHook)));
+
+        if (entities.isEmpty()) {
+            return null;
+        }
+
+        ArmorStand mythicalFishArmorStand = entities.get(0);
+        ItemStack itemStack = mythicalFishArmorStand.getItemBySlot(EquipmentSlot.HEAD);
+        MythicalFishType mythicalFishType = MythicalFishType.getByItemStack(itemStack);
+        if (mythicalFishType == null) {
+            String serializedItemStack = ItemStack.CODEC.encode(itemStack, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).mapOrElse(JsonElement::toString, Error::message);
+            Minecraft.getInstance().player.displayClientMessage(Component.literal("Couldn't determine the MythicalFishType of the active Mythical Fish! ItemStack: " + serializedItemStack), false);
+        }
+
+        return new MythicalFishEntity(new WeakReference<>(mythicalFishArmorStand), mythicalFishType);
     }
 
     private void extractStats(ItemStack itemStack) {
