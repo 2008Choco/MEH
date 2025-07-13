@@ -3,6 +3,8 @@ package wtf.choco.meh.client.fishing;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import net.minecraft.ChatFormatting;
@@ -10,12 +12,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
 
 import wtf.choco.meh.client.event.HypixelServerEvents;
+import wtf.choco.meh.client.event.MEHClientEntityEvents;
 import wtf.choco.meh.client.event.MEHEvents;
 import wtf.choco.meh.client.event.MenuEvents;
 import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
@@ -41,11 +47,14 @@ public final class FishingState {
 
     private boolean fishing = false;
     private boolean spokenToDockMaster = false;
+    private Reference<FishingHook> activeFishingHook = new WeakReference<>(null);
 
     public void initialize() {
         MenuEvents.SLOT_ITEM_STACK_CHANGE.register(this::onSlotItemStackChange);
         HypixelServerEvents.FISHING_CATCH.register(this::onCatch);
         MEHEvents.HYPIXEL_SCOREBOARD_REFRESH.register(this::onScoreboardRefresh);
+        MEHClientEntityEvents.ENTITY_ADD.register(this::onFishingHookAddedToWorld);
+        MEHClientEntityEvents.ENTITY_REMOVE.register(this::onFishingHookRemovedFromWorld);
     }
 
     public int getCaughtCount(CatchType type) {
@@ -58,6 +67,10 @@ public final class FishingState {
 
     public boolean hasSpokenToDockMaster() {
         return spokenToDockMaster;
+    }
+
+    public Reference<FishingHook> getActiveFishingHook() {
+        return activeFishingHook;
     }
 
     @SuppressWarnings("unused") // menu
@@ -78,6 +91,20 @@ public final class FishingState {
 
     private void onScoreboardRefresh(HypixelScoreboard scoreboard) {
         this.fishing = scoreboard.containsTextOnAnyLine("Fish Caught");
+    }
+
+    private void onFishingHookAddedToWorld(Entity entity) {
+        if (entity instanceof FishingHook hook && hook.getOwner() == Minecraft.getInstance().player) {
+            this.activeFishingHook = new WeakReference<>(hook);
+        }
+    }
+
+    @SuppressWarnings("unused") // reason
+    private void onFishingHookRemovedFromWorld(Entity entity, RemovalReason reason) {
+        FishingHook fishingHook = activeFishingHook.get();
+        if (fishingHook != null && entity.getUUID().equals(fishingHook.getUUID())) {
+            this.activeFishingHook.clear();
+        }
     }
 
     private void extractStats(ItemStack itemStack) {
