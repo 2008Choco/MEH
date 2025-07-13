@@ -13,14 +13,14 @@ import wtf.choco.meh.client.util.Translatable;
 
 public enum MythicalFishType implements Translatable {
 
-    EMBER_OF_HELIOS("Ember of Helios", FishRarity.COMMON),
-    DUST_OF_SELENE("Dust of Selene", FishRarity.COMMON),
-    SHADOW_OF_NYX("Shadow of Nyx", FishRarity.UNCOMMON),
-    HEART_OF_APHRODITE("Heart of Aphrodite", FishRarity.UNCOMMON),
-    SPARK_OF_ZEUS("Spark of Zeus", FishRarity.RARE),
-    SPIRIT_OF_DEMETER("Spirit of Demeter", FishRarity.RARE),
-    AUTOMATON_OF_DAEDALUS("Automaton of Daedalus", FishRarity.ULTRA_RARE, FishingEnvironment.WATER),
-    WRATH_OF_HADES("Wrath of Hades", FishRarity.ULTRA_RARE, FishingEnvironment.LAVA);
+    EMBER_OF_HELIOS("Ember of Helios", 25, FishRarity.COMMON),
+    DUST_OF_SELENE("Dust of Selene", 25, FishRarity.COMMON),
+    SHADOW_OF_NYX("Shadow of Nyx", 38, FishRarity.UNCOMMON),
+    HEART_OF_APHRODITE("Heart of Aphrodite", 38, FishRarity.UNCOMMON),
+    SPARK_OF_ZEUS("Spark of Zeus", 50, FishRarity.RARE),
+    SPIRIT_OF_DEMETER("Spirit of Demeter", 50, FishRarity.RARE),
+    AUTOMATON_OF_DAEDALUS("Automaton of Daedalus", 63, FishRarity.ULTRA_RARE, FishingEnvironment.WATER),
+    WRATH_OF_HADES("Wrath of Hades", 63, FishRarity.ULTRA_RARE, FishingEnvironment.LAVA);
 
     private static final Map<String, MythicalFishType> BY_NAME = new HashMap<>();
 
@@ -33,23 +33,31 @@ public enum MythicalFishType implements Translatable {
     private String descriptionKey;
 
     private final String name;
+    private final int maxHealth;
     private final FishRarity rarity;
     private final Set<FishingEnvironment> environments;
 
-    private MythicalFishType(String name, FishRarity rarity, FishingEnvironment environment, FishingEnvironment... additionalEnvironments) {
+    private MythicalFishType(String name, int maxHealth, FishRarity rarity, Set<FishingEnvironment> environments) {
         this.name = name;
+        this.maxHealth = maxHealth;
         this.rarity = rarity;
-        this.environments = ImmutableSet.copyOf(EnumSet.of(environment, additionalEnvironments));
+        this.environments = ImmutableSet.copyOf(environments);
     }
 
-    private MythicalFishType(String name, FishRarity rarity) {
-        this.name = name;
-        this.rarity = rarity;
-        this.environments = ImmutableSet.copyOf(EnumSet.allOf(FishingEnvironment.class));
+    private MythicalFishType(String name, int maxHealth, FishRarity rarity, FishingEnvironment environment, FishingEnvironment... additionalEnvironments) {
+        this(name, maxHealth, rarity, EnumSet.of(environment, additionalEnvironments));
+    }
+
+    private MythicalFishType(String name, int maxHealth, FishRarity rarity) {
+        this(name, maxHealth, rarity, EnumSet.allOf(FishingEnvironment.class));
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public FishRarity getRarity() {
