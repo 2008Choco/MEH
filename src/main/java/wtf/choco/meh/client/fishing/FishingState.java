@@ -103,10 +103,6 @@ public final class FishingState {
 
     private void onCatch(FishingCatch fishingCatch) {
         this.catches.merge(fishingCatch.getType(), 1, Integer::sum);
-
-        if (fishingCatch.getType() == CatchType.MYTHICAL_FISH) {
-            this.mythicalFishEntity = null;
-        }
     }
 
     private void onScoreboardRefresh(HypixelScoreboard scoreboard) {
@@ -126,6 +122,7 @@ public final class FishingState {
         }
 
         if (mythicalFishEntity != null && entity instanceof ArmorStand armorStand && mythicalFishEntity.armorStand().refersTo(armorStand)) {
+            HypixelServerEvents.FISHING_MYTHICAL_FISH_DISAPPEAR.invoker().onDisappear(mythicalFishEntity);
             this.mythicalFishEntity = null;
         }
     }

@@ -267,6 +267,14 @@ public final class HypixelServerEvents {
             }
     );
 
+    public static final Event<FishingEvent.MythicalFishDisappear> FISHING_MYTHICAL_FISH_DISAPPEAR = EventFactory.createArrayBacked(FishingEvent.MythicalFishDisappear.class,
+            listeners -> entity -> {
+                for (FishingEvent.MythicalFishDisappear event : listeners) {
+                    event.onDisappear(entity);
+                }
+            }
+    );
+
     private HypixelServerEvents() { }
 
     @FunctionalInterface
@@ -597,6 +605,13 @@ public final class HypixelServerEvents {
         public interface MythicalFishAppear {
 
             public void onAppear(MythicalFishEntity entity);
+
+        }
+
+        @FunctionalInterface
+        public interface MythicalFishDisappear {
+
+            public void onDisappear(MythicalFishEntity entity);
 
         }
 
