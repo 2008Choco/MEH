@@ -89,6 +89,11 @@ public final class FishingState {
         return activeFishingHook;
     }
 
+    @Nullable
+    public MythicalFishEntity getMythicalFishEntity() {
+        return mythicalFishEntity;
+    }
+
     @SuppressWarnings("unused") // menu
     private void onSlotItemStackChange(AbstractContainerMenu menu, Slot slot, ItemStack itemStack) {
         if (slot.index != STAT_ITEM_SLOT) {
