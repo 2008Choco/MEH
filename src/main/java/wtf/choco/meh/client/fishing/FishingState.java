@@ -121,16 +121,12 @@ public final class FishingState {
 
     @SuppressWarnings("unused") // reason
     private void onFishingHookRemovedFromWorld(Entity entity, RemovalReason reason) {
-        FishingHook fishingHook = activeFishingHook.get();
-        if (fishingHook != null && entity.getUUID().equals(fishingHook.getUUID())) {
+        if (entity instanceof FishingHook fishingHook && activeFishingHook.refersTo(fishingHook)) {
             this.activeFishingHook.clear();
         }
 
-        if (mythicalFishEntity != null) {
-            ArmorStand armorStand = mythicalFishEntity.armorStand().get();
-            if (armorStand != null && entity.getUUID().equals(armorStand.getUUID())) {
-                this.mythicalFishEntity = null;
-            }
+        if (mythicalFishEntity != null && entity instanceof ArmorStand armorStand && mythicalFishEntity.armorStand().refersTo(armorStand)) {
+            this.mythicalFishEntity = null;
         }
     }
 
@@ -155,11 +151,11 @@ public final class FishingState {
     }
 
     private MythicalFishEntity findNearbyMythicalFish() {
-        FishingHook fishingHook = activeFishingHook.get();
-        if (fishingHook == null) {
+        if (activeFishingHook.refersTo(null)) {
             return null;
         }
 
+        FishingHook fishingHook = activeFishingHook.get();
         List<ArmorStand> entities = fishingHook.level().getEntitiesOfClass(ArmorStand.class, fishingHook.getBoundingBox().inflate(5), entity -> {
             Component name = entity.getCustomName();
             return name != null && PATTERN_MYTHICAL_FISH_NAME.matcher(name.getString()).matches();
