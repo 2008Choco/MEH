@@ -2,7 +2,10 @@ package wtf.choco.meh.client.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+
+import org.jetbrains.annotations.Nullable;
 
 public class MEHClientEntityEvents {
 
@@ -22,6 +25,14 @@ public class MEHClientEntityEvents {
             }
     );
 
+    public static final Event<SetCustomName> SET_CUSTOM_NAME = EventFactory.createArrayBacked(SetCustomName.class,
+            listeners -> (entity, newName) -> {
+                for (SetCustomName event : listeners) {
+                    event.onSetCustomName(entity, newName);
+                }
+            }
+    );
+
     private MEHClientEntityEvents() { }
 
     @FunctionalInterface
@@ -35,6 +46,13 @@ public class MEHClientEntityEvents {
     public static interface EntityRemove {
 
         public void onEntityRemove(Entity entity, Entity.RemovalReason reason);
+
+    }
+
+    @FunctionalInterface
+    public static interface SetCustomName {
+
+        public void onSetCustomName(Entity entity, @Nullable Component newName);
 
     }
 

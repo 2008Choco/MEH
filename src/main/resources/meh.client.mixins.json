@@ -9,6 +9,7 @@
         "ChatScreenAccessor",
         "ClientLevelMixin",
         "ContextualBarRendererMixin",
+        "EntityMixin",
         "GuiAccessor",
         "GuiMixin",
         "ItemModelResolverMixin",

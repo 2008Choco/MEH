@@ -275,6 +275,30 @@ public final class HypixelServerEvents {
             }
     );
 
+    public static final Event<FishingEvent.MythicalFishReel> FISHING_MYTHICAL_FISH_REEL = EventFactory.createArrayBacked(FishingEvent.MythicalFishReel.class,
+            listeners -> entity -> {
+                for (FishingEvent.MythicalFishReel event : listeners) {
+                    event.onReel(entity);
+                }
+            }
+    );
+
+    public static final Event<FishingEvent.MythicalFishHealthChange> FISHING_MYTHICAL_FISH_HEALTH_CHANGE = EventFactory.createArrayBacked(FishingEvent.MythicalFishHealthChange.class,
+            listeners -> (entity, newHealth) -> {
+                for (FishingEvent.MythicalFishHealthChange event : listeners) {
+                    event.onHealthChange(entity, newHealth);
+                }
+            }
+    );
+
+    public static final Event<FishingEvent.MythicalFishHeatChange> FISHING_MYTHICAL_FISH_HEAT_CHANGE = EventFactory.createArrayBacked(FishingEvent.MythicalFishHeatChange.class,
+            listeners -> (entity, newHeat) -> {
+                for (FishingEvent.MythicalFishHeatChange event : listeners) {
+                    event.onHeatChange(entity, newHeat);
+                }
+            }
+    );
+
     private HypixelServerEvents() { }
 
     @FunctionalInterface
@@ -612,6 +636,27 @@ public final class HypixelServerEvents {
         public interface MythicalFishDisappear {
 
             public void onDisappear(MythicalFishEntity entity);
+
+        }
+
+        @FunctionalInterface
+        public interface MythicalFishReel {
+
+            public void onReel(MythicalFishEntity entity);
+
+        }
+
+        @FunctionalInterface
+        public interface MythicalFishHealthChange {
+
+            public void onHealthChange(MythicalFishEntity entity, int newHealth);
+
+        }
+
+        @FunctionalInterface
+        public interface MythicalFishHeatChange {
+
+            public void onHeatChange(MythicalFishEntity entity, double newHeat);
 
         }
 

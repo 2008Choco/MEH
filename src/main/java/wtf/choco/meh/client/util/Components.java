@@ -13,6 +13,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 
+import org.jetbrains.annotations.Nullable;
+
 public final class Components {
 
     private static final Style STYLE_NON_ITALIC = Style.EMPTY.withItalic(false);
@@ -31,6 +33,11 @@ public final class Components {
 
     public static MutableComponent emptyNonItalic() {
         return Component.empty().setStyle(STYLE_NON_ITALIC);
+    }
+
+    @Nullable
+    public static ChatFormatting asChatFormatting(@Nullable TextColor color) {
+        return color != null ? COLOR_TO_LEGACY_FORMATTING.get(color) : null;
     }
 
     public static boolean anyMatch(Component[] components, Component input) {
@@ -53,11 +60,9 @@ public final class Components {
         return component.visit((style, content) -> {
             if (format.isColor()) {
                 TextColor color = style.getColor();
-                if (color != null) {
-                    ChatFormatting componentFormatting = COLOR_TO_LEGACY_FORMATTING.get(color);
-                    if (componentFormatting == format) {
-                        return Optional.of(true);
-                    }
+                ChatFormatting componentFormatting = asChatFormatting(color);
+                if (componentFormatting == format) {
+                    return Optional.of(true);
                 }
 
                 return Optional.empty();
@@ -85,7 +90,7 @@ public final class Components {
         component.visit((style, content) -> {
             TextColor color = style.getColor();
             if (color != null) {
-                ChatFormatting formatting = COLOR_TO_LEGACY_FORMATTING.get(color);
+                ChatFormatting formatting = asChatFormatting(color);
                 if (formatting != null) {
                     output.append(colorChar).append(formatting.getChar());
                 }
