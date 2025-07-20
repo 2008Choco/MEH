@@ -10,6 +10,7 @@ import wtf.choco.meh.client.chat.ChatChannelsFeature;
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
 import wtf.choco.meh.client.chat.MnemonicChatFeature;
 import wtf.choco.meh.client.fishing.FishingStatOverlayFeature;
+import wtf.choco.meh.client.fishing.MythicalFishHelperFeature;
 import wtf.choco.meh.client.fishing.RetexturedFishingRodsFeature;
 import wtf.choco.meh.client.game.housing.HousingAutoDisableFlightFeature;
 import wtf.choco.meh.client.game.housing.HousingAutoNightVisionFeature;
@@ -29,6 +30,7 @@ public final class Features {
     public static final HousingAutoNightVisionFeature HOUSING_AUTO_NIGHT_VISION = register("housing_auto_night_vision", HousingAutoNightVisionFeature::new);
     public static final MnemonicChatFeature MNEMONIC_GC = register("mnemonic_gc", MnemonicChatFeature::gc);
     public static final MnemonicChatFeature MNEMONIC_GG = register("mnemonic_gg", MnemonicChatFeature::gg);
+    public static final MythicalFishHelperFeature MYTHICAL_FISH_HELPER = register("mythical_fish_helper", MythicalFishHelperFeature::new);
     public static final PartyManagerFeature PARTY_MANAGER = register("party_manager", PartyManagerFeature::new);
     public static final QuietThunderFeature QUIET_THUNDER = register("quiet_thunder", QuietThunderFeature::new);
     public static final RetexturedFishingRodsFeature RETEXTURED_FISHING_RODS = register("retextured_fishing_rods", RetexturedFishingRodsFeature::new);

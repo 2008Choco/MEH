@@ -233,7 +233,7 @@ public final class FishingState {
             Minecraft.getInstance().player.displayClientMessage(Component.literal("Couldn't determine the MythicalFishType of the active Mythical Fish! ItemStack: " + serializedItemStack), false);
         }
 
-        return new MythicalFishEntity(new WeakReference<>(mythicalFishArmorStand), mythicalFishType);
+        return new MythicalFishEntity(fishingHook.position(), new WeakReference<>(mythicalFishArmorStand), mythicalFishType);
     }
 
     private void extractStats(ItemStack itemStack) {

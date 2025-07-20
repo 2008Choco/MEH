@@ -3,6 +3,7 @@ package wtf.choco.meh.client.fishing;
 import java.lang.ref.Reference;
 
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.phys.Vec3;
 
 import wtf.choco.meh.client.event.HypixelServerEvents;
 
@@ -15,13 +16,19 @@ public final class MythicalFishEntity {
     private double heat = 0;
     private boolean enraged = true; // The fish starts enraged every time
 
+    private final Vec3 centerPosition;
     private final Reference<ArmorStand> armorStand;
     private final MythicalFishType type;
 
-    public MythicalFishEntity(Reference<ArmorStand> armorStand, MythicalFishType type) {
+    public MythicalFishEntity(Vec3 centerPosition, Reference<ArmorStand> armorStand, MythicalFishType type) {
+        this.centerPosition = centerPosition;
         this.armorStand = armorStand;
         this.type = type;
         this.health = type.getMaxHealth();
+    }
+
+    public Vec3 getCenterPosition() {
+        return centerPosition;
     }
 
     public Reference<ArmorStand> getArmorStand() {
