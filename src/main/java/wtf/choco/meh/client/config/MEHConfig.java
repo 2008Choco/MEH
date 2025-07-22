@@ -17,6 +17,9 @@ public final class MEHConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip(count = 2)
     private boolean quiet_thunder = false;
 
+    @ConfigEntry.Gui.Tooltip(count = 3)
+    private boolean trust_all_commands = false;
+
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.PrefixText
     @ConfigEntry.Gui.CollapsibleObject
@@ -56,6 +59,10 @@ public final class MEHConfig implements ConfigData {
 
     public boolean isQuietThunder() {
         return quiet_thunder;
+    }
+
+    public boolean isTrustAllCommands() {
+        return trust_all_commands;
     }
 
     public ConfigChatChannels getChatChannelsConfig() {

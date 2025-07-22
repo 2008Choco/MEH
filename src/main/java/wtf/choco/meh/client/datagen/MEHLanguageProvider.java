@@ -288,6 +288,11 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
             "Hypixel uses lots of lightning, but it's so loud!",
             "When enabled, reduces the volume of thunder sounds to a reasonable level."
         );
+        this.addOption(builder, "trust_all_commands", "Trust All Commands",
+            "Minecraft will prompt you for commands in click events.",
+            "On Hypixel, these are used often. When true, MEH will automatically confirm these commands",
+            "and execute them for you as though you pressed 'Yes'."
+        );
         this.addOption(builder, "chat_channels", "Chat Channels", "Organize your chat better with simple chat channels.");
         this.addOption(builder, "chat_channels.auto_switch_on_new_message", "Auto Switch on New Message",
             "When receiving a new private message, automatically switch to the newly created channel.",

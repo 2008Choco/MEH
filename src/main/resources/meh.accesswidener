@@ -1,4 +1,5 @@
 accessWidener v2 named
 
 accessible class net/minecraft/client/gui/Gui$ContextualInfo
+accessible class net/minecraft/client/multiplayer/ClientPacketListener$CommandCheckResult
 accessible field net/minecraft/world/entity/Entity DATA_CUSTOM_NAME Lnet/minecraft/network/syncher/EntityDataAccessor;

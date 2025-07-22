@@ -302,5 +302,9 @@
   "text.autoconfig.meh.option.skyblock.@Tooltip": "Enhancements to Hypixel SkyBlock.",
   "text.autoconfig.meh.option.skyblock.pretty_hud": "Pretty HUD",
   "text.autoconfig.meh.option.skyblock.pretty_hud.@Tooltip": "Improve SkyBlock's various HUD elements with pretty client-sided elements.",
+  "text.autoconfig.meh.option.trust_all_commands": "Trust All Commands",
+  "text.autoconfig.meh.option.trust_all_commands.@Tooltip[0]": "Minecraft will prompt you for commands in click events.",
+  "text.autoconfig.meh.option.trust_all_commands.@Tooltip[1]": "On Hypixel, these are used often. When true, MEH will automatically confirm these commands",
+  "text.autoconfig.meh.option.trust_all_commands.@Tooltip[2]": "and execute them for you as though you pressed 'Yes'.",
   "text.autoconfig.meh.title": "MEH Options"
 }
