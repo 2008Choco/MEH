@@ -18,6 +18,9 @@ public final class MEHConfig implements ConfigData {
     private boolean trust_all_commands = false;
 
     @ConfigEntry.Gui.Tooltip
+    private boolean improved_anvil_input = true;
+
+    @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.PrefixText
     @ConfigEntry.Gui.CollapsibleObject
     private ConfigChatChannels chat_channels = new ConfigChatChannels();
@@ -56,6 +59,10 @@ public final class MEHConfig implements ConfigData {
 
     public boolean isTrustAllCommands() {
         return trust_all_commands;
+    }
+
+    public boolean isImprovedAnvilInput() {
+        return improved_anvil_input;
     }
 
     public ConfigChatChannels getChatChannelsConfig() {

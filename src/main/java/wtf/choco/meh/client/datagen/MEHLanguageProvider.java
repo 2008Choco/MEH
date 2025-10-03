@@ -289,6 +289,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
             "On Hypixel, these are used often. When true, MEH will automatically confirm these commands",
             "and execute them for you as though you pressed 'Yes'."
         );
+        this.addOption(builder, "improved_anvil_input", "Improved Anvil Input", "When in an anvil input menu, press Enter to confirm.");
         this.addOption(builder, "chat_channels", "Chat Channels", "Organize your chat better with simple chat channels.");
         this.addOption(builder, "chat_channels.auto_switch_on_new_message", "Auto Switch on New Message",
             "When receiving a new private message, automatically switch to the newly created channel.",

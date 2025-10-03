@@ -27,6 +27,7 @@ public final class Features {
     public static final FishingStatOverlayFeature FISHING_STAT_OVERLAY = register("fishing_stat_overlay", FishingStatOverlayFeature::new);
     public static final HousingAutoDisableFlightFeature HOUSING_AUTO_DISABLE_FLIGHT = register("housing_auto_disable_flight", HousingAutoDisableFlightFeature::new);
     public static final HousingAutoNightVisionFeature HOUSING_AUTO_NIGHT_VISION = register("housing_auto_night_vision", HousingAutoNightVisionFeature::new);
+    public static final ImprovedAnvilInputFeature IMPROVED_ANVIL_INPUT = register("improved_anvil_input", ImprovedAnvilInputFeature::new);
     public static final MnemonicChatFeature MNEMONIC_GC = register("mnemonic_gc", MnemonicChatFeature::gc);
     public static final MnemonicChatFeature MNEMONIC_GG = register("mnemonic_gg", MnemonicChatFeature::gg);
     public static final PartyManagerFeature PARTY_MANAGER = register("party_manager", PartyManagerFeature::new);

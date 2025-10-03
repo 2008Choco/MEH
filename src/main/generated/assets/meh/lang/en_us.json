@@ -259,6 +259,8 @@
   "text.autoconfig.meh.option.housing.auto_night_vision.@Tooltip[0]": "When enabled, try to execute well-known commands to enable Night Vision.",
   "text.autoconfig.meh.option.housing.auto_night_vision.@Tooltip[1]": "It will only try to execute commands that the client is aware of!",
   "text.autoconfig.meh.option.housing.auto_night_vision.@Tooltip[2]": "If a housing doesn't send commands to the client, this will not work!",
+  "text.autoconfig.meh.option.improved_anvil_input": "Improved Anvil Input",
+  "text.autoconfig.meh.option.improved_anvil_input.@Tooltip": "When in an anvil input menu, press Enter to confirm.",
   "text.autoconfig.meh.option.main_lobby_fishing": "Main Lobby Fishing",
   "text.autoconfig.meh.option.main_lobby_fishing.@Tooltip": "Enhancements to Hypixel's main lobby fishing experience.",
   "text.autoconfig.meh.option.main_lobby_fishing.fishing_stat_overlay": "Stat Overlay",
