@@ -14,7 +14,7 @@ import wtf.choco.meh.client.feature.Features;
 @Mixin(ClientLevel.class)
 public final class ClientLevelMixin {
 
-    @Inject(method = "getMarkerParticleTarget()Lnet/minecraft/world/level/block/Block", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getMarkerParticleTarget()Lnet/minecraft/world/level/block/Block;", at = @At("RETURN"), cancellable = true)
     private void getMarkerParticleTarget(CallbackInfoReturnable<Block> callback) {
         if (Features.BARRIER_RENDERER.isEnabled()) {
             callback.setReturnValue(Blocks.BARRIER);
