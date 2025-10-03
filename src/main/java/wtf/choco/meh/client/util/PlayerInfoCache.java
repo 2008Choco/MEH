@@ -34,7 +34,7 @@ public final class PlayerInfoCache {
 
                     // Now we have to do a session query
                     MEHClient.LOGGER.info("Querying for " + playerUUID + "'s info from session servers!");
-                    ProfileResult result = Minecraft.getInstance().getMinecraftSessionService().fetchProfile(playerUUID, true);
+                    ProfileResult result = Minecraft.getInstance().services().sessionService().fetchProfile(playerUUID, true);
                     return new PlayerInfo(result.profile(), false);
                 }
 

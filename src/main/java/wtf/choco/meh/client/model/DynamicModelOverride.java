@@ -3,6 +3,7 @@ package wtf.choco.meh.client.model;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -26,7 +27,7 @@ public interface DynamicModelOverride {
      *
      * @return true if should override and apply the {@link #getModelLocation()}, false otherwise
      */
-    public boolean shouldOverride(ItemStack itemStack, @Nullable Level level, @Nullable LivingEntity entity);
+    public boolean shouldOverride(ItemStack itemStack, @Nullable Level level, @Nullable ItemOwner entity);
 
     /**
      * Get the {@link ResourceLocation} pointing to the model file to use for the item if

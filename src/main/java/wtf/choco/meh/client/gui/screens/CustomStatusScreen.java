@@ -14,6 +14,9 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.input.InputWithModifiers;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -332,16 +335,18 @@ public final class CustomStatusScreen extends Screen {
         return true;
     }
 
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
+    @Override
+    public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
         if (!dragging) {
-            return super.mouseDragged(mouseX, mouseY, button, dx, dy);
+            return super.mouseDragged(event, dx, dy);
         }
 
-        this.updateScrollOffset(mouseY);
+        this.updateScrollOffset(event.y());
         return true;
     }
 
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         this.dragging = false;
 
         int scrollBarX = leftX + SCROLL_BAR_X;
@@ -349,12 +354,12 @@ public final class CustomStatusScreen extends Screen {
         int scrollBarY = topY + SCROLL_BAR_Y;
         int scrollBarMaxY = scrollBarY + SCROLL_BAR_HEIGHT + 1;
 
-        if (isAllowedToScroll() && mouseX > scrollBarX && mouseX < scrollBarMaxX && mouseY > scrollBarY && mouseY <= scrollBarMaxY) {
+        if (isAllowedToScroll() && event.x() > scrollBarX && event.x() < scrollBarMaxX && event.y() > scrollBarY && event.y() <= scrollBarMaxY) {
             this.dragging = true;
-            this.updateScrollOffset(mouseY);
+            this.updateScrollOffset(event.y());
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
 
     @Override
@@ -369,8 +374,8 @@ public final class CustomStatusScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN.matches(keyCode, scanCode) || minecraft.options.keyInventory.matches(keyCode, scanCode)) {
+    public boolean keyPressed(KeyEvent event) {
+        if (MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN.matches(event) || minecraft.options.keyInventory.matches(event)) {
             if (!addStatusButton.adding && !editStatusButton.editing) {
                 this.onClose();
                 return true;
@@ -383,25 +388,25 @@ public final class CustomStatusScreen extends Screen {
                 focusedIndex = button.index;
             }
             
-            if (keyCode == InputConstants.KEY_UP && focusedIndex == 0 && selectedIndex > 0) {
+            if (event.key() == InputConstants.KEY_UP && focusedIndex == 0 && selectedIndex > 0) {
                 this.selectedIndex--;
                 this.scrollOffset--;
-            } else if (keyCode == InputConstants.KEY_DOWN && focusedIndex == (STATUS_BUTTON_COUNT - 1) && selectedIndex < (statusStorage.getStatusCount() - 1)) {
+            } else if (event.key() == InputConstants.KEY_DOWN && focusedIndex == (STATUS_BUTTON_COUNT - 1) && selectedIndex < (statusStorage.getStatusCount() - 1)) {
                 this.selectedIndex++;
                 this.scrollOffset++;
             }
         }
 
         if (getFocused() instanceof CustomStatusButton) {
-            if (keyCode == InputConstants.KEY_RETURN || keyCode == InputConstants.KEY_NUMPADENTER) {
-                this.applyStatusButton.onPress();
-            } else if (keyCode == InputConstants.KEY_DELETE) {
+            if (event.key() == InputConstants.KEY_RETURN || event.key() == InputConstants.KEY_NUMPADENTER) {
+                this.applyStatusButton.onPress(event);
+            } else if (event.key() == InputConstants.KEY_DELETE) {
                 this.deleteStatusButton.playDownSound(minecraft.getSoundManager());
-                this.deleteStatusButton.onPress();
+                this.deleteStatusButton.onPress(event);
             }
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
     @Override
@@ -434,7 +439,7 @@ public final class CustomStatusScreen extends Screen {
         }
 
         @Override
-        public void onPress() {
+        public void onPress(InputWithModifiers input) {
             CustomStatusScreen.this.selectedIndex = index + scrollOffset;
         }
 
@@ -450,10 +455,10 @@ public final class CustomStatusScreen extends Screen {
         }
 
         @Override
-        public void onPress() {
+        public void onPress(InputWithModifiers input) {
             // We don't want to allow adding and editing at the same time
             if (editStatusButton.editing) {
-                CustomStatusScreen.this.editStatusButton.onPress();
+                CustomStatusScreen.this.editStatusButton.onPress(input);
             }
 
             CustomStatusScreen.this.selectedIndex = -1;
@@ -477,7 +482,7 @@ public final class CustomStatusScreen extends Screen {
         }
 
         @Override
-        public void onPress() {
+        public void onPress(InputWithModifiers input) {
             int beforeStatusCount = statusStorage.getStatusCount();
             CustomStatusScreen.this.statusStorage.removeStatus(selectedIndex);
 
@@ -503,14 +508,14 @@ public final class CustomStatusScreen extends Screen {
         }
 
         @Override
-        public void onPress() {
+        public void onPress(InputWithModifiers input) {
             if (selectedIndex < 0 || selectedIndex > statusStorage.getStatusCount()) {
                 return;
             }
 
             // We don't want to allow editing and adding at the same time
             if (addStatusButton.adding) {
-                CustomStatusScreen.this.addStatusButton.onPress();
+                CustomStatusScreen.this.addStatusButton.onPress(input);
             }
 
             this.editing = !editing;
@@ -538,7 +543,7 @@ public final class CustomStatusScreen extends Screen {
         }
 
         @Override
-        public void onPress() {
+        public void onPress(InputWithModifiers input) {
             if (selectedIndex < 0 || selectedIndex > statusStorage.getStatusCount()) {
                 return;
             }
@@ -566,9 +571,9 @@ public final class CustomStatusScreen extends Screen {
         }
 
         @Override
-        public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-            boolean confirm = (keyCode == InputConstants.KEY_RETURN || keyCode == InputConstants.KEY_NUMPADENTER);
-            boolean cancel = (keyCode == InputConstants.KEY_ESCAPE);
+        public boolean keyPressed(KeyEvent event) {
+            boolean confirm = (event.key() == InputConstants.KEY_RETURN || event.key() == InputConstants.KEY_NUMPADENTER);
+            boolean cancel = (event.key() == InputConstants.KEY_ESCAPE);
             boolean close = (confirm || cancel);
 
             if (confirm) {
@@ -590,7 +595,7 @@ public final class CustomStatusScreen extends Screen {
                 return false;
             }
 
-            return super.keyPressed(keyCode, scanCode, modifiers);
+            return super.keyPressed(event);
         }
 
         private void onValueChange(String value) {
@@ -612,13 +617,13 @@ public final class CustomStatusScreen extends Screen {
         }
 
         @Override
-        public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        public boolean keyPressed(KeyEvent event) {
             if (editingIndex == -1) {
                 return false;
             }
 
-            boolean confirm = (keyCode == InputConstants.KEY_RETURN || keyCode == InputConstants.KEY_NUMPADENTER);
-            boolean cancel = (keyCode == InputConstants.KEY_ESCAPE);
+            boolean confirm = (event.key() == InputConstants.KEY_RETURN || event.key() == InputConstants.KEY_NUMPADENTER);
+            boolean cancel = (event.key() == InputConstants.KEY_ESCAPE);
             boolean close = (confirm || cancel);
 
             if (confirm) {
@@ -639,7 +644,7 @@ public final class CustomStatusScreen extends Screen {
                 return false;
             }
 
-            return super.keyPressed(keyCode, scanCode, modifiers);
+            return super.keyPressed(event);
         }
 
         private void onValueChange(String value) {

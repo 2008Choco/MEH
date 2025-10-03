@@ -1,7 +1,7 @@
 package wtf.choco.meh.client.fishing;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -19,7 +19,7 @@ final class FishingRodModelOverride implements DynamicModelOverride {
     }
 
     @Override
-    public boolean shouldOverride(ItemStack itemStack, @Nullable Level level, @Nullable LivingEntity entity) {
+    public boolean shouldOverride(ItemStack itemStack, @Nullable Level level, @Nullable ItemOwner itemOwner) {
         return Features.RETEXTURED_FISHING_RODS.isEnabled() && fishingRodType.test(itemStack.getHoverName());
     }
 

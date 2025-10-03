@@ -11,7 +11,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.ChatScreen;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -195,19 +195,19 @@ public final class EmoteSelectorWidget implements Renderable {
     }
 
     @SuppressWarnings("unused")
-    public void onKeyPress(int key, int scancode, int modifiers) {
-        if (key == InputConstants.KEY_ESCAPE) {
+    public void onKeyPress(KeyEvent event) {
+        if (event.key() == InputConstants.KEY_ESCAPE) {
             this.returnFocusToChatBox();
             return;
         }
 
-        if (Screen.hasControlDown() && key == InputConstants.KEY_E) {
+        if (event.hasControlDown() && event.key() == InputConstants.KEY_E) {
             this.returnFocusToChatBox();
             return;
         }
 
-        if (key == InputConstants.KEY_RETURN) {
-            boolean keepOpen = Screen.hasShiftDown();
+        if (event.key() == InputConstants.KEY_RETURN) {
+            boolean keepOpen = event.hasShiftDown();
             String text = getSelectedEmote().getInputText();
             if (keepOpen) {
                 text += " ";
@@ -224,13 +224,13 @@ public final class EmoteSelectorWidget implements Renderable {
 
         int minEmoteIndex = (scrollOffset * CELLS_PER_ROW);
         int maxEmoteIndex = minEmoteIndex + EMOTES_PER_PAGE;
-        if (key == InputConstants.KEY_LEFT) {
+        if (event.key() == InputConstants.KEY_LEFT) {
             this.selectedEmoteIndex = Math.max(selectedEmoteIndex - 1, 0);
-        } else if (key == InputConstants.KEY_RIGHT) {
+        } else if (event.key() == InputConstants.KEY_RIGHT) {
             this.selectedEmoteIndex = Math.min(selectedEmoteIndex + 1, getKnownEmotes().size() - 1);
-        } else if (key == InputConstants.KEY_UP) {
+        } else if (event.key() == InputConstants.KEY_UP) {
             this.selectedEmoteIndex = Math.max(selectedEmoteIndex - CELLS_PER_ROW, 0);
-        } else if (key == InputConstants.KEY_DOWN) {
+        } else if (event.key() == InputConstants.KEY_DOWN) {
             this.selectedEmoteIndex = Math.min(selectedEmoteIndex + CELLS_PER_ROW, getKnownEmotes().size() - 1);
         }
 

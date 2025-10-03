@@ -15,13 +15,12 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-
-import org.lwjgl.glfw.GLFW;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.chat.extractor.UserData;
@@ -172,14 +171,14 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     @SuppressWarnings("unused")
-    private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
-        if (Screen.hasControlDown()) {
-            if (key == InputConstants.KEY_TAB) {
-                boolean next = (modifiers & GLFW.GLFW_MOD_SHIFT) == 0;
+    private boolean onKeyInChatScreen(ChatScreen screen, KeyEvent event) {
+        if (event.hasControlDown()) {
+            if (event.key() == InputConstants.KEY_TAB) {
+                boolean next = event.hasShiftDown();
                 return !handleSwitchChannelKeybind(next);
-            } else if (key == InputConstants.KEY_MINUS) {
+            } else if (event.key() == InputConstants.KEY_MINUS) {
                 return !handleDeleteChannelKeybind();
-            } else if (key == InputConstants.KEY_F) {
+            } else if (event.key() == InputConstants.KEY_F) {
                 return !handleToggleFocusModeKeybind();
             }
         }
@@ -187,8 +186,8 @@ public final class ChatChannelsFeature extends Feature {
         return true;
     }
 
-    private boolean onKeyInChatScreen(Screen screen, int key, int keycode, int scancode) { // Exists only as a way to target with method reference
-        return onKeyInChatScreen((ChatScreen) screen, key, keycode, scancode);
+    private boolean onKeyInChatScreen(Screen screen, KeyEvent event) { // bridge
+        return onKeyInChatScreen((ChatScreen) screen, event);
     }
 
     private boolean handleSwitchChannelKeybind(boolean next) {

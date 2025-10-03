@@ -90,13 +90,13 @@ public final class PartyListHudElement implements HudElement {
 
             Component text;
             if (position == Position.TOP_LEFT) {
-                text = Component.literal(playerInfo.getProfile().getName())
+                text = Component.literal(playerInfo.getProfile().name())
                     .append(" ")
                     .append(Component.literal("(" + member.getRole().getPrettyName() + ")").withStyle(ChatFormatting.GRAY));
             } else {
                 text = Component.literal("(" + member.getRole().getPrettyName() + ")").withStyle(ChatFormatting.GRAY)
                     .append(" ")
-                    .append(Component.literal(playerInfo.getProfile().getName()).withStyle(ChatFormatting.WHITE));
+                    .append(Component.literal(playerInfo.getProfile().name()).withStyle(ChatFormatting.WHITE));
             }
 
             int textOffset = 0;

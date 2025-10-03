@@ -72,7 +72,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add("gui.meh.fishing_stats.incomplete", "Speak to the %s to get your stats!");
 
         // Keybinds
-        builder.add(MEHKeybinds.CATEGORY_MEH, "MEH");
+        builder.add(MEHKeybinds.CATEGORY_MEH.id().toLanguageKey("key.category"), "MEH");
         this.add(builder, MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN, "Open Custom Status Screen");
 
         // Constants

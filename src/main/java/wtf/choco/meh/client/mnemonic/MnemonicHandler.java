@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.input.KeyEvent;
 
 import wtf.choco.meh.client.event.LWJGLEvents;
 import wtf.choco.meh.client.event.MEHEvents;
@@ -31,7 +32,7 @@ public final class MnemonicHandler {
     }
 
     @SuppressWarnings("unused")
-    private boolean onKeyStateChange(int keycode, int scancode, int action, int mods) {
+    private boolean onKeyStateChange(int action, KeyEvent event) {
         // Don't process anything if there's a screen open or if the action was not a press
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.screen != null || action != InputConstants.PRESS) {
@@ -55,7 +56,7 @@ public final class MnemonicHandler {
         if (stack == null || difference > MNEMONIC_TIMEOUT_MILLIS) {
             List<Mnemonic> possibleMnemonics = Mnemonics.stream()
                 .filter(mnemonic -> mnemonic.size() > 0)
-                .filter(mnemonic -> mnemonic.keycodeAt(0) == keycode)
+                .filter(mnemonic -> mnemonic.keycodeAt(0) == event.key())
                 .collect(Collectors.toCollection(ArrayList::new));
 
             if (possibleMnemonics.isEmpty()) {
@@ -66,7 +67,7 @@ public final class MnemonicHandler {
         }
 
         // Push the pressed key to the stack and don't continue if there are no more possible mnemonics
-        if (!stack.pushKey(keycode)) {
+        if (!stack.pushKey(event.key())) {
             this.stack = null;
             return true;
         }

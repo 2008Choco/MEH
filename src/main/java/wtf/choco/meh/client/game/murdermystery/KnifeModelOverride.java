@@ -2,6 +2,7 @@ package wtf.choco.meh.client.game.murdermystery;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -20,7 +21,7 @@ final class KnifeModelOverride implements DynamicModelOverride {
     }
 
     @Override
-    public boolean shouldOverride(ItemStack itemStack, @Nullable Level level, @Nullable LivingEntity entity) {
+    public boolean shouldOverride(ItemStack itemStack, @Nullable Level level, @Nullable ItemOwner itemOwner) {
         if (!Features.RETEXTURED_KNIVES.isEnabled()) {
             return false;
         }
@@ -29,8 +30,11 @@ final class KnifeModelOverride implements DynamicModelOverride {
          * If the knife is thrown, it's put on an armour stand, but Murder Mystery doesn't actually give the item its name.
          * All we have to work with is the item's type, so we'll take what we can get!
          */
-        if (entity != null && entity.getType() == EntityType.ARMOR_STAND && itemStack.is(knifeType.getItem().asItem())) {
-            return true;
+        if (itemOwner != null) {
+            LivingEntity itemOwnerEntity = itemOwner.asLivingEntity();
+            if (itemOwnerEntity != null && itemOwnerEntity.getType() == EntityType.ARMOR_STAND && itemStack.is(knifeType.getItem().asItem())) {
+                return true;
+            }
         }
 
         // In all other circumstances, test the name

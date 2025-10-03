@@ -18,7 +18,7 @@
   "gui.meh.fishing_stats.dock_master": "Dock Master",
   "gui.meh.fishing_stats.header": "Fishing Stats",
   "gui.meh.fishing_stats.incomplete": "Speak to the %s to get your stats!",
-  "key.categories.meh": "MEH",
+  "key.category.meh.meh": "MEH",
   "meh.channel.all.name": "All",
   "meh.channel.focus.tooltip": "Focus mode enabled. Press %s to disable.",
   "meh.channel.new.msg": "Creating new chat channel for %s.",

@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
@@ -51,26 +52,26 @@ public final class EmoteSelectorFeature extends Feature {
         });
     }
 
-    private boolean onKeyInChatScreen(ChatScreen screen, int key, int keycode, int modifiers) {
+    private boolean onKeyInChatScreen(ChatScreen screen, KeyEvent event) {
         if (!isEnabled() || ScreenUtil.isWritingCommand(screen)) {
             return true;
         }
 
-        if (Screen.hasControlDown() && key == InputConstants.KEY_E && !emoteSelector.isFocused()) {
+        if (event.hasControlDown() && event.key() == InputConstants.KEY_E && !emoteSelector.isFocused()) {
             this.emoteSelector.takeFocus(screen);
             return false;
         }
 
         if (emoteSelector.isFocused()) {
-            this.emoteSelector.onKeyPress(key, keycode, modifiers);
+            this.emoteSelector.onKeyPress(event);
             return false;
         }
 
         return true;
     }
 
-    private boolean onKeyInChatScreen(Screen screen, int key, int keycode, int scancode) { // bridge
-        return onKeyInChatScreen((ChatScreen) screen, key, keycode, scancode);
+    private boolean onKeyInChatScreen(Screen screen, KeyEvent event) { // bridge
+        return onKeyInChatScreen((ChatScreen) screen, event);
     }
 
     @SuppressWarnings("unused")
