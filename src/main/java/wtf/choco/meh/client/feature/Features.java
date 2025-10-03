@@ -30,7 +30,6 @@ public final class Features {
     public static final MnemonicChatFeature MNEMONIC_GC = register("mnemonic_gc", MnemonicChatFeature::gc);
     public static final MnemonicChatFeature MNEMONIC_GG = register("mnemonic_gg", MnemonicChatFeature::gg);
     public static final PartyManagerFeature PARTY_MANAGER = register("party_manager", PartyManagerFeature::new);
-    public static final QuietThunderFeature QUIET_THUNDER = register("quiet_thunder", QuietThunderFeature::new);
     public static final RetexturedFishingRodsFeature RETEXTURED_FISHING_RODS = register("retextured_fishing_rods", RetexturedFishingRodsFeature::new);
     public static final RetexturedKnivesFeature RETEXTURED_KNIVES = register("retextured_knives", RetexturedKnivesFeature::new);
 

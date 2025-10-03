@@ -13,8 +13,7 @@
         "GuiMixin",
         "ItemModelResolverMixin",
         "KeyboardHandlerMixin",
-        "ScreenAccessor",
-        "SoundEngineMixin"
+        "ScreenAccessor"
     ],
     "injectors": {
         "defaultRequire": 1

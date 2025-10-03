@@ -284,10 +284,6 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
             "Higher numbers consume more memory! Be careful!",
             "By default, Minecraft remembers only 100 messages."
         );
-        this.addOption(builder, "quiet_thunder", "Quiet Thunder",
-            "Hypixel uses lots of lightning, but it's so loud!",
-            "When enabled, reduces the volume of thunder sounds to a reasonable level."
-        );
         this.addOption(builder, "trust_all_commands", "Trust All Commands",
             "Minecraft will prompt you for commands in click events.",
             "On Hypixel, these are used often. When true, MEH will automatically confirm these commands",
