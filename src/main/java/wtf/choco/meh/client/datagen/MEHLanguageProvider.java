@@ -38,6 +38,8 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
     @Override
     public void generateTranslations(Provider registryLookup, TranslationBuilder builder) {
         // Literals
+        builder.add("meh.barrier_rendering.toggle.on", "Barrier rendering toggled ON! (Press %s to toggle)");
+        builder.add("meh.barrier_rendering.toggle.off", "Barrier rendering toggled OFF! (Press %s to toggle)");
         builder.add("meh.channel.all.name", "All");
         builder.add("meh.channel.focus.tooltip", "Focus mode enabled. Press %s to disable.");
         builder.add("meh.channel.new.msg", "Creating new chat channel for %s.");
@@ -74,6 +76,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         // Keybinds
         builder.add(MEHKeybinds.CATEGORY_MEH.id().toLanguageKey("key.category"), "MEH");
         this.add(builder, MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN, "Open Custom Status Screen");
+        this.add(builder, MEHKeybinds.TOGGLE_BARRIER_BLOCK_RENDERING, "Toggle Barrier Block Rendering");
 
         // Constants
         this.add(builder, CatchType.CREATURES, "Creatures");

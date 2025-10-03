@@ -19,6 +19,8 @@
   "gui.meh.fishing_stats.header": "Fishing Stats",
   "gui.meh.fishing_stats.incomplete": "Speak to the %s to get your stats!",
   "key.category.meh.meh": "MEH",
+  "meh.barrier_rendering.toggle.off": "Barrier rendering toggled OFF! (Press %s to toggle)",
+  "meh.barrier_rendering.toggle.on": "Barrier rendering toggled ON! (Press %s to toggle)",
   "meh.channel.all.name": "All",
   "meh.channel.focus.tooltip": "Focus mode enabled. Press %s to disable.",
   "meh.channel.new.msg": "Creating new chat channel for %s.",
@@ -305,5 +307,6 @@
   "text.autoconfig.meh.option.trust_all_commands.@Tooltip[0]": "Minecraft will prompt you for commands in click events.",
   "text.autoconfig.meh.option.trust_all_commands.@Tooltip[1]": "On Hypixel, these are used often. When true, MEH will automatically confirm these commands",
   "text.autoconfig.meh.option.trust_all_commands.@Tooltip[2]": "and execute them for you as though you pressed 'Yes'.",
-  "text.autoconfig.meh.title": "MEH Options"
+  "text.autoconfig.meh.title": "MEH Options",
+  "toggle_barrier_block_rendering": "Toggle Barrier Block Rendering"
 }

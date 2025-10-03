@@ -11,8 +11,8 @@ public final class MEHKeybinds {
 
     public static final KeyMapping.Category CATEGORY_MEH = KeyMapping.Category.register(MEHClient.key("meh"));
 
-    // Standard key mappings
     public static final KeyMapping OPEN_CUSTOM_STATUS_SCREEN = registerKeybind("open_custom_status_screen", InputConstants.UNKNOWN.getValue());
+    public static final KeyMapping TOGGLE_BARRIER_BLOCK_RENDERING = registerKeybind("toggle_barrier_block_rendering", InputConstants.UNKNOWN.getValue());
 
     private MEHKeybinds() { }
 
