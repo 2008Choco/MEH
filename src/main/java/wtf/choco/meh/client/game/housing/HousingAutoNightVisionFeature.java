@@ -24,7 +24,9 @@ public final class HousingAutoNightVisionFeature extends Feature {
             "nv",
             "nvn",
             "nvis",
+            "nvision",
             "nightvision",
+            "night",
             "see"
     };
 
