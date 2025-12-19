@@ -4,7 +4,6 @@
     "compatibilityLevel": "JAVA_17",
     "mixins": [
         "AbstractContainerMenuMixin",
-        "AbstractSoundInstanceAccessor",
         "ChatComponentMixin",
         "ChatScreenAccessor",
         "ClientLevelMixin",
