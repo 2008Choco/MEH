@@ -8,7 +8,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.profiling.Profiler;
 
 import wtf.choco.meh.client.MEHClient;
@@ -18,7 +18,7 @@ import wtf.choco.meh.client.fishing.FishingState;
 
 public final class FishingStatsHudElement implements HudElement {
 
-    public static final ResourceLocation ID = MEHClient.key("fishing_stats");
+    public static final Identifier ID = MEHClient.key("fishing_stats");
 
     private static final String TRANSLATION_KEY_FISH_CAUGHT = "gui.meh.fishing_stats.caught";
     private static final String TRANSLATION_KEY_FISHING_STATS_HEADER = "gui.meh.fishing_stats.header";

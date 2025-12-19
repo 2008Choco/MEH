@@ -19,7 +19,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 
 import wtf.choco.meh.client.MEHClient;
@@ -37,7 +37,7 @@ public final class ChatChannelsFeature extends Feature {
 
     static boolean dontSendToChannel = false;
 
-    private static final ResourceLocation TEXTURE_FOCUS = ResourceLocation.tryBuild(MEHClient.MOD_ID, "textures/gui/screen/focus.png");
+    private static final Identifier TEXTURE_FOCUS = Identifier.tryBuild(MEHClient.MOD_ID, "textures/gui/screen/focus.png");
 
     private static final int DEFAULT_CHAT_BOX_MAX_LENGTH = 256;
 

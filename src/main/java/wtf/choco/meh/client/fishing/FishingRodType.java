@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.util.Components;
@@ -38,9 +38,9 @@ public enum FishingRodType implements Predicate<Component> {
     private static final String MODEL_PREFIX = "item/";
     private static final String TEXTURE_LOCATION_PREFIX = "item/fishing_rod/";
 
-    private ResourceLocation itemModelLocation;
-    private ResourceLocation modelLocation, castModelLocation;
-    private ResourceLocation textureLocation, castTextureLocation;
+    private Identifier itemModelLocation;
+    private Identifier modelLocation, castModelLocation;
+    private Identifier textureLocation, castTextureLocation;
 
     private final Component[] displayNames;
 
@@ -65,7 +65,7 @@ public enum FishingRodType implements Predicate<Component> {
      *
      * @return the model location
      */
-    public ResourceLocation getItemModelLocation() {
+    public Identifier getItemModelLocation() {
         if (itemModelLocation == null) {
             this.itemModelLocation = MEHClient.key(name().toLowerCase());
         }
@@ -78,7 +78,7 @@ public enum FishingRodType implements Predicate<Component> {
      *
      * @return the model location
      */
-    public ResourceLocation getModelLocation() {
+    public Identifier getModelLocation() {
         if (modelLocation == null) {
             this.modelLocation = getItemModelLocation().withPrefix(MODEL_PREFIX);
         }
@@ -91,7 +91,7 @@ public enum FishingRodType implements Predicate<Component> {
      *
      * @return the model location
      */
-    public ResourceLocation getCastModelLocation() {
+    public Identifier getCastModelLocation() {
         if (castModelLocation == null) {
             this.castModelLocation = getModelLocation().withSuffix("_cast");
         }
@@ -104,7 +104,7 @@ public enum FishingRodType implements Predicate<Component> {
      *
      * @return the texture location
      */
-    public ResourceLocation getTextureLocation() {
+    public Identifier getTextureLocation() {
         if (textureLocation == null) {
             this.textureLocation = MEHClient.key(name().toLowerCase()).withPrefix(TEXTURE_LOCATION_PREFIX);
         }
@@ -117,7 +117,7 @@ public enum FishingRodType implements Predicate<Component> {
      *
      * @return the texture location
      */
-    public ResourceLocation getCastTextureLocation() {
+    public Identifier getCastTextureLocation() {
         if (castTextureLocation == null) {
             this.castTextureLocation = getTextureLocation().withSuffix("_cast");
         }

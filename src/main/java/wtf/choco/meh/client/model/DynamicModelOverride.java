@@ -2,9 +2,8 @@ package wtf.choco.meh.client.model;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.client.resources.model.ModelManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ItemOwner;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -30,8 +29,8 @@ public interface DynamicModelOverride {
     public boolean shouldOverride(ItemStack itemStack, @Nullable Level level, @Nullable ItemOwner entity);
 
     /**
-     * Get the {@link ResourceLocation} pointing to the model file to use for the item if
-     * {@link #shouldOverride(ItemStack, Level, LivingEntity)} returns true.
+     * Get the {@link Identifier} pointing to the model file to use for the item if
+     * {@link #shouldOverride(ItemStack, Level, ItemOwner)} returns true.
      * <p>
      * The returned location should point towards a model that has been loaded by the game and can
      * be recognized by the {@link ModelManager}. If a custom model is to be used (not associated with
@@ -39,6 +38,6 @@ public interface DynamicModelOverride {
      *
      * @return the override model location
      */
-    public ResourceLocation getModelLocation();
+    public Identifier getModelLocation();
 
 }

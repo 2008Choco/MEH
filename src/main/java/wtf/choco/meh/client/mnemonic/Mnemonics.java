@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import wtf.choco.meh.client.MEHClient;
 
@@ -15,7 +15,7 @@ import wtf.choco.meh.client.MEHClient;
  */
 public final class Mnemonics {
 
-    private static final Map<ResourceLocation, Mnemonic> BY_ID = new HashMap<>();
+    private static final Map<Identifier, Mnemonic> BY_ID = new HashMap<>();
 
     /**
      * "gg", which writes "gg" into the chat.
@@ -30,7 +30,7 @@ public final class Mnemonics {
     private Mnemonics() { }
 
     private static Mnemonic create(String id, int... keycodes) {
-        ResourceLocation key = ResourceLocation.tryBuild(MEHClient.MOD_ID, id);
+        Identifier key = Identifier.tryBuild(MEHClient.MOD_ID, id);
         Mnemonic mnemonic = Mnemonic.of(key, keycodes);
         BY_ID.put(key, mnemonic);
         return mnemonic;

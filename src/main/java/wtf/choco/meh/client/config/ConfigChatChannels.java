@@ -5,7 +5,7 @@ import java.util.List;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 
 public final class ConfigChatChannels {
 

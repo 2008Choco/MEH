@@ -16,7 +16,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.PlayerFaceRenderer;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3x2fStack;
@@ -28,7 +28,7 @@ import wtf.choco.meh.client.party.PartyMember;
 
 public final class PartyListHudElement implements HudElement {
 
-    public static final ResourceLocation ID = MEHClient.key("party_list");
+    public static final Identifier ID = MEHClient.key("party_list");
 
     public static enum Position implements Translatable {
 

@@ -10,7 +10,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.Profiler;
 
@@ -21,13 +21,13 @@ import wtf.choco.meh.client.game.skyblock.SkyBlockPrettyHudFeature;
 
 public final class SkyBlockPrettyHudHudElement implements HudElement {
 
-    public static final ResourceLocation ID = MEHClient.key("pretty_skyblock_hud");
+    public static final Identifier ID = MEHClient.key("pretty_skyblock_hud");
 
-    private static final ResourceLocation SPRITE_ARMOR_FULL = ResourceLocation.withDefaultNamespace("hud/armor_full"); // Vanilla sprite
-    private static final ResourceLocation SPRITE_HEALTH_CONTAINER = MEHClient.key("hud/health_container");
-    private static final ResourceLocation SPRITE_HEALTH_FULL = MEHClient.key("hud/health_full");
-    private static final ResourceLocation SPRITE_MANA_CONTAINER = MEHClient.key("hud/mana_container");
-    private static final ResourceLocation SPRITE_MANA_FULL = MEHClient.key("hud/mana_full");
+    private static final Identifier SPRITE_ARMOR_FULL = Identifier.withDefaultNamespace("hud/armor_full"); // Vanilla sprite
+    private static final Identifier SPRITE_HEALTH_CONTAINER = MEHClient.key("hud/health_container");
+    private static final Identifier SPRITE_HEALTH_FULL = MEHClient.key("hud/health_full");
+    private static final Identifier SPRITE_MANA_CONTAINER = MEHClient.key("hud/mana_container");
+    private static final Identifier SPRITE_MANA_FULL = MEHClient.key("hud/mana_full");
 
     private static final NumberFormat FORMAT = NumberFormat.getIntegerInstance();
 

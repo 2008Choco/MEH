@@ -1,6 +1,6 @@
 package wtf.choco.meh.client.fishing;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,7 +24,7 @@ final class FishingRodModelOverride implements DynamicModelOverride {
     }
 
     @Override
-    public ResourceLocation getModelLocation() {
+    public Identifier getModelLocation() {
         return fishingRodType.getItemModelLocation();
     }
 

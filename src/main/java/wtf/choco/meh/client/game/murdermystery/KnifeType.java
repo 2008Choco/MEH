@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 
@@ -84,9 +84,9 @@ public enum KnifeType implements Predicate<Component> {
     private static final String MODEL_PREFIX = "item/";
     private static final String TEXTURE_LOCATION_PREFIX = "item/knife/";
 
-    private ResourceLocation itemModelLocation;
-    private ResourceLocation modelLocation;
-    private ResourceLocation textureLocation;
+    private Identifier itemModelLocation;
+    private Identifier modelLocation;
+    private Identifier textureLocation;
 
     private final ItemLike item;
     private final Component[] displayNames;
@@ -126,7 +126,7 @@ public enum KnifeType implements Predicate<Component> {
      *
      * @return the model location
      */
-    public ResourceLocation getItemModelLocation() {
+    public Identifier getItemModelLocation() {
         if (itemModelLocation == null) {
             this.itemModelLocation = MEHClient.key(name().toLowerCase());
         }
@@ -139,7 +139,7 @@ public enum KnifeType implements Predicate<Component> {
      *
      * @return the model location
      */
-    public ResourceLocation getModelLocation() {
+    public Identifier getModelLocation() {
         if (modelLocation == null) {
             this.modelLocation = getItemModelLocation().withPrefix(MODEL_PREFIX);
         }
@@ -152,7 +152,7 @@ public enum KnifeType implements Predicate<Component> {
      *
      * @return the texture location
      */
-    public ResourceLocation getTextureLocation() {
+    public Identifier getTextureLocation() {
         if (textureLocation == null) {
             this.textureLocation = MEHClient.key(name().toLowerCase()).withPrefix(TEXTURE_LOCATION_PREFIX);
         }

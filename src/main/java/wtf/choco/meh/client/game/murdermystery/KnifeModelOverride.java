@@ -1,6 +1,6 @@
 package wtf.choco.meh.client.game.murdermystery;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,7 +42,7 @@ final class KnifeModelOverride implements DynamicModelOverride {
     }
 
     @Override
-    public ResourceLocation getModelLocation() {
+    public Identifier getModelLocation() {
         return knifeType.getItemModelLocation();
     }
 

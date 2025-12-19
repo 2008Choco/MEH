@@ -10,6 +10,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.PlainTextButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -20,7 +21,8 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 
@@ -34,12 +36,12 @@ import wtf.choco.meh.client.util.Components;
 
 public final class CustomStatusScreen extends Screen {
 
-    private static final ResourceLocation BACKGROUND_LOCATION = MEHClient.key("textures/gui/custom_status_screen.png");
+    private static final Identifier BACKGROUND_LOCATION = MEHClient.key("textures/gui/custom_status_screen.png");
 
-    private static final ResourceLocation SCROLLER_SPRITE = MEHClient.key("container/scroller");
-    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = MEHClient.key("container/scroller_disabled");
-    private static final ResourceLocation SIDEBAR_TAB_SPRITE = MEHClient.key("container/sidebar_tab");
-    private static final ResourceLocation SIDEBAR_TEXT_FIELD_SPRITE = MEHClient.key("container/sidebar_text_field");
+    private static final Identifier SCROLLER_SPRITE = MEHClient.key("container/scroller");
+    private static final Identifier SCROLLER_DISABLED_SPRITE = MEHClient.key("container/scroller_disabled");
+    private static final Identifier SIDEBAR_TAB_SPRITE = MEHClient.key("container/sidebar_tab");
+    private static final Identifier SIDEBAR_TEXT_FIELD_SPRITE = MEHClient.key("container/sidebar_text_field");
 
     private static final int MAX_STATUS_LENGTH = 256 - "/customstatus ".length();
 
@@ -153,8 +155,8 @@ public final class CustomStatusScreen extends Screen {
     }
 
     @Override
-    public void resize(Minecraft minecraft, int width, int height) {
-        super.resize(minecraft, width, height);
+    public void resize(int width, int height) {
+        super.resize(width, height);
         this.updateTopLeftCoordinates(width, height);
     }
 
@@ -266,7 +268,7 @@ public final class CustomStatusScreen extends Screen {
             }
         }
 
-        ResourceLocation sprite = isAllowedToScroll() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
+        Identifier sprite = isAllowedToScroll() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, leftX + SCROLL_BAR_X, topY + SCROLL_BAR_Y + scrollerOffset, SCROLLER_WIDTH, SCROLLER_HEIGHT);
     }
 
@@ -429,7 +431,7 @@ public final class CustomStatusScreen extends Screen {
         this.scrollOffset = Mth.clamp((int) newScrollOffset, 0, extraStatuses);
     }
 
-    private final class CustomStatusButton extends Button {
+    private final class CustomStatusButton extends Button.Plain {
 
         private final int index;
 
@@ -445,7 +447,7 @@ public final class CustomStatusScreen extends Screen {
 
     }
 
-    private final class AddStatusButton extends Button {
+    private final class AddStatusButton extends Button.Plain {
 
         private boolean adding = false;
 
@@ -474,9 +476,9 @@ public final class CustomStatusScreen extends Screen {
 
     }
 
-    private final class RemoveStatusButton extends Button {
+    private final class RemoveStatusButton extends Button.Plain {
 
-        protected RemoveStatusButton(int x, int y, int width, int height) {
+        private RemoveStatusButton(int x, int y, int width, int height) {
             super(x, y, width, height, Component.literal("-"), null, text -> Component.translatable("gui.meh.custom_status.button.delete_status.narration"));
             this.setTooltip(Tooltip.create(Component.translatable("gui.meh.custom_status.button.delete_status.tooltip")));
         }
@@ -498,11 +500,11 @@ public final class CustomStatusScreen extends Screen {
 
     }
 
-    private final class EditStatusButton extends Button {
+    private final class EditStatusButton extends Button.Plain {
 
         private boolean editing = false;
 
-        protected EditStatusButton(int x, int y, int width, int height) {
+        private EditStatusButton(int x, int y, int width, int height) {
             super(x, y, width, height, Component.literal("✎"), null, text -> Component.translatable("gui.meh.custom_status.button.edit_status.narration"));
             this.setTooltip(Tooltip.create(Component.translatable("gui.meh.custom_status.button.edit_status.tooltip")));
         }
@@ -535,7 +537,7 @@ public final class CustomStatusScreen extends Screen {
 
     }
 
-    private final class ApplyStatusButton extends Button {
+    private final class ApplyStatusButton extends Button.Plain {
 
         public ApplyStatusButton(int x, int y, int width, int height) {
             super(x, y, width, height, Component.literal("✔"), null, text -> Component.translatable("gui.meh.custom_status.button.apply_status.narration"));
