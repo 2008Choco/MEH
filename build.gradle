@@ -45,8 +45,7 @@ dependencies {
     modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
     modApi "net.hypixel:mod-api:${project.hypixel_mod_api_version}"
 
-    // TODO: DevAuth does not yet support 1.21.11
-    // modRuntimeOnly "me.djtheredstoner:DevAuth-fabric:${project.dev_auth_version}"
+    modRuntimeOnly "me.djtheredstoner:DevAuth-fabric:${project.dev_auth_version}"
 }
 
 processResources {
