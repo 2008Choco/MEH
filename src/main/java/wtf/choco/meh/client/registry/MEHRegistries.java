@@ -12,7 +12,7 @@ public final class MEHRegistries {
 
     public static final ResourceKey<Registry<Feature>> KEY_FEATURE = ResourceKey.createRegistryKey(MEHClient.key("feature"));
 
-    public static final MappedRegistry<Feature> FEATURE = FabricRegistryBuilder.createSimple(KEY_FEATURE).buildAndRegister();
+    public static final MappedRegistry<Feature> FEATURE = FabricRegistryBuilder.create(KEY_FEATURE).buildAndRegister();
 
     private MEHRegistries() { }
 

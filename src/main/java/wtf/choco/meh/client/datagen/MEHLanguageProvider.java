@@ -2,7 +2,7 @@ package wtf.choco.meh.client.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.core.HolderLookup.Provider;
@@ -22,7 +22,7 @@ import wtf.choco.meh.client.fishing.Plant;
 import wtf.choco.meh.client.fishing.QuantifiedTreasureType;
 import wtf.choco.meh.client.fishing.Treasure;
 import wtf.choco.meh.client.gui.PartyListHudElement;
-import wtf.choco.meh.client.keybind.MEHKeybinds;
+import wtf.choco.meh.client.keybind.MEHKeyMappings;
 import wtf.choco.meh.client.mnemonic.Mnemonics;
 import wtf.choco.meh.client.server.HypixelServerType;
 import wtf.choco.meh.client.util.Translatable;
@@ -31,7 +31,7 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
 
     private static final String AUTOCONFIG = "text.autoconfig." + MEHClient.MOD_ID;
 
-    protected MEHLanguageProvider(FabricDataOutput output, CompletableFuture<Provider> registryLookup) {
+    protected MEHLanguageProvider(FabricPackOutput output, CompletableFuture<Provider> registryLookup) {
         super(output, "en_us", registryLookup);
     }
 
@@ -74,9 +74,9 @@ public final class MEHLanguageProvider extends FabricLanguageProvider {
         builder.add("gui.meh.fishing_stats.incomplete", "Speak to the %s to get your stats!");
 
         // Keybinds
-        builder.add(MEHKeybinds.CATEGORY_MEH.id().toLanguageKey("key.category"), "MEH");
-        this.add(builder, MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN, "Open Custom Status Screen");
-        this.add(builder, MEHKeybinds.TOGGLE_BARRIER_BLOCK_RENDERING, "Toggle Barrier Block Rendering");
+        builder.add(MEHKeyMappings.CATEGORY_MEH.id().toLanguageKey("key.category"), "MEH");
+        this.add(builder, MEHKeyMappings.OPEN_CUSTOM_STATUS_SCREEN, "Open Custom Status Screen");
+        this.add(builder, MEHKeyMappings.TOGGLE_BARRIER_BLOCK_RENDERING, "Toggle Barrier Block Rendering");
 
         // Constants
         this.add(builder, CatchType.CREATURES, "Creatures");

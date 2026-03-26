@@ -5,7 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.serialization.JsonOps;
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -21,13 +21,13 @@ public final class ClientTestCommand {
     private ClientTestCommand() { }
 
     public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
-        dispatcher.register(ClientCommandManager.literal("mehtest")
-            .then(ClientCommandManager.literal("party")
-                .then(ClientCommandManager.literal("refresh").executes(ClientTestCommand::refreshParty))
-                .then(ClientCommandManager.literal("delete").executes(ClientTestCommand::deleteParty))
+        dispatcher.register(ClientCommands.literal("mehtest")
+            .then(ClientCommands.literal("party")
+                .then(ClientCommands.literal("refresh").executes(ClientTestCommand::refreshParty))
+                .then(ClientCommands.literal("delete").executes(ClientTestCommand::deleteParty))
             )
-            .then(ClientCommandManager.literal("actionbar")
-                .then(ClientCommandManager.literal("copy").executes(ClientTestCommand::copyActionBar))
+            .then(ClientCommands.literal("actionbar")
+                .then(ClientCommands.literal("copy").executes(ClientTestCommand::copyActionBar))
             )
         );
     }

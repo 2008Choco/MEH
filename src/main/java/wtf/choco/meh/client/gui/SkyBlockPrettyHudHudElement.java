@@ -7,7 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -52,7 +52,7 @@ public final class SkyBlockPrettyHudHudElement implements HudElement {
     }
 
     @Override
-    public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         if (!feature.isEnabled()) {
             return;
         }
@@ -73,7 +73,7 @@ public final class SkyBlockPrettyHudHudElement implements HudElement {
         Profiler.get().pop();
     }
 
-    private void renderHealthBar(GuiGraphics graphics, int x, int y) {
+    private void renderHealthBar(GuiGraphicsExtractor graphics, int x, int y) {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_HEALTH_CONTAINER, x, y, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
         float healthProgress = Mth.clamp(((HEALTH_BAR_ICON_SIZE / 2.0F) + feature.getCurrentHealth()) / Math.max(feature.getMaxHealth(), 1), 0.0F, 1.0F);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_HEALTH_FULL, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT, 0, 0, x, y, Mth.floor(healthProgress * HEALTH_BAR_WIDTH), HEALTH_BAR_HEIGHT);
@@ -85,7 +85,7 @@ public final class SkyBlockPrettyHudHudElement implements HudElement {
         this.renderScaledText(graphics, healthText, healthBarTextX, healthBarTextY, TEXT_SCALE, true);
     }
 
-    private void renderDefenseInformation(GuiGraphics graphics, int x, int y) {
+    private void renderDefenseInformation(GuiGraphicsExtractor graphics, int x, int y) {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_ARMOR_FULL, x, y, DEFENSE_ICON_SIZE, DEFENSE_ICON_SIZE);
 
         Component defenseText = Component.literal(FORMAT.format(feature.getCurrentDefense()));
@@ -95,7 +95,7 @@ public final class SkyBlockPrettyHudHudElement implements HudElement {
         this.renderScaledText(graphics, defenseText, defenseTextX, defenseTextY, TEXT_SCALE, false);
     }
 
-    private void renderManaBar(GuiGraphics graphics, int x, int y) {
+    private void renderManaBar(GuiGraphicsExtractor graphics, int x, int y) {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_MANA_CONTAINER, x, y, MANA_BAR_WIDTH, MANA_BAR_HEIGHT);
         float manaProgress = Mth.clamp(((MANA_BAR_ICON_SIZE / 2.0F) + feature.getCurrentMana()) / Math.max(feature.getMaxMana(), 1), 0.0F, 1.0F);
 
@@ -112,7 +112,7 @@ public final class SkyBlockPrettyHudHudElement implements HudElement {
         this.renderScaledText(graphics, manaText, manaBarTextX, manaBarTextY, TEXT_SCALE, true);
     }
 
-    private void renderScaledText(GuiGraphics graphics, Component text, int x, int y, float scale, boolean centered) {
+    private void renderScaledText(GuiGraphicsExtractor graphics, Component text, int x, int y, float scale, boolean centered) {
         Font font = Minecraft.getInstance().font;
         int halfLineHeight = (font.lineHeight / 2);
         float xScaleOffset = 0.0F;
@@ -128,7 +128,7 @@ public final class SkyBlockPrettyHudHudElement implements HudElement {
         pose.translate(x + xScaleOffset, y + halfLineHeight);
         pose.scale(scale);
         pose.translate(-x - xScaleOffset, -y - halfLineHeight);
-        graphics.drawString(font, text, x, y, 0xFFFFFFFF);
+        graphics.text(font, text, x, y, 0xFFFFFFFF);
         pose.popMatrix();
     }
 

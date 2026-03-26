@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.ChatScreen;
@@ -99,7 +99,7 @@ public final class EmoteSelectorWidget implements Renderable {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         if (!feature.isEnabled() || !isFocused() || chatScreen == null) {
             return;
         }
@@ -128,7 +128,7 @@ public final class EmoteSelectorWidget implements Renderable {
         stack.translate(WIDGET_WIDTH / 2, WIDGET_HEADER_HEIGHT / 2); // Move to the center of the widget
         stack.scale(0.75F); // Scale the text down (from the middle)
         ChatEmote selectedEmote = knownEmotes.get(selectedEmoteIndex);
-        graphics.drawCenteredString(minecraft.font, selectedEmote.getDisplayName(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
+        graphics.centeredText(minecraft.font, selectedEmote.getDisplayName(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
 
         stack.popMatrix();
 
@@ -158,7 +158,7 @@ public final class EmoteSelectorWidget implements Renderable {
         profiler.pop();
     }
 
-    private void renderEmoteCell(GuiGraphics graphics, Matrix3x2fStack stack, ChatEmote emote, boolean selected) {
+    private void renderEmoteCell(GuiGraphicsExtractor graphics, Matrix3x2fStack stack, ChatEmote emote, boolean selected) {
         int color = (selected ? CELL_SELECTED_COLOR : CELL_COLOR);
         graphics.fill(0, 0, CELL_SIZE, CELL_SIZE, color);
 
@@ -175,7 +175,7 @@ public final class EmoteSelectorWidget implements Renderable {
             stack.scale(scale);
         }
 
-        graphics.drawCenteredString(minecraft.font, emote.getEmoteDisplayText(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
+        graphics.centeredText(minecraft.font, emote.getEmoteDisplayText(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
         stack.popMatrix();
 
         // Gold selection border

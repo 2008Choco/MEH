@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
@@ -37,7 +37,7 @@ public final class ChatChannelsFeature extends Feature {
 
     static boolean dontSendToChannel = false;
 
-    private static final Identifier TEXTURE_FOCUS = Identifier.tryBuild(MEHClient.MOD_ID, "textures/gui/screen/focus.png");
+    private static final Identifier TEXTURE_FOCUS = Identifier.fromNamespaceAndPath(MEHClient.MOD_ID, "textures/gui/screen/focus.png");
 
     private static final int DEFAULT_CHAT_BOX_MAX_LENGTH = 256;
 
@@ -81,7 +81,7 @@ public final class ChatChannelsFeature extends Feature {
             }
 
             ScreenKeyboardEvents.allowKeyPress(screen).register(this::onKeyInChatScreen);
-            ScreenEvents.afterRender(screen).register(this::onRenderChatScreen);
+            ScreenEvents.afterExtract(screen).register(this::onRenderChatScreen);
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
@@ -124,7 +124,7 @@ public final class ChatChannelsFeature extends Feature {
         int r = (int) (((random.nextFloat() / 2.0F) + 0.5F) * 0xFF);
         int g = (int) (((random.nextFloat() / 2.0F) + 0.5F) * 0xFF);
         int b = (int) (((random.nextFloat() / 2.0F) + 0.5F) * 0xFF);
-        int randomColor = ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
+        int randomColor = ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
 
         Component channelDisplayName = Component.literal(username);
         ChatChannel channel = new ChatChannel(username, channelDisplayName, randomColor, "w " + username, ChatChannelType.PRIVATE_MESSAGE, ChatMessageFilter.privateMessage(username));
@@ -135,7 +135,7 @@ public final class ChatChannelsFeature extends Feature {
 
         int newChannelIndex = channelSelector.addChannel(channel);
 
-        minecraft.player.displayClientMessage(Component.translatable("meh.channel.new.msg", channel.getDisplayName(true)), false);
+        minecraft.player.sendSystemMessage(Component.translatable("meh.channel.new.msg", channel.getDisplayName(true)));
 
         // If the chat window isn't open, we'll automatically switch to the newly created channel
         if (MEHClient.getConfig().getChatChannelsConfig().isAutoSwitchOnNewMessage() && !(minecraft.screen instanceof ChatScreen)) {
@@ -245,18 +245,13 @@ public final class ChatChannelsFeature extends Feature {
     }
 
     @SuppressWarnings("unused")
-    private void onRenderChatScreen(ChatScreen screen, GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    private void onRenderChatScreen(ChatScreen screen, GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         if (!isEnabled() || ScreenUtil.isWritingCommand(screen)) {
             return;
         }
 
-        ChannelSelector channelSelector = getChannelSelector();
-        if (channelSelector == null) {
-            return;
-        }
-
         Minecraft minecraft = Minecraft.getInstance();
-        ChatChannel channel = channelSelector.getSelectedChannel();
+        ChatChannel channel = getChannelSelector().getSelectedChannel();
         Component displayName = channel.getDisplayName();
 
         final int channelTagY = screen.height - CHANNEL_TAG_Y_OFFSET;
@@ -267,7 +262,7 @@ public final class ChatChannelsFeature extends Feature {
         final int backgroundColor = channel.getColor() | CHANNEL_TAG_ALPHA;
 
         graphics.fill(CHANNEL_TAG_X, channelTagY, CHANNEL_TAG_X + textWidth + 3, channelTagY + channelTagHeight, backgroundColor);
-        graphics.drawString(minecraft.font, displayName, CHANNEL_NAME_X, channelNameY, 0xFFFFFFFF);
+        graphics.text(minecraft.font, displayName, CHANNEL_NAME_X, channelNameY, 0xFFFFFFFF);
 
         if (focused) {
             final int x = CHANNEL_TAG_X + textWidth + FOCUS_ICON_PADDING;
@@ -283,7 +278,7 @@ public final class ChatChannelsFeature extends Feature {
         }
     }
 
-    private void onRenderChatScreen(Screen screen, GuiGraphics graphics, int mouseX, int mouseY, float delta) { // Exists only as a way to target with method reference
+    private void onRenderChatScreen(Screen screen, GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) { // Exists only as a way to target with method reference
         this.onRenderChatScreen((ChatScreen) screen, graphics, mouseX, mouseY, delta);
     }
 

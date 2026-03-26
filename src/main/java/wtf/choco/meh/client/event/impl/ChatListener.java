@@ -153,7 +153,7 @@ public final class ChatListener {
         if (junk != null) {
             HypixelServerEvents.FISHING_CATCH.invoker().onCatch(junk);
         } else {
-            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a Junk catch but couldn't find constant: \"" + name + "\"").withStyle(ChatFormatting.RED), false);
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("[MEH] Detected a Junk catch but couldn't find constant: \"" + name + "\"").withStyle(ChatFormatting.RED));
         }
     }
 
@@ -162,7 +162,7 @@ public final class ChatListener {
         if (type != null) {
             HypixelServerEvents.FISHING_CATCH.invoker().onCatch(new QuantifiedTreasure(type, data.quantity()));
         } else {
-            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a QuantitativeTresureType catch but couldn't find constant: \"" + data.name() + "\"").withStyle(ChatFormatting.RED), false);
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("[MEH] Detected a QuantitativeTresureType catch but couldn't find constant: \"" + data.name() + "\"").withStyle(ChatFormatting.RED));
         }
     }
 
@@ -171,7 +171,7 @@ public final class ChatListener {
         if (treasure != null) {
             HypixelServerEvents.FISHING_CATCH.invoker().onCatch(treasure);
         } else {
-            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a Treasure catch but couldn't find constant: \"" + name + "\"").withStyle(ChatFormatting.RED), false);
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("[MEH] Detected a Treasure catch but couldn't find constant: \"" + name + "\"").withStyle(ChatFormatting.RED));
         }
     }
 
@@ -194,7 +194,7 @@ public final class ChatListener {
         if (fishingCatch != null) {
             HypixelServerEvents.FISHING_CATCH.invoker().onCatch(fishingCatch);
         } else {
-            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a generic catch but couldn't map to constant: \"" + name + "\"").withStyle(ChatFormatting.RED), false);
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("[MEH] Detected a generic catch but couldn't map to constant: \"" + name + "\"").withStyle(ChatFormatting.RED));
         }
     }
 
@@ -203,7 +203,7 @@ public final class ChatListener {
         if (fishType != null) {
             HypixelServerEvents.FISHING_CATCH.invoker().onCatch(new MythicalFish(fishType, data.weight()));
         } else {
-            Minecraft.getInstance().player.displayClientMessage(Component.literal("[MEH] Detected a MythicalFishType catch but couldn't map to constant: \"" + data.name() + "\"").withStyle(ChatFormatting.RED), false);
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("[MEH] Detected a MythicalFishType catch but couldn't map to constant: \"" + data.name() + "\"").withStyle(ChatFormatting.RED));
         }
     }
 

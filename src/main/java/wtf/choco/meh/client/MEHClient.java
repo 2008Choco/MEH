@@ -19,7 +19,7 @@ import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.impl.ChatListener;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.feature.Features;
-import wtf.choco.meh.client.keybind.MEHKeybinds;
+import wtf.choco.meh.client.keybind.MEHKeyMappings;
 import wtf.choco.meh.client.mnemonic.MnemonicHandler;
 import wtf.choco.meh.client.registry.MEHRegistries;
 import wtf.choco.meh.client.server.CustomStatusStorage;
@@ -54,7 +54,7 @@ public final class MEHClient implements ClientModInitializer {
         this.mnemonicHandler.initialize();
         this.hypixelServerState.initialize();
 
-        MEHKeybinds.init();
+        MEHKeyMappings.init();
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientTestCommand.register(dispatcher));
 

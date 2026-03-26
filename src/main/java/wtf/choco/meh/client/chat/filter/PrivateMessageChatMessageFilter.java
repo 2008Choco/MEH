@@ -1,7 +1,6 @@
 package wtf.choco.meh.client.chat.filter;
 
-import net.minecraft.client.GuiMessage;
-
+import net.minecraft.client.multiplayer.chat.GuiMessage;
 import wtf.choco.meh.client.chat.extractor.ChatExtractors;
 
 final class PrivateMessageChatMessageFilter implements ChatMessageFilter {

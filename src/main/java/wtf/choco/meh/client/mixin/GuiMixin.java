@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 import net.minecraft.world.entity.player.Player;
 
@@ -29,7 +29,6 @@ public abstract class GuiMixin implements GuiExtensions {
     @Unique
     @Nullable
     private ContextualBarRenderer contextualBarRendererOverride;
-    @Final
     @Shadow
     private Pair<Gui.ContextualInfo, ContextualBarRenderer> contextualInfoBar;
     @Final
@@ -45,39 +44,39 @@ public abstract class GuiMixin implements GuiExtensions {
     }
 
     @SuppressWarnings("unused") // graphics, player, y, armor, maxArmor, x
-    @Inject(method = "renderArmor(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;IIII)V", at = @At("HEAD"), cancellable = true)
-    private static void onRenderArmor(GuiGraphics graphics, Player player, int y, int armor, int maxArmor, int x, CallbackInfo callback) {
+    @Inject(method = "extractArmor(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;IIII)V", at = @At("HEAD"), cancellable = true)
+    private static void onExtractArmor(GuiGraphicsExtractor graphics, Player player, int y, int armor, int maxArmor, int x, CallbackInfo callback) {
         if (hideHealthInformation) {
             callback.cancel();
         }
     }
 
     @SuppressWarnings("unused") // graphics, player, x, y, lines, regeneratingHeartIndex, maxHealth, lastHealth, health, absorption, blinking
-    @Inject(method = "renderHearts(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V", at = @At("HEAD"), cancellable = true)
-    private void onRenderHearts(GuiGraphics graphics, Player player, int x, int y, int lines, int regeneratingHeartIndex, float maxHealth, int lastHealth, int health, int absorption, boolean blinking, CallbackInfo callback) {
+    @Inject(method = "extractHearts(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V", at = @At("HEAD"), cancellable = true)
+    private void onExtractHearts(GuiGraphicsExtractor graphics, Player player, int x, int y, int lines, int regeneratingHeartIndex, float maxHealth, int lastHealth, int health, int absorption, boolean blinking, CallbackInfo callback) {
         if (hideHealthInformation) {
             callback.cancel();
         }
     }
 
     @SuppressWarnings("unused") // graphics
-    @Inject(method = "renderVehicleHealth(Lnet/minecraft/client/gui/GuiGraphics;)V", at = @At("HEAD"), cancellable = true)
-    private void onRenderVehicleHealth(GuiGraphics graphics, CallbackInfo callback) {
+    @Inject(method = "extractVehicleHealth(Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V", at = @At("HEAD"), cancellable = true)
+    private void onExtractVehicleHealth(GuiGraphicsExtractor graphics, CallbackInfo callback) {
         if (hideHealthInformation) {
             callback.cancel();
         }
     }
 
     @SuppressWarnings("unused") // graphics, player, top, right, callback
-    @Inject(method = "renderFood", at = @At("HEAD"), cancellable = true)
-    private void onRenderFood(GuiGraphics graphics, Player player, int top, int right, CallbackInfo callback) {
+    @Inject(method = "extractFood", at = @At("HEAD"), cancellable = true)
+    private void onExtractFood(GuiGraphicsExtractor graphics, Player player, int top, int right, CallbackInfo callback) {
         if (hideHealthInformation) {
             callback.cancel();
         }
     }
 
     @Redirect(
-            method = "renderHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V",
+            method = "extractHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/DeltaTracker;)V",
             at = @At(
                 value = "INVOKE",
                 target = "Lnet/minecraft/client/gui/Gui;nextContextualInfoState()Lnet/minecraft/client/gui/Gui$ContextualInfo;"
@@ -99,7 +98,7 @@ public abstract class GuiMixin implements GuiExtensions {
     }
 
     @Redirect(
-            method = "renderHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V",
+            method = "extractHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/DeltaTracker;)V",
             at = @At(
                 value = "INVOKE",
                 target = "Lorg/apache/commons/lang3/tuple/Pair;getValue()Ljava/lang/Object;"
@@ -111,16 +110,16 @@ public abstract class GuiMixin implements GuiExtensions {
     }
 
     @Redirect(
-            method = "renderHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V",
+            method = "extractHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/DeltaTracker;)V",
             at = @At(
                 value = "INVOKE",
-                target = "Lnet/minecraft/client/gui/contextualbar/ContextualBarRenderer;renderExperienceLevel(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Font;I)V"
+                target = "Lnet/minecraft/client/gui/contextualbar/ContextualBarRenderer;extractExperienceLevel(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/gui/Font;I)V"
             )
     )
-    private void redirectRenderExperienceLevel(GuiGraphics graphics, Font font, int level) {
+    private void redirectExtractExperienceLevel(GuiGraphicsExtractor graphics, Font font, int level) {
         ContextualBarRenderer currentRenderer = (contextualBarRendererOverride != null) ? contextualBarRendererOverride : contextualInfoBar.getValue();
-        if (currentRenderer != null && currentRenderer.shouldRenderExperienceLevel()) {
-            ContextualBarRenderer.renderExperienceLevel(graphics, font, level);
+        if (currentRenderer != null && currentRenderer.shouldExtractExperienceLevel()) {
+            ContextualBarRenderer.extractExperienceLevel(graphics, font, level);
         }
     }
 

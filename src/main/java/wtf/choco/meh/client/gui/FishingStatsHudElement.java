@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.profiling.Profiler;
@@ -38,7 +38,7 @@ public final class FishingStatsHudElement implements HudElement {
     }
 
     @Override
-    public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         if (!feature.isEnabled() || !feature.isDisplayConditionMet()) {
             return;
         }
@@ -67,7 +67,7 @@ public final class FishingStatsHudElement implements HudElement {
 
         int heightPerLine = (minecraft.font.lineHeight + VERTICAL_TEXT_SPACING);
         for (Component line : lines) {
-            graphics.drawString(minecraft.font, line, HORIZONTAL_PADDING + HORIZONTAL_TEXT_PADDING, textHeight, 0xFFFFFFFF);
+            graphics.text(minecraft.font, line, HORIZONTAL_PADDING + HORIZONTAL_TEXT_PADDING, textHeight, 0xFFFFFFFF);
             textHeight += heightPerLine;
         }
 

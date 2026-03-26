@@ -65,7 +65,7 @@ public final class HousingAutoNightVisionFeature extends Feature {
             }
 
             connection.sendCommand(nightVisionCommandName);
-            player.displayClientMessage(Component.translatable("meh.housing.auto_night_vision.success", "/" + nightVisionCommandName).withStyle(ChatFormatting.GREEN), false);
+            player.sendSystemMessage(Component.translatable("meh.housing.auto_night_vision.success", "/" + nightVisionCommandName).withStyle(ChatFormatting.GREEN));
             break;
         }
     }

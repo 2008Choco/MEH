@@ -1,7 +1,7 @@
 package wtf.choco.meh.client.chat.filter;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.GuiMessage;
+import net.minecraft.client.multiplayer.chat.GuiMessage;
 
 final class StartsWithChatMessageFilter implements ChatMessageFilter {
 
@@ -13,8 +13,7 @@ final class StartsWithChatMessageFilter implements ChatMessageFilter {
 
     @Override
     public boolean test(GuiMessage message) {
-        String messageString = ChatFormatting.stripFormatting(message.content().getString());
-        return messageString != null && messageString.startsWith(text);
+        return ChatFormatting.stripFormatting(message.content().getString()).startsWith(text);
     }
 
     @Override

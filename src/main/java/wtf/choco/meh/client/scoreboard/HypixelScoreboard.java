@@ -39,7 +39,7 @@ public final class HypixelScoreboard {
     private static final Collection<HypixelScoreboard> LISTENING_SCOREBOARDS = Collections.synchronizedCollection(new ArrayList<>());
 
     static {
-        ClientTickEvents.END_WORLD_TICK.register(level -> {
+        ClientTickEvents.END_LEVEL_TICK.register(level -> {
             for (HypixelScoreboard scoreboard : LISTENING_SCOREBOARDS) {
                 scoreboard.onWorldTick(level);
             }

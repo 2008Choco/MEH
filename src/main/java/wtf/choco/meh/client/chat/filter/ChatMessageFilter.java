@@ -1,9 +1,9 @@
 package wtf.choco.meh.client.chat.filter;
 
+import net.minecraft.client.multiplayer.chat.GuiMessage;
+
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-
-import net.minecraft.client.GuiMessage;
 
 /**
  * A functional interface capable of testing whether or not a {@link GuiMessage} is allowed to

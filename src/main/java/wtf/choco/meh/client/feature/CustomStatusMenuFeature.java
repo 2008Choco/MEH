@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.gui.screens.CustomStatusScreen;
-import wtf.choco.meh.client.keybind.MEHKeybinds;
+import wtf.choco.meh.client.keybind.MEHKeyMappings;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class CustomStatusMenuFeature extends Feature {
@@ -29,10 +29,10 @@ public final class CustomStatusMenuFeature extends Feature {
                 return;
             }
 
-            if (client.screen == null && MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN.consumeClick()) {
+            if (client.screen == null && MEHKeyMappings.OPEN_CUSTOM_STATUS_SCREEN.consumeClick()) {
                 HypixelServerState serverState = getMod().getHypixelServerState();
                 if (serverState.isConnectedToHypixel() && !FabricLoader.getInstance().isDevelopmentEnvironment() && !serverState.getServerLocationProvider().isLobby()) {
-                    client.player.displayClientMessage(Component.translatable("gui.meh.custom_status.not_in_lobby").withStyle(ChatFormatting.RED), false);
+                    client.player.sendSystemMessage(Component.translatable("gui.meh.custom_status.not_in_lobby").withStyle(ChatFormatting.RED));
                     return;
                 }
 

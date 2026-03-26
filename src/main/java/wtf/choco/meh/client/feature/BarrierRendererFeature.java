@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.config.MEHConfig;
-import wtf.choco.meh.client.keybind.MEHKeybinds;
+import wtf.choco.meh.client.keybind.MEHKeyMappings;
 
 public final class BarrierRendererFeature extends Feature {
 
@@ -26,12 +26,12 @@ public final class BarrierRendererFeature extends Feature {
         // TODO: Maybe render an icon or text somewhere to let the client know that barriers are being rendered
         // Not that they wouldn't be able to tell... they'll see barrier blocks... but it's a nice QOL thing!
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (MEHKeybinds.TOGGLE_BARRIER_BLOCK_RENDERING.consumeClick()) {
+            if (MEHKeyMappings.TOGGLE_BARRIER_BLOCK_RENDERING.consumeClick()) {
                 this.enabled = !enabled;
-                client.player.displayClientMessage(Component.translatable(
+                client.player.sendSystemMessage(Component.translatable(
                     enabled ? "meh.barrier_rendering.toggle.on" : "meh.barrier_rendering.toggle.off",
-                    MEHKeybinds.TOGGLE_BARRIER_BLOCK_RENDERING.getTranslatedKeyMessage()
-                ).withStyle(enabled ? ChatFormatting.GREEN : ChatFormatting.RED), false);
+                    MEHKeyMappings.TOGGLE_BARRIER_BLOCK_RENDERING.getTranslatedKeyMessage()
+                ).withStyle(enabled ? ChatFormatting.GREEN : ChatFormatting.RED));
             }
         });
     }

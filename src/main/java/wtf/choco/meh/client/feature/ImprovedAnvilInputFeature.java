@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.client.gui.screens.inventory.AnvilScreen;
 import net.minecraft.world.inventory.AnvilMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 
 import wtf.choco.meh.client.MEHClient;
@@ -42,7 +42,7 @@ public final class ImprovedAnvilInputFeature extends Feature {
                     return;
                 }
 
-                client.gameMode.handleInventoryMouseClick(menu.containerId, resultSlot.index, InputConstants.MOUSE_BUTTON_LEFT, ClickType.PICKUP, client.player);
+                client.gameMode.handleContainerInput(menu.containerId, resultSlot.index, InputConstants.MOUSE_BUTTON_LEFT, ContainerInput.PICKUP, client.player);
             });
         });
     }

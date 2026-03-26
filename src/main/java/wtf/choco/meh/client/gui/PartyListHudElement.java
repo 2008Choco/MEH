@@ -12,8 +12,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.PlayerFaceRenderer;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.PlayerFaceExtractor;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -30,7 +30,7 @@ public final class PartyListHudElement implements HudElement {
 
     public static final Identifier ID = MEHClient.key("party_list");
 
-    public static enum Position implements Translatable {
+    public enum Position implements Translatable {
 
         TOP_LEFT,
         TOP_RIGHT;
@@ -55,7 +55,7 @@ public final class PartyListHudElement implements HudElement {
     }
 
     @Override
-    public void render(GuiGraphics graphics, DeltaTracker delta) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker delta) {
         Minecraft minecraft = Minecraft.getInstance();
         if (!feature.isEnabled() || minecraft.gui.getDebugOverlay().showDebugScreen()) {
             return;
@@ -86,7 +86,7 @@ public final class PartyListHudElement implements HudElement {
                 faceX = window.getGuiScaledWidth() - SKIN_SIZE - ENTRY_HORIZONTAL_PADDING;
             }
 
-            PlayerFaceRenderer.draw(graphics, playerInfo.getSkin(), faceX, y, SKIN_SIZE);
+            PlayerFaceExtractor.extractRenderState(graphics, playerInfo.getSkin(), faceX, y, SKIN_SIZE);
 
             Component text;
             if (position == Position.TOP_LEFT) {
@@ -113,7 +113,7 @@ public final class PartyListHudElement implements HudElement {
             stack.translate(textX + textOffset, textY);
             stack.scale(TEXT_SCALE);
 
-            graphics.drawString(minecraft.font, text, -textOffset, -(minecraft.font.lineHeight / 2), 0xFFFFFFFF);
+            graphics.text(minecraft.font, text, -textOffset, -(minecraft.font.lineHeight / 2), 0xFFFFFFFF);
 
             stack.popMatrix();
         }

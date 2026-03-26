@@ -97,11 +97,12 @@ public final class FishingState {
             String line = lines.get(lineIndex++).getString();
             int lastSpace = line.lastIndexOf(' ');
 
+            String statString = line.substring(lastSpace + 1);
             try {
-                int catches = Integer.parseInt(line.substring(lastSpace + 1, line.length()).replace(",", "").replace(".", ""));
+                int catches = Integer.parseInt(statString.replace(",", "").replace(".", ""));
                 this.catches.put(catchType, catches);
             } catch (NumberFormatException e) {
-                Minecraft.getInstance().player.displayClientMessage(Component.literal("Failed to parse \"" + line.substring(lastSpace + 1, line.length()) + "\"! This is a bug!").withStyle(ChatFormatting.RED), false);
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Failed to parse \"" + statString + "\"! This is a bug!").withStyle(ChatFormatting.RED));
             }
         }
 

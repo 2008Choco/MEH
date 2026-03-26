@@ -1,7 +1,7 @@
 package wtf.choco.meh.client.mixin;
 
-import net.minecraft.client.GuiMessage;
 import net.minecraft.client.gui.components.ChatComponent;
+import net.minecraft.client.multiplayer.chat.GuiMessage;
 
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +24,7 @@ public abstract class ChatComponentMixin implements ChatFilterable {
     @Nullable
     private ChatMessageFilter messageFilter = null;
 
-    @Inject(method = "addMessageToDisplayQueue(Lnet/minecraft/client/GuiMessage;)V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "addMessageToDisplayQueue(Lnet/minecraft/client/multiplayer/chat/GuiMessage;)V", at = @At("HEAD"), cancellable = true)
     private void onAddMessageToDisplayQueue(GuiMessage message, CallbackInfo callback) {
         ChatMessageFilter filter = messageFilter;
         if (filter != null && !filter.test(message)) {
@@ -33,7 +33,7 @@ public abstract class ChatComponentMixin implements ChatFilterable {
     }
 
     @SuppressWarnings("unused")
-    @ModifyConstant(method = "addMessageToQueue(Lnet/minecraft/client/GuiMessage;)V", constant = @Constant(intValue = 100))
+    @ModifyConstant(method = "addMessageToQueue(Lnet/minecraft/client/multiplayer/chat/GuiMessage;)V", constant = @Constant(intValue = 100))
     private int modifyMaxChatHistory(int value) {
         return getMaxInMemoryChatHistory();
     }

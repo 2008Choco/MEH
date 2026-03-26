@@ -2,7 +2,7 @@ package wtf.choco.meh.client.gui.contextualbar;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -26,7 +26,7 @@ public final class SkillExperienceBarRenderer implements ContextualBarRenderer {
     }
 
     @Override
-    public void renderBackground(GuiGraphics graphics, DeltaTracker deltaTracker) {
+    public void extractBackground(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
         int x = left(minecraft.getWindow());
         int y = top(minecraft.getWindow());
@@ -40,14 +40,14 @@ public final class SkillExperienceBarRenderer implements ContextualBarRenderer {
     }
 
     @Override
-    public void render(GuiGraphics graphics, DeltaTracker deltaTracker) { }
+    public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) { }
 
     public void setColor(int color) {
         this.color = color;
     }
 
     @Override
-    public boolean shouldRenderExperienceLevel() {
+    public boolean shouldExtractExperienceLevel() {
         return false;
     }
 

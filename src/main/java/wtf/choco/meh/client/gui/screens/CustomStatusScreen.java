@@ -5,12 +5,10 @@ import com.mojang.blaze3d.platform.InputConstants;
 import java.util.List;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.PlainTextButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -21,7 +19,6 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
@@ -30,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
 
 import wtf.choco.meh.client.MEHClient;
-import wtf.choco.meh.client.keybind.MEHKeybinds;
+import wtf.choco.meh.client.keybind.MEHKeyMappings;
 import wtf.choco.meh.client.server.CustomStatusStorage;
 import wtf.choco.meh.client.util.Components;
 
@@ -166,10 +163,10 @@ public final class CustomStatusScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta) {
-        super.render(graphics, mouseX, mouseY, tickDelta);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta) {
+        super.extractRenderState(graphics, mouseX, mouseY, tickDelta);
 
-        graphics.drawString(font, title, leftX + TITLE_OFFSET_X, topY + TITLE_OFFSET_Y, 0xFF040404, false);
+        graphics.text(font, title, leftX + TITLE_OFFSET_X, topY + TITLE_OFFSET_Y, 0xFF040404, false);
         this.renderCustomStatusTextOnButtons(graphics);
         this.renderScrollBar(graphics);
 
@@ -197,7 +194,7 @@ public final class CustomStatusScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta) {
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta) {
         graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND_LOCATION, leftX, topY, 0.0F, 0.0F, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 256, 256);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SIDEBAR_TAB_SPRITE, leftX + SIDEBAR_TAB_X, topY + SIDEBAR_TAB_Y, SIDEBAR_TAB_WIDTH, SIDEBAR_TAB_HEIGHT);
 
@@ -217,7 +214,7 @@ public final class CustomStatusScreen extends Screen {
         this.renderPortraitWithNameplateFollowsMouse(graphics, mouseX, mouseY, selectedStatus);
     }
 
-    private void renderCenteredEmptyStatusMessage(GuiGraphics graphics) {
+    private void renderCenteredEmptyStatusMessage(GuiGraphicsExtractor graphics) {
         Matrix3x2fStack stack = graphics.pose();
         stack.pushMatrix();
 
@@ -235,13 +232,13 @@ public final class CustomStatusScreen extends Screen {
         int y = (height + font.lineHeight) / 2;
         int headerX = startX + ((STATUS_BUTTON_WIDTH - font.width(header)) / 2);
         int footerX = startX + ((STATUS_BUTTON_WIDTH - font.width(footer)) / 2);
-        graphics.drawString(font, header, headerX, y - (font.lineHeight / 2) - 1, 0xFF3A3A3A, false);
-        graphics.drawString(font, footer, footerX, y + (font.lineHeight / 2) + 1, 0xFF3A3A3A, false);
+        graphics.text(font, header, headerX, y - (font.lineHeight / 2) - 1, 0xFF3A3A3A, false);
+        graphics.text(font, footer, footerX, y + (font.lineHeight / 2) + 1, 0xFF3A3A3A, false);
 
         stack.popMatrix();
     }
 
-    private void renderCustomStatusTextOnButtons(GuiGraphics graphics) {
+    private void renderCustomStatusTextOnButtons(GuiGraphicsExtractor graphics) {
         int textX = leftX + STATUS_BUTTON_X + 6;
         int textY = topY + STATUS_BUTTON_START_Y + ((STATUS_BUTTON_HEIGHT - font.lineHeight) / 2) + 1;
         int clipX = leftX + STATUS_BUTTON_X + 1;
@@ -250,13 +247,13 @@ public final class CustomStatusScreen extends Screen {
         for (int i = 0; i < Math.min(STATUS_BUTTON_COUNT, statusStorage.getStatusCount()); i++) {
             int statusIndex = i + scrollOffset;
             graphics.enableScissor(clipX, 0, clipEndX, graphics.guiHeight());
-            graphics.drawString(font, statusStorage.getStatus(statusIndex), textX, textY, 0xFFFFFFFF);
+            graphics.text(font, statusStorage.getStatus(statusIndex), textX, textY, 0xFFFFFFFF);
             graphics.disableScissor();
             textY += STATUS_BUTTON_HEIGHT;
         }
     }
 
-    private void renderScrollBar(GuiGraphics graphics) {
+    private void renderScrollBar(GuiGraphicsExtractor graphics) {
         int scrollerOffset = 0;
         int extraStatuses = statusStorage.getStatusCount() - STATUS_BUTTON_COUNT;
 
@@ -272,13 +269,13 @@ public final class CustomStatusScreen extends Screen {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, leftX + SCROLL_BAR_X, topY + SCROLL_BAR_Y + scrollerOffset, SCROLLER_WIDTH, SCROLLER_HEIGHT);
     }
 
-    private void renderPortraitWithNameplateFollowsMouse(GuiGraphics graphics, int mouseX, int mouseY, @Nullable Component customStatusText) {
+    private void renderPortraitWithNameplateFollowsMouse(GuiGraphicsExtractor graphics, int mouseX, int mouseY, @Nullable Component customStatusText) {
         // Render entity
         int portraitX = (leftX + PORTRAIT_START_X);
         int portraitY = (topY + PORTRAIT_START_Y);
         int portraitEndX = portraitX + PORTRAIT_WIDTH;
         int portraitEndY = portraitY + PORTRAIT_HEIGHT;
-        InventoryScreen.renderEntityInInventoryFollowsMouse(
+        InventoryScreen.extractEntityInInventoryFollowsMouse(
                 graphics,
                 portraitX,
                 portraitY,
@@ -303,7 +300,7 @@ public final class CustomStatusScreen extends Screen {
         graphics.disableScissor();
     }
 
-    private void renderNameplate(GuiGraphics graphics, Component text, int x, int y, float scale) {
+    private void renderNameplate(GuiGraphicsExtractor graphics, Component text, int x, int y, float scale) {
         int textWidth = minecraft.font.width(text);
         int centeredX = x - Mth.floor(textWidth / 2.0F);
         int nameplateBackgroundAlpha = (int) (minecraft.options.getBackgroundOpacity(0.25F) * 255.0F) << 24;
@@ -315,7 +312,7 @@ public final class CustomStatusScreen extends Screen {
         pose.scale(scale);
         pose.translate(-x, -y);
         graphics.fill(centeredX - 2, y - 2, centeredX + textWidth + 2, y + minecraft.font.lineHeight, backgroundColor);
-        graphics.drawString(font, text, centeredX, y, 0xFFFFFFFF);
+        graphics.text(font, text, centeredX, y, 0xFFFFFFFF);
         pose.popMatrix();
     }
 
@@ -377,7 +374,7 @@ public final class CustomStatusScreen extends Screen {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        if (MEHKeybinds.OPEN_CUSTOM_STATUS_SCREEN.matches(event) || minecraft.options.keyInventory.matches(event)) {
+        if (MEHKeyMappings.OPEN_CUSTOM_STATUS_SCREEN.matches(event) || minecraft.options.keyInventory.matches(event)) {
             if (!addStatusButton.adding && !editStatusButton.editing) {
                 this.onClose();
                 return true;
@@ -556,7 +553,7 @@ public final class CustomStatusScreen extends Screen {
             if (!FabricLoader.getInstance().isDevelopmentEnvironment()) {
                 minecraft.player.connection.sendCommand(command);
             } else {
-                minecraft.player.displayClientMessage(Component.literal("Would have sent command: " + command), false);
+                minecraft.player.sendSystemMessage(Component.literal("Would have sent command: " + command));
             }
         }
 
