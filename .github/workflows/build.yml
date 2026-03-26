@@ -14,7 +14,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [ 21 ]    # Is a Current Java LTS, make sure is a minimum supported by Minecraft
+        java: [ 25 ]    # Is a Current Java LTS, make sure is a minimum supported by Minecraft
         os: [windows-2022]
     runs-on: ${{ matrix.os }}
     steps:
