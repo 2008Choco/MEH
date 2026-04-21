@@ -2,10 +2,6 @@ package wtf.choco.meh.client.gui.components;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ChatComponent;
@@ -18,10 +14,10 @@ import net.minecraft.util.profiling.ProfilerFiller;
 
 import org.joml.Matrix3x2fStack;
 
+import wtf.choco.meh.client.chat.ChatEmote;
 import wtf.choco.meh.client.chat.EmoteSelectorFeature;
-import wtf.choco.meh.client.chat.emote.ChatEmote;
-import wtf.choco.meh.client.chat.emote.HypixelChatEmote;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
+import wtf.choco.meh.client.registry.MEHRegistries;
 
 public final class EmoteSelectorWidget implements Renderable {
 
@@ -55,7 +51,6 @@ public final class EmoteSelectorWidget implements Renderable {
     private ChatScreen chatScreen = null;
     private int selectedEmoteIndex = 0;
     private int scrollOffset = 0;
-    private List<ChatEmote> knownEmotes;
 
     private final EmoteSelectorFeature feature;
 
@@ -75,27 +70,8 @@ public final class EmoteSelectorWidget implements Renderable {
         this.chatScreen = chatScreen;
     }
 
-    private void refreshEmotes() {
-        HypixelChatEmote[] hypixelChatEmotes = HypixelChatEmote.values();
-        if (knownEmotes == null) {
-            this.knownEmotes = new ArrayList<>(hypixelChatEmotes.length);
-        } else {
-            this.knownEmotes.clear();
-        }
-
-        Collections.addAll(knownEmotes, hypixelChatEmotes);
-    }
-
-    private List<ChatEmote> getKnownEmotes() {
-        if (knownEmotes == null) {
-            this.refreshEmotes();
-        }
-
-        return knownEmotes;
-    }
-
     private ChatEmote getSelectedEmote() {
-        return getKnownEmotes().get(selectedEmoteIndex);
+        return MEHRegistries.CHAT_EMOTES.byId(selectedEmoteIndex);
     }
 
     @Override
@@ -104,7 +80,6 @@ public final class EmoteSelectorWidget implements Renderable {
             return;
         }
 
-        List<ChatEmote> knownEmotes = getKnownEmotes();
         Minecraft minecraft = Minecraft.getInstance();
 
         int x = getX();
@@ -127,8 +102,7 @@ public final class EmoteSelectorWidget implements Renderable {
         stack.translate(x, headerY); // Move to the top left corner of the widget header
         stack.translate(WIDGET_WIDTH / 2, WIDGET_HEADER_HEIGHT / 2); // Move to the center of the widget
         stack.scale(0.75F); // Scale the text down (from the middle)
-        ChatEmote selectedEmote = knownEmotes.get(selectedEmoteIndex);
-        graphics.centeredText(minecraft.font, selectedEmote.getDisplayName(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
+        graphics.centeredText(minecraft.font, getSelectedEmote().getDisplayName(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
 
         stack.popMatrix();
 
@@ -143,11 +117,15 @@ public final class EmoteSelectorWidget implements Renderable {
             for (int gridX = 0; gridX < CELLS_PER_ROW; gridX++) {
                 int cellIndex = (gridY * CELLS_PER_ROW) + gridX;
                 int emoteIndex = (scrollOffset * CELLS_PER_ROW) + cellIndex;
-                if (emoteIndex >= knownEmotes.size()) {
+                if (emoteIndex >= MEHRegistries.CHAT_EMOTES.size()) {
                     break cellLoop;
                 }
 
-                this.renderEmoteCell(graphics, stack, knownEmotes.get(emoteIndex), emoteIndex == selectedEmoteIndex);
+                ChatEmote emote = MEHRegistries.CHAT_EMOTES.byId(emoteIndex);
+                if (emote != null) {
+                    this.renderEmoteCell(graphics, stack, emote, emoteIndex == selectedEmoteIndex);
+                }
+
                 stack.translate(CELL_SIZE + CELL_PADDING, 0);
             }
             stack.translate(-(CELL_SIZE + CELL_PADDING) * CELLS_PER_ROW, CELL_SIZE + CELL_PADDING);
@@ -168,14 +146,14 @@ public final class EmoteSelectorWidget implements Renderable {
         stack.pushMatrix();
         stack.translate(CELL_SIZE / 2, CELL_SIZE / 2);
 
-        int textWidth = minecraft.font.width(emote.getEmoteDisplayText());
+        int textWidth = minecraft.font.width(emote.display());
         if (textWidth >= CELL_SIZE) {
             float factor = Math.min((float) textWidth / (float) CELL_SIZE, 1.45F);
             float scale = (float) Math.log(-factor + 2.2F) + 0.7F;
             stack.scale(scale);
         }
 
-        graphics.centeredText(minecraft.font, emote.getEmoteDisplayText(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
+        graphics.centeredText(minecraft.font, emote.display(), 0, -minecraft.font.lineHeight / 2, 0xFFFFFFFF);
         stack.popMatrix();
 
         // Gold selection border
@@ -208,7 +186,7 @@ public final class EmoteSelectorWidget implements Renderable {
 
         if (event.key() == InputConstants.KEY_RETURN) {
             boolean keepOpen = event.hasShiftDown();
-            String text = getSelectedEmote().getInputText();
+            String text = getSelectedEmote().chatInput();
             if (keepOpen) {
                 text += " ";
             }
@@ -227,11 +205,11 @@ public final class EmoteSelectorWidget implements Renderable {
         if (event.key() == InputConstants.KEY_LEFT) {
             this.selectedEmoteIndex = Math.max(selectedEmoteIndex - 1, 0);
         } else if (event.key() == InputConstants.KEY_RIGHT) {
-            this.selectedEmoteIndex = Math.min(selectedEmoteIndex + 1, getKnownEmotes().size() - 1);
+            this.selectedEmoteIndex = Math.min(selectedEmoteIndex + 1, MEHRegistries.CHAT_EMOTES.size() - 1);
         } else if (event.key() == InputConstants.KEY_UP) {
             this.selectedEmoteIndex = Math.max(selectedEmoteIndex - CELLS_PER_ROW, 0);
         } else if (event.key() == InputConstants.KEY_DOWN) {
-            this.selectedEmoteIndex = Math.min(selectedEmoteIndex + CELLS_PER_ROW, getKnownEmotes().size() - 1);
+            this.selectedEmoteIndex = Math.min(selectedEmoteIndex + CELLS_PER_ROW, MEHRegistries.CHAT_EMOTES.size() - 1);
         }
 
         if (selectedEmoteIndex < minEmoteIndex) {

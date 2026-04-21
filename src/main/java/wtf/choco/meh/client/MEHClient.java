@@ -14,6 +14,7 @@ import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import wtf.choco.meh.client.chat.ChatEmotes;
 import wtf.choco.meh.client.command.ClientTestCommand;
 import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.impl.ChatListener;
@@ -50,6 +51,7 @@ public final class MEHClient implements ClientModInitializer {
 
         Features.bootstrap();
         MEHRegistries.FEATURE.forEach(Feature::initialize);
+        ChatEmotes.bootstrap();
 
         this.mnemonicHandler.initialize();
         this.hypixelServerState.initialize();
