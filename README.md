@@ -13,9 +13,9 @@ This project is licensed under the MIT license.
 > Please download and use their resource pack if you enjoy main lobby fishing on Hypixel but aren't willing to use this mod :)
 
 ## Dependencies & Integration
-- Minecraft 1.21.6 (consequently, Java 21)
-- Fabric Loader (version 0.16.14 or above)
-- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) (version 0.127.x or above)
+- Minecraft 26.1.x (consequently, Java 25)
+- Fabric Loader (version 0.18.4 or above)
+- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) (version 0.144.x or above)
 - [Cloth Config API](https://modrinth.com/mod/cloth-config/)
 - _(Optional)_ [Mod Menu](https://modrinth.com/mod/modmenu/)
   - Provides a configuration screen in the Mod Menu list
