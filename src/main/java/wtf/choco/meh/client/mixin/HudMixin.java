@@ -23,10 +23,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import wtf.choco.meh.client.event.GuiEvents;
-import wtf.choco.meh.client.mixinapi.HudExtensions;
+import wtf.choco.meh.client.mixinapi.MEHHud;
 
 @Mixin(Hud.class)
-public abstract class HudMixin implements HudExtensions {
+public abstract class HudMixin implements MEHHud {
 
     @Shadow
     private Pair<Hud.ContextualInfo, ContextualBar> contextualInfoBar;

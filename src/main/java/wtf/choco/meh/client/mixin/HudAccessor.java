@@ -10,9 +10,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(Hud.class)
 public interface HudAccessor {
 
-    @Accessor("overlayMessageString")
-    public void setActionBarText(Component text);
-
     @Nullable
     @Accessor("overlayMessageString")
     public Component getActionBarText();

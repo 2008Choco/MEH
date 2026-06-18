@@ -31,7 +31,6 @@ import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.gui.SkyBlockPrettyHudHudElement;
 import wtf.choco.meh.client.gui.contextualbar.SkillExperienceBarRenderer;
-import wtf.choco.meh.client.mixinapi.HudExtensions;
 import wtf.choco.meh.client.server.HypixelServerType;
 
 public final class SkyBlockPrettyHudFeature extends Feature {
@@ -203,7 +202,7 @@ public final class SkyBlockPrettyHudFeature extends Feature {
     }
 
     private void refreshState(boolean hideHealthInformation) {
-        HudExtensions.get(Minecraft.getInstance().gui.hud).setHideHealthInformation(hideHealthInformation);
+        Minecraft.getInstance().gui.hud.setHideHealthInformation(hideHealthInformation);
     }
 
     private static int parseIntFromFormattedString(String input) {
