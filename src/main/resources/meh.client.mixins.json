@@ -5,12 +5,14 @@
     "mixins": [
         "AbstractContainerMenuMixin",
         "ChatComponentMixin",
+        "ChatFormattingAccessor",
         "ChatScreenAccessor",
         "ClientLevelMixin",
         "ClientPacketListenerMixin",
-        "ContextualBarRendererMixin",
-        "GuiAccessor",
-        "GuiMixin",
+        "ContextualBarMixin",
+        "ContextualInfoMixin",
+        "HudAccessor",
+        "HudMixin",
         "ItemModelResolverMixin",
         "KeyboardHandlerMixin",
         "ScreenAccessor"

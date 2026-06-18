@@ -29,14 +29,14 @@ public final class CustomStatusMenuFeature extends Feature {
                 return;
             }
 
-            if (client.screen == null && MEHKeyMappings.OPEN_CUSTOM_STATUS_SCREEN.consumeClick()) {
+            if (client.gui.screen() == null && MEHKeyMappings.OPEN_CUSTOM_STATUS_SCREEN.consumeClick()) {
                 HypixelServerState serverState = getMod().getHypixelServerState();
                 if (serverState.isConnectedToHypixel() && !FabricLoader.getInstance().isDevelopmentEnvironment() && !serverState.getServerLocationProvider().isLobby()) {
                     client.player.sendSystemMessage(Component.translatable("gui.meh.custom_status.not_in_lobby").withStyle(ChatFormatting.RED));
                     return;
                 }
 
-                client.setScreen(new CustomStatusScreen(getMod().getStatusStorage()));
+                client.gui.setScreen(new CustomStatusScreen(getMod().getStatusStorage()));
             }
         });
     }

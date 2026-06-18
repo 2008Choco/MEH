@@ -2,6 +2,7 @@ package wtf.choco.meh.client.game.murdermystery;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +33,7 @@ final class KnifeModelOverride implements DynamicModelOverride {
          */
         if (itemOwner != null) {
             LivingEntity itemOwnerEntity = itemOwner.asLivingEntity();
-            if (itemOwnerEntity != null && itemOwnerEntity.getType() == EntityType.ARMOR_STAND && itemStack.is(knifeType.getItem().asItem())) {
+            if (itemOwnerEntity != null && itemOwnerEntity.getType() == EntityTypes.ARMOR_STAND && itemStack.is(knifeType.getItem().asItem())) {
                 return true;
             }
         }

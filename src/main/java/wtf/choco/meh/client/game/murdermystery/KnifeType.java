@@ -46,7 +46,7 @@ public enum KnifeType implements Predicate<Component> {
     PRICKLY(Items.ROSE_BUSH, "Prickly"),
     PUMPKIN_PIE(Items.PUMPKIN_PIE, "Pumpkin Pie"),
     RUDOLPHS_FAVORITE_SNACK(Items.CARROT, "Rudolph's Favorite Snack"),
-    RUDOLPHS_NOSE(Items.RED_DYE, "Rudolph's Nose"),
+    RUDOLPHS_NOSE(Items.DYE.red(), "Rudolph's Nose"),
     SALMON(Items.SALMON, "Salmon"),
     SHEARS(Items.SHEARS, "Shears"),
     SHOVEL(Items.IRON_SHOVEL, "Shovel"),

@@ -138,7 +138,7 @@ public final class ChatChannelsFeature extends Feature {
         minecraft.player.sendSystemMessage(Component.translatable("meh.channel.new.msg", channel.getDisplayName(true)));
 
         // If the chat window isn't open, we'll automatically switch to the newly created channel
-        if (MEHClient.getConfig().getChatChannelsConfig().isAutoSwitchOnNewMessage() && !(minecraft.screen instanceof ChatScreen)) {
+        if (MEHClient.getConfig().getChatChannelsConfig().isAutoSwitchOnNewMessage() && !(minecraft.gui.screen() instanceof ChatScreen)) {
             if (!ChatChannelEvents.SWITCH.invoker().onSwitchChatChannel(channelSelector.getSelectedChannel(), channel, switchReason)) {
                 return;
             }
@@ -158,9 +158,9 @@ public final class ChatChannelsFeature extends Feature {
     @SuppressWarnings("unused")
     private boolean onChatChannelSwitch(ChatChannel from, ChatChannel to, ChatChannelEvents.Switch.Reason reason) {
         Minecraft client = Minecraft.getInstance();
-        this.ensureChatEditBoxMaxLength(client.screen, to);
+        this.ensureChatEditBoxMaxLength(client.gui.screen(), to);
 
-        ChatComponent chat = client.gui.getChat();
+        ChatComponent chat = client.gui.hud.getChat();
         if (focused && !Objects.equals(from.getMessageFilter(), to.getMessageFilter())) {
             chat.setChatMessageFilter(to.getMessageFilter());
         } else if (!focused && chat.hasChatMessageFilter()) {
@@ -227,7 +227,7 @@ public final class ChatChannelsFeature extends Feature {
 
         Minecraft minecraft = Minecraft.getInstance();
         ChatChannel selectedChannel = getChannelSelector().getSelectedChannel();
-        minecraft.gui.getChat().setChatMessageFilter(focused ? selectedChannel.getMessageFilter() : null);
+        minecraft.gui.hud.getChat().setChatMessageFilter(focused ? selectedChannel.getMessageFilter() : null);
         return true;
     }
 
@@ -237,7 +237,7 @@ public final class ChatChannelsFeature extends Feature {
         }
 
         Minecraft minecraft = Minecraft.getInstance();
-        if (!(minecraft.screen instanceof ChatScreen) || ScreenUtil.isWritingCommand((ChatScreen) minecraft.screen)) {
+        if (!(minecraft.gui.screen() instanceof ChatScreen chatScreen) || ScreenUtil.isWritingCommand(chatScreen)) {
             return false;
         }
 

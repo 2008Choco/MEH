@@ -35,7 +35,7 @@ public final class MnemonicHandler {
     private boolean onKeyStateChange(int action, KeyEvent event) {
         // Don't process anything if there's a screen open or if the action was not a press
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.screen != null || action != InputConstants.PRESS) {
+        if (minecraft.gui.screen() != null || action != InputConstants.PRESS) {
             return true;
         }
 

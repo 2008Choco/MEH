@@ -57,7 +57,7 @@ public final class PartyListHudElement implements HudElement {
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker delta) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (!feature.isEnabled() || minecraft.gui.getDebugOverlay().showDebugScreen()) {
+        if (!feature.isEnabled() || minecraft.gui.hud.getDebugOverlay().showDebugScreen()) {
             return;
         }
 

@@ -13,7 +13,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.feature.Features;
-import wtf.choco.meh.client.mixin.GuiAccessor;
+import wtf.choco.meh.client.mixin.HudAccessor;
 import wtf.choco.meh.client.server.HypixelServerState;
 
 public final class ClientTestCommand {
@@ -80,7 +80,7 @@ public final class ClientTestCommand {
     }
 
     private static int copyActionBar(CommandContext<FabricClientCommandSource> context) {
-        GuiAccessor gui = (GuiAccessor) context.getSource().getClient().gui;
+        HudAccessor gui = (HudAccessor) context.getSource().getClient().gui;
         if (gui.getActionBarTicks() <= 0) {
             context.getSource().sendError(Component.literal("There is no action bar to be copied.").withStyle(ChatFormatting.RED));
             return 0;

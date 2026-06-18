@@ -5,8 +5,8 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 
+import java.time.Duration;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerInfo;
@@ -18,7 +18,7 @@ import wtf.choco.meh.client.MEHClient;
 public final class PlayerInfoCache {
 
     private static final LoadingCache<UUID, PlayerInfo> CACHED_PLAYER_INFO = CacheBuilder.newBuilder()
-            .expireAfterAccess(10, TimeUnit.MINUTES)
+            .expireAfterAccess(Duration.ofMinutes(10))
             .build(new CacheLoader<>() {
 
                 @Override

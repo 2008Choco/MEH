@@ -12,6 +12,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.Util;
+import wtf.choco.meh.client.mixin.ChatFormattingAccessor;
 
 public final class Components {
 
@@ -51,7 +52,7 @@ public final class Components {
 
     public static boolean hasFormattingAnywhere(Component component, ChatFormatting format) {
         return component.visit((style, content) -> {
-            if (format.isColor()) {
+            if (isColor(format)) {
                 TextColor color = style.getColor();
                 if (color != null) {
                     ChatFormatting componentFormatting = COLOR_TO_LEGACY_FORMATTING.get(color);
@@ -87,32 +88,32 @@ public final class Components {
             if (color != null) {
                 ChatFormatting formatting = COLOR_TO_LEGACY_FORMATTING.get(color);
                 if (formatting != null) {
-                    output.append(colorChar).append(formatting.getChar());
+                    output.append(colorChar).append(getColorCode(formatting));
                 }
                 hadFormat.set(true);
             } else if (hadFormat.get()) {
-                output.append(colorChar).append(ChatFormatting.RESET.getChar());
+                output.append(colorChar).append(getColorCode(ChatFormatting.RESET));
                 hadFormat.set(false);
             }
 
             if (style.isBold()) {
-                output.append(colorChar).append(ChatFormatting.BOLD.getChar());
+                output.append(colorChar).append(getColorCode(ChatFormatting.BOLD));
                 hadFormat.set(true);
             }
             if (style.isItalic()) {
-                output.append(colorChar).append(ChatFormatting.ITALIC.getChar());
+                output.append(colorChar).append(getColorCode(ChatFormatting.ITALIC));
                 hadFormat.set(true);
             }
             if (style.isUnderlined()) {
-                output.append(colorChar).append(ChatFormatting.UNDERLINE.getChar());
+                output.append(colorChar).append(getColorCode(ChatFormatting.UNDERLINE));
                 hadFormat.set(true);
             }
             if (style.isStrikethrough()) {
-                output.append(colorChar).append(ChatFormatting.STRIKETHROUGH.getChar());
+                output.append(colorChar).append(getColorCode(ChatFormatting.STRIKETHROUGH));
                 hadFormat.set(true);
             }
             if (style.isObfuscated()) {
-                output.append(colorChar).append(ChatFormatting.OBFUSCATED.getChar());
+                output.append(colorChar).append(getColorCode(ChatFormatting.OBFUSCATED));
                 hadFormat.set(true);
             }
 
@@ -150,7 +151,7 @@ public final class Components {
                         style = Style.EMPTY;
                     }
 
-                    if (formatting.isColor()) {
+                    if (isColor(formatting)) {
                         // If it was a colour, discard all previous formatting
                         style = style.withBold(false).withItalic(false).withUnderlined(false).withStrikethrough(false).withObfuscated(false).withColor(formatting);
                         // But if it was a formatting code, we can append it to an existing style
@@ -193,6 +194,16 @@ public final class Components {
         MutableComponent remaining = Component.literal(buffer.toString()).withStyle(style);
         buffer.delete(0, buffer.length());
         return (component != null) ? component.append(remaining) : remaining;
+    }
+
+    private static boolean isColor(ChatFormatting formatting) {
+        return formatting != ChatFormatting.BOLD && formatting != ChatFormatting.ITALIC
+                && formatting != ChatFormatting.UNDERLINE && formatting != ChatFormatting.STRIKETHROUGH
+                && formatting != ChatFormatting.OBFUSCATED;
+    }
+
+    private static char getColorCode(ChatFormatting formatting) {
+        return ((ChatFormattingAccessor) (Object) formatting).getCode();
     }
 
 }

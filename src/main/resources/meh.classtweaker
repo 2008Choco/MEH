@@ -1,0 +1,9 @@
+classTweaker v2 official
+
+accessible class net/minecraft/client/gui/Hud$ContextualInfo
+accessible class net/minecraft/client/multiplayer/ClientPacketListener$CommandCheckResult
+
+extend-enum net/minecraft/client/gui/Hud$ContextualInfo MEH_SKYBLOCK_SKILL
+
+inject-interface net/minecraft/client/gui/components/ChatComponent wtf/choco/meh/client/chat/filter/ChatFilterable
+inject-interface net/minecraft/client/gui/contextualbar/ContextualBar wtf/choco/meh/client/mixinapi/MEHContextualBar

@@ -3,7 +3,7 @@ package wtf.choco.meh.client.gui.contextualbar;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
+import net.minecraft.client.gui.contextualbar.ContextualBar;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import wtf.choco.meh.client.MEHClient;
 import wtf.choco.meh.client.game.skyblock.SkyBlockPrettyHudFeature;
 
-public final class SkillExperienceBarRenderer implements ContextualBarRenderer {
+public final class SkillExperienceBarRenderer implements ContextualBar {
 
     private static final Identifier SPRITE_SKILL_EXPERIENCE_BAR_BACKGROUND = MEHClient.key("hud/skill_experience_bar_background");
     private static final Identifier SPRITE_SKILL_EXPERIENCE_BAR_PROGRESS = MEHClient.key("hud/skill_experience_bar_progress");

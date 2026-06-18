@@ -66,7 +66,7 @@ public final class FishingState {
             return;
         }
 
-        Screen screen = Minecraft.getInstance().screen;
+        Screen screen = Minecraft.getInstance().gui.screen();
         if (screen != null && screen.getTitle().getString().equals(FISHING_MENU_TITLE)) {
             this.extractStats(itemStack);
         }

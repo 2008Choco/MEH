@@ -16,7 +16,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -31,7 +31,7 @@ import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
 import wtf.choco.meh.client.gui.SkyBlockPrettyHudHudElement;
 import wtf.choco.meh.client.gui.contextualbar.SkillExperienceBarRenderer;
-import wtf.choco.meh.client.mixinapi.GuiExtensions;
+import wtf.choco.meh.client.mixinapi.HudExtensions;
 import wtf.choco.meh.client.server.HypixelServerType;
 
 public final class SkyBlockPrettyHudFeature extends Feature {
@@ -115,12 +115,13 @@ public final class SkyBlockPrettyHudFeature extends Feature {
             return InteractionResult.SUCCESS;
         });
 
-        GuiEvents.CONTEXTUAL_BAR_OVERRIDE.register((vanillaInfo, vanillaRenderer) -> {
-            if (vanillaInfo != Gui.ContextualInfo.EMPTY && experienceBarStayTicks > 0) {
-                return skillExperienceBarRenderer;
+        GuiEvents.REGISTER_CONTEXTUAL_INFO.register(registrar -> registrar.register(Hud.ContextualInfo.MEH_SKYBLOCK_SKILL, () -> new SkillExperienceBarRenderer(this)));
+        GuiEvents.CONTEXTUAL_BAR_OVERRIDE.register(vanillaInfo -> {
+            if (vanillaInfo != Hud.ContextualInfo.EMPTY && experienceBarStayTicks > 0) {
+                return Hud.ContextualInfo.MEH_SKYBLOCK_SKILL;
             }
 
-            return vanillaRenderer;
+            return vanillaInfo;
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (experienceBarStayTicks > 0) {
@@ -202,7 +203,7 @@ public final class SkyBlockPrettyHudFeature extends Feature {
     }
 
     private void refreshState(boolean hideHealthInformation) {
-        GuiExtensions.get(Minecraft.getInstance().gui).setHideHealthInformation(hideHealthInformation);
+        HudExtensions.get(Minecraft.getInstance().gui.hud).setHideHealthInformation(hideHealthInformation);
     }
 
     private static int parseIntFromFormattedString(String input) {
