@@ -8,3 +8,4 @@ extend-enum net/minecraft/client/gui/Hud$ContextualInfo MEH_SKYBLOCK_SKILL
 inject-interface net/minecraft/client/gui/Hud wtf/choco/meh/client/mixinapi/MEHHud
 inject-interface net/minecraft/client/gui/components/ChatComponent wtf/choco/meh/client/chat/filter/ChatFilterable
 inject-interface net/minecraft/client/gui/contextualbar/ContextualBar wtf/choco/meh/client/mixinapi/MEHContextualBar
+inject-interface net/minecraft/client/gui/screens/ChatScreen wtf/choco/meh/client/mixinapi/CommandInputSupplier

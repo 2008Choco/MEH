@@ -30,7 +30,6 @@ import wtf.choco.meh.client.config.MEHConfig;
 import wtf.choco.meh.client.event.ChatChannelEvents;
 import wtf.choco.meh.client.event.HypixelServerEvents;
 import wtf.choco.meh.client.feature.Feature;
-import wtf.choco.meh.client.gui.ScreenUtil;
 import wtf.choco.meh.client.mixin.ChatScreenAccessor;
 
 public final class ChatChannelsFeature extends Feature {
@@ -237,7 +236,7 @@ public final class ChatChannelsFeature extends Feature {
         }
 
         Minecraft minecraft = Minecraft.getInstance();
-        if (!(minecraft.gui.screen() instanceof ChatScreen chatScreen) || ScreenUtil.isWritingCommand(chatScreen)) {
+        if (!(minecraft.gui.screen() instanceof ChatScreen chatScreen) || chatScreen.isCommandInBuffer()) {
             return false;
         }
 
@@ -246,7 +245,7 @@ public final class ChatChannelsFeature extends Feature {
 
     @SuppressWarnings("unused")
     private void onRenderChatScreen(ChatScreen screen, GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
-        if (!isEnabled() || ScreenUtil.isWritingCommand(screen)) {
+        if (!isEnabled() || screen.isCommandInBuffer()) {
             return;
         }
 
