@@ -17,7 +17,7 @@ import wtf.choco.meh.client.scoreboard.HypixelScoreboard;
 final class HypixelScoreboardServerLocationProvider implements ServerLocationProvider {
 
     // 1/2/3  M1B
-    private static final Pattern PATTERN_SCOREBOARD_SERVER_ID = Pattern.compile("\\d+\\/\\d+\\/\\d+\\s+(?<server>[\\w\\d]+)");
+    private static final Pattern PATTERN_SCOREBOARD_SERVER_ID = Pattern.compile("\\d+/\\d+/\\d+\\s+(?<server>\\w+)");
 
     private HypixelServerType serverType = null;
     private boolean lobby = false;

@@ -37,10 +37,6 @@ public enum SkyBlockSkillType {
         this.experienceBarColor = experienceBarColor;
     }
 
-    public String getSkillName() {
-        return skillName;
-    }
-
     public int getExperienceBarColor() {
         return experienceBarColor;
     }

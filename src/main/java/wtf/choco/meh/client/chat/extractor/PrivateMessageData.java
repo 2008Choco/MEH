@@ -37,7 +37,7 @@ public final record PrivateMessageData(Direction direction, UserData user, Strin
     /**
      * A direction in which a private message may travel.
      */
-    public static enum Direction implements RegExUtil.Matchable {
+    public enum Direction implements RegExUtil.Matchable {
 
         /**
          * The message is incoming, sent from another user.

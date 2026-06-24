@@ -2,7 +2,6 @@ package wtf.choco.meh.client.mnemonic;
 
 import it.unimi.dsi.fastutil.ints.IntList;
 
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import net.minecraft.resources.Identifier;
@@ -43,15 +42,6 @@ public final class Mnemonic implements Translatable {
         }
 
         return descriptionKey;
-    }
-
-    /**
-     * Returns a copy of the array of the mnemonic's key codes (in order).
-     *
-     * @return the key codes
-     */
-    public int[] getKeycodes() {
-        return Arrays.copyOf(keycodes, keycodes.length);
     }
 
     /**

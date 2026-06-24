@@ -351,7 +351,7 @@ public final class HypixelServerEvents {
              */
             public void onDisband(Reason reason, @Nullable UserData disbander);
 
-            public enum Reason {
+            enum Reason {
 
                 /**
                  * The party was empty and was disbanded automatically.

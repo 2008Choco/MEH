@@ -45,7 +45,7 @@ public record PartyRoleChangeData(UserData user, Action action, UserData target,
     /**
      * An action to occur in a party role change.
      */
-    public static enum Action implements RegExUtil.Matchable {
+    public enum Action implements RegExUtil.Matchable {
 
         PROMOTED("promoted"),
         DEMOTED("demoted");

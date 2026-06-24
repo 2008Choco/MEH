@@ -98,7 +98,7 @@ public final class ChatChannelEvents {
          */
         public boolean onSwitchChatChannel(ChatChannel from, ChatChannel to, Reason reason);
 
-        public static enum Reason {
+        enum Reason {
 
             /**
              * The channel was switched to manually by the client (usually by keybind) to the next

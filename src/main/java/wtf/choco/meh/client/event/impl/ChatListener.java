@@ -242,24 +242,16 @@ public final class ChatListener {
         HypixelServerEvents.PARTY_USER_YOINKED.invoker().onUserYoink(data.targetUser(), data.user());
     }
 
-    private static interface ChatHandler {
+    private interface ChatHandler {
 
         public boolean handle(Component text, String strippedText);
 
     }
 
-    private static final class ExtractorHandler<T> implements ChatHandler {
-
-        private final ChatExtractor<T> extractor;
-        private final BiConsumer<Component, T> action;
-
-        private ExtractorHandler(ChatExtractor<T> extractor, BiConsumer<Component, T> action) {
-            this.extractor = extractor;
-            this.action = action;
-        }
+    private record ExtractorHandler<T>(ChatExtractor<T> extractor, BiConsumer<Component, T> action) implements ChatHandler {
 
         private ExtractorHandler(ChatExtractor<T> extractor, Consumer<T> action) {
-            this(extractor, (message, strippedMessage) -> action.accept(strippedMessage));
+            this(extractor, (_, strippedMessage) -> action.accept(strippedMessage));
         }
 
         @Override
@@ -275,18 +267,10 @@ public final class ChatListener {
 
     }
 
-    private static final class MatcherHandler implements ChatHandler {
-
-        private final ChatMatcher matcher;
-        private final Consumer<Component> action;
-
-        private MatcherHandler(ChatMatcher matcher, Consumer<Component> action) {
-            this.matcher = matcher;
-            this.action = action;
-        }
+    private record MatcherHandler(ChatMatcher matcher, Consumer<Component> action) implements ChatHandler {
 
         private MatcherHandler(ChatMatcher matcher, Runnable action) {
-            this(matcher, message -> action.run());
+            this(matcher, _ -> action.run());
         }
 
         @Override

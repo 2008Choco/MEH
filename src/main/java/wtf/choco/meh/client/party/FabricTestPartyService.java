@@ -28,7 +28,7 @@ public final class FabricTestPartyService implements PartyService {
             this.addMember(members, UUID_HYPIXEL, PartyRole.MEMBER);
             this.addMember(members, UUID_MD_5, PartyRole.MEMBER);
 
-            return new Party(playerUUID, members);
+            return new Party(members);
         };
     }
 

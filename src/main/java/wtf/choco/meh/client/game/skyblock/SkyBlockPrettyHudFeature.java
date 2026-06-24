@@ -36,25 +36,25 @@ import wtf.choco.meh.client.server.HypixelServerType;
 public final class SkyBlockPrettyHudFeature extends Feature {
 
     private static final char SECTION_CHAR = ChatFormatting.PREFIX_CODE;
-    private static final char ICON_HEART = '\u2764';
-    private static final char ICON_DEFENSE = '\u2748';
-    private static final char ICON_MANA = '\u270e';
+    private static final char ICON_HEART = '❤';
+    private static final char ICON_DEFENSE = '❈';
+    private static final char ICON_MANA = '✎';
 
     private static final record PatternStripper(Pattern pattern, BiConsumer<MatchResult, SkyBlockPrettyHudFeature> onMatch) { }
 
     private static final PatternStripper[] PATTERNS = {
-            new PatternStripper(Pattern.compile("\\s*" + SECTION_CHAR + "c(?<current>\\d+)\\/(?<max>\\d+)\\s*" + ICON_HEART), (result, feature) -> {
+            new PatternStripper(Pattern.compile("\\s*" + SECTION_CHAR + "c(?<current>\\d+)/(?<max>\\d+)\\s*" + ICON_HEART), (result, feature) -> {
                 feature.currentHealth = NumberUtils.toInt(result.group("current"), 0);
                 feature.maxHealth = NumberUtils.toInt(result.group("max"), 0);
             }),
             new PatternStripper(Pattern.compile("\\s*" + SECTION_CHAR + "a(?<value>\\d+)" + SECTION_CHAR + "a" + ICON_DEFENSE + " Defense\\s*"), (result, feature) -> {
                 feature.currentDefense = NumberUtils.toInt(result.group("value"));
             }),
-            new PatternStripper(Pattern.compile("\\s*" + SECTION_CHAR + "b(?<current>\\d+)\\/(?<max>\\d+)" + ICON_MANA + " Mana\\s*"), (result, feature) -> {
+            new PatternStripper(Pattern.compile("\\s*" + SECTION_CHAR + "b(?<current>\\d+)/(?<max>\\d+)" + ICON_MANA + " Mana\\s*"), (result, feature) -> {
                 feature.currentMana = NumberUtils.toInt(result.group("current"), 0);
                 feature.maxMana = NumberUtils.toInt(result.group("max"), 0);
             }),
-            new PatternStripper(Pattern.compile("\\s*\\+[\\d+\\.]+\\s+(?<skill>[\\w\\s]+)\\s+\\((?<current>[\\d,k]+)/(?<required>[\\d,k]+)\\)\\s*"), (result, feature) -> {
+            new PatternStripper(Pattern.compile("\\s*\\+[\\d+.]+\\s+(?<skill>[\\w\\s]+)\\s+\\((?<current>[\\d,k]+)/(?<required>[\\d,k]+)\\)\\s*"), (result, feature) -> {
                 int current = parseIntFromFormattedString(result.group("current"));
                 int required = parseIntFromFormattedString(result.group("required"));
                 feature.currentSkillExperienceProgress = (float) current / required;
@@ -62,7 +62,7 @@ public final class SkyBlockPrettyHudFeature extends Feature {
                 feature.skillExperienceBarRenderer.setColor(skill != null ? skill.getExperienceBarColor() : 0xFFFFFF);
                 feature.experienceBarStayTicks = 60;
             }),
-            new PatternStripper(Pattern.compile("\\s*\\+[\\d+\\.]+\\s+(?<skill>[\\w\\s]+)\\s+\\((?<percent>[\\d\\.]+)%\\)\\s*"), (result, feature) -> {
+            new PatternStripper(Pattern.compile("\\s*\\+[\\d+.]+\\s+(?<skill>[\\w\\s]+)\\s+\\((?<percent>[\\d.]+)%\\)\\s*"), (result, feature) -> {
                 feature.currentSkillExperienceProgress = NumberUtils.toFloat(result.group("percent")) / 100.0F;
                 SkyBlockSkillType skill = SkyBlockSkillType.getByName(result.group("skill"));
                 feature.skillExperienceBarRenderer.setColor(skill != null ? skill.getExperienceBarColor() : 0xFFFFFF);
@@ -109,7 +109,7 @@ public final class SkyBlockPrettyHudFeature extends Feature {
         ClientReceiveMessageEvents.MODIFY_GAME.register(this::onModifyMessage);
         HypixelServerEvents.SERVER_LOCATION_CHANGED.register(this::onServerLocationChange);
         ClientPlayConnectionEvents.JOIN.register(this::onJoin);
-        AutoConfig.getConfigHolder(MEHConfig.class).registerSaveListener((holder, config) -> {
+        AutoConfig.getConfigHolder(MEHConfig.class).registerSaveListener((_, config) -> {
             this.refreshState(getMod().getHypixelServerState().isConnectedToHypixel() && isFeatureEnabled(config));
             return InteractionResult.SUCCESS;
         });
@@ -166,8 +166,7 @@ public final class SkyBlockPrettyHudFeature extends Feature {
                     try {
                         pattern.onMatch().accept(result, this);
                     } catch (Exception e) {
-                        MEHClient.LOGGER.error("Failed to handle matched result of pattern \"%s\" for input string \"%s\"", pattern.pattern().pattern(), result.group());
-                        e.printStackTrace();
+                        MEHClient.LOGGER.atError().setCause(e).log("Failed to handle matched result of pattern \"{}\" for input string \"{}\"", pattern.pattern().pattern(), result.group());
                         return result.group();
                     }
                 }

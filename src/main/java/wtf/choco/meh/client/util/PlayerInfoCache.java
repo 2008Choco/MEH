@@ -22,7 +22,7 @@ public final class PlayerInfoCache {
             .build(new CacheLoader<>() {
 
                 @Override
-                public PlayerInfo load(UUID playerUUID) throws Exception {
+                public PlayerInfo load(UUID playerUUID) {
                     Minecraft minecraft = Minecraft.getInstance();
 
                     // Try to get it from the server first so we don't have to make a session service query

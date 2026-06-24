@@ -59,8 +59,7 @@ public final class CustomStatusStorage implements Iterable<Component> {
             this.statuses.forEach(status -> data.append(Components.toLegacyText(status, '&')).append('\n'));
             writer.write(data.toString());
         } catch (IOException e) {
-            MEHClient.LOGGER.warn("Couldn't write custom statuses to file \"{}\"", path.toString());
-            e.printStackTrace();
+            MEHClient.LOGGER.atWarn().setCause(e).log("Couldn't write custom statuses to file \"{}\"", path);
         }
     }
 
@@ -72,8 +71,7 @@ public final class CustomStatusStorage implements Iterable<Component> {
         try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             reader.lines().forEach(line -> statuses.add(Components.fromLegacyText(line, '&')));
         } catch (IOException e) {
-            MEHClient.LOGGER.warn("Couldn't read custom statuses from file \"{}\"", path.toString());
-            e.printStackTrace();
+            MEHClient.LOGGER.atWarn().setCause(e).log("Couldn't read custom statuses from file \"{}\"", path);
         }
     }
 

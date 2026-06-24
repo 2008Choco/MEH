@@ -71,10 +71,6 @@ public final class HypixelScoreboard {
         this.setAutoRefreshInterval(autoRefreshInterval);
     }
 
-    public HypixelScoreboard() {
-        this(0);
-    }
-
     /**
      * Get the text on the given line of the scoreboard (from the top {@literal ->} down).
      * <p>
@@ -172,16 +168,6 @@ public final class HypixelScoreboard {
      */
     public void setAutoRefreshInterval(int refreshIntervalTicks) {
         this.autoRefreshInterval = Math.max(refreshIntervalTicks, 0);
-    }
-
-    /**
-     * Get the interval (in ticks) between which the scoreboard's data will be automatically scraped
-     * and cached.
-     *
-     * @return the auto refresh interval, or 0 if the scoreboard must be manually refreshed
-     */
-    public int getAutoRefreshInterval() {
-        return autoRefreshInterval;
     }
 
     /**

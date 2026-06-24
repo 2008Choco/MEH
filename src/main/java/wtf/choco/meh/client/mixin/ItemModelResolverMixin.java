@@ -25,9 +25,9 @@ public class ItemModelResolverMixin {
             target = "Lnet/minecraft/world/item/ItemStack;get(Lnet/minecraft/core/component/DataComponentType;)Ljava/lang/Object;"
         )
     )
-    public Object redirectGet(ItemStack itemStack, DataComponentType<?> dataComponentType, @Local Level level, @Local ItemOwner itemOwner) {
+    public Object redirectGet(ItemStack itemStack, DataComponentType<?> dataComponentType, @Local(argsOnly = true, name = "level") Level level, @Local(argsOnly = true, name = "owner") ItemOwner owner) {
         for (DynamicModelOverride override : DynamicModelOverrides.get(itemStack.getItem())) {
-            if (!override.shouldOverride(itemStack, level, itemOwner)) {
+            if (!override.shouldOverride(itemStack, level, owner)) {
                 continue;
             }
 

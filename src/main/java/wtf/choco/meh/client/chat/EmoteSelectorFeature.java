@@ -31,7 +31,7 @@ public final class EmoteSelectorFeature extends Feature {
 
     @Override
     protected void registerListeners() {
-        ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+        ScreenEvents.BEFORE_INIT.register((_, screen, _, _) -> {
             if (!(screen instanceof ChatScreen) || !isEnabled()) {
                 return;
             }
@@ -40,7 +40,7 @@ public final class EmoteSelectorFeature extends Feature {
             ScreenEvents.remove(screen).register(this::onChatScreenClose);
         });
 
-        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+        ScreenEvents.AFTER_INIT.register((_, screen, _, _) -> {
             if (!(screen instanceof ChatScreen chatScreen) || !isEnabled()) {
                 return;
             }

@@ -39,7 +39,7 @@ public final class HypixelPartyService implements PartyService {
 
         if (packet.isInParty()) {
             Map<UUID, ClientboundPartyInfoPacket.PartyMember> members = packet.getMemberMap();
-            Party party = new Party(packet.getLeader().get(), convert(members));
+            Party party = new Party(convert(members));
 
             CompletableFuture.runAsync(party::resolveMembers).whenComplete((ignore, e) -> {
                 if (e != null) {
@@ -58,7 +58,6 @@ public final class HypixelPartyService implements PartyService {
             case LEADER -> PartyRole.LEADER;
             case MOD -> PartyRole.MODERATOR;
             case MEMBER -> PartyRole.MEMBER;
-            default -> throw new UnsupportedOperationException("ClientboundPartyInfoPacket.PartyRole." + role.name());
         };
     }
 

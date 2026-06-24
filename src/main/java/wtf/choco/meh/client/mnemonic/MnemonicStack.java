@@ -59,7 +59,7 @@ final class MnemonicStack {
             return null;
         }
 
-        Mnemonic mnemonic = possibleMnemonics.get(0);
+        Mnemonic mnemonic = possibleMnemonics.getFirst();
         return mnemonic.matchesExactly(pushedKeys) ? mnemonic : null;
     }
 

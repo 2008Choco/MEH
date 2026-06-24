@@ -58,6 +58,7 @@ public abstract class ChatComponentMixin implements ChatFilterable {
      * how many messages can be rendered, but because we're allowing for filters, we
      * should really increase the maximum amount of messages that the client remembers.
      */
+    @Unique
     private static int getMaxInMemoryChatHistory() {
         return MEHClient.getConfig().getMaxRememberedChatHistory();
     }

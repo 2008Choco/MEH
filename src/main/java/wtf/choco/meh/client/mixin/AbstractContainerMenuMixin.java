@@ -17,8 +17,8 @@ public abstract class AbstractContainerMenuMixin {
 
     @SuppressWarnings("unused") // stateId
     @Inject(method = "setItem(IILnet/minecraft/world/item/ItemStack;)V", at = @At("HEAD"))
-    private void onSetItem(int slotIndex, int stateId, ItemStack itemStack, CallbackInfo callback) {
-        MenuEvents.SLOT_ITEM_STACK_CHANGE.invoker().onSlotItemStackChange((AbstractContainerMenu) (Object) this, getSlot(slotIndex), itemStack);
+    private void onSetItem(int slot, int stateId, ItemStack itemStack, CallbackInfo callback) {
+        MenuEvents.SLOT_ITEM_STACK_CHANGE.invoker().onSlotItemStackChange((AbstractContainerMenu) (Object) this, getSlot(slot), itemStack);
     }
 
     @Shadow

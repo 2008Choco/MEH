@@ -32,7 +32,7 @@ final class Patterns {
     static final Pattern PATTERN_PARTY_TRANSFER = Pattern.compile("^The party was transferred to " + userMatchString("target") + " by " + userMatchString() + "$");
 
     // String
-    static final Pattern PATTERN_FISHING_CAUGHT_GENERIC = Pattern.compile("^You caught(?: an?)? (?<string>[^\\d].+)!"); // Fish (yellow), Plant (dark green), Creature (aqua)
+    static final Pattern PATTERN_FISHING_CAUGHT_GENERIC = Pattern.compile("^You caught(?: an?)? (?<string>\\D.+)!"); // Fish (yellow), Plant (dark green), Creature (aqua)
     static final Pattern PATTERN_FISHING_CAUGHT_JUNK = Pattern.compile("^Oh no, you caught(?: an?)? (?<string>.+)!");
     static final Pattern PATTERN_FISHING_CAUGHT_TREASURE = Pattern.compile("^You caught(?: an?)? (?<string>.+), that's a treasure!");
 

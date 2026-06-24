@@ -40,10 +40,6 @@ public final class MythicalFish implements FishingCatch {
         return type.getDescriptionKey();
     }
 
-    public int getWeight() {
-        return weight;
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(type, weight);

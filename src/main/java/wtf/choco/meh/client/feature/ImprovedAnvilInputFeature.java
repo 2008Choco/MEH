@@ -25,12 +25,12 @@ public final class ImprovedAnvilInputFeature extends Feature {
 
     @Override
     protected void registerListeners() {
-        ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+        ScreenEvents.BEFORE_INIT.register((client, screen, _, _) -> {
             if (!isEnabled() || !(screen instanceof AnvilScreen anvilScreen)) {
                 return;
             }
 
-            ScreenKeyboardEvents.afterKeyPress(screen).register((screen_, context) -> {
+            ScreenKeyboardEvents.afterKeyPress(screen).register((_, context) -> {
                 if (context.key() != InputConstants.KEY_RETURN && context.key() != InputConstants.KEY_NUMPADENTER) {
                     return;
                 }

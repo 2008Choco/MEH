@@ -58,13 +58,9 @@ public final class MEHClient implements ClientModInitializer {
 
         MEHKeyMappings.init();
 
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> ClientTestCommand.register(dispatcher));
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, _) -> ClientTestCommand.register(dispatcher));
 
         this.statusStorage.readFromFile();
-    }
-
-    public MnemonicHandler getMnemonicHandler() {
-        return mnemonicHandler;
     }
 
     public HypixelServerState getHypixelServerState() {

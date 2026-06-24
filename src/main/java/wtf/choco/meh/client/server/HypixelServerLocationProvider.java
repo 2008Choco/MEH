@@ -17,8 +17,6 @@ final class HypixelServerLocationProvider implements ServerLocationProvider {
     private HypixelEnvironment environment = HypixelEnvironment.PRODUCTION;
     private HypixelServerType serverType;
     private boolean lobby = false;
-    private HypixelServerType lastServerType;
-    private boolean lastLobby = false;
 
     HypixelServerLocationProvider() {
         HypixelModAPI.getInstance().subscribeToEventPacket(ClientboundLocationPacket.class);
@@ -46,12 +44,13 @@ final class HypixelServerLocationProvider implements ServerLocationProvider {
     }
 
     private void onLocationPacket(ClientboundLocationPacket packet) {
-        this.lastServerType = this.serverType;
+        HypixelServerType previousServerType = this.serverType;
         this.serverType = packet.getServerType().map(this::convert).orElse(null);
-        this.lastLobby = lobby;
+
+        boolean previousLobby = lobby;
         this.lobby = packet.getLobbyName().isPresent();
 
-        HypixelServerEvents.SERVER_LOCATION_CHANGED.invoker().onLocationChange(serverType, lobby, lastServerType, lastLobby);
+        HypixelServerEvents.SERVER_LOCATION_CHANGED.invoker().onLocationChange(serverType, lobby, previousServerType, previousLobby);
     }
 
     private HypixelEnvironment convert(Environment environment) {

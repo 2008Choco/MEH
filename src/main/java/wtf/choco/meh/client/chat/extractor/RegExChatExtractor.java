@@ -14,11 +14,6 @@ class RegExChatExtractor<R> extends RegExChatMatcher implements ChatExtractor<R>
         this.resultExtractor = resultExtractor;
     }
 
-    RegExChatExtractor(String regexPattern, Function<Matcher, R> resultExtractor) {
-        super(regexPattern);
-        this.resultExtractor = resultExtractor;
-    }
-
     @Override
     public Optional<R> extract(String input) {
         Matcher matcher = pattern.matcher(input);

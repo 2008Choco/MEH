@@ -14,7 +14,7 @@ public final class PartyMember implements Comparable<PartyMember> {
     private PlayerInfo playerInfo;
 
     private final UUID playerUUID;
-    private PartyRole role;
+    private final PartyRole role;
 
     public PartyMember(UUID playerUUID, PartyRole role) {
         this.playerUUID = playerUUID;
@@ -37,14 +37,6 @@ public final class PartyMember implements Comparable<PartyMember> {
         }
 
         return playerInfo;
-    }
-
-    public UUID getPlayerUUID() {
-        return playerUUID;
-    }
-
-    public void setRole(PartyRole role) {
-        this.role = role;
     }
 
     public PartyRole getRole() {

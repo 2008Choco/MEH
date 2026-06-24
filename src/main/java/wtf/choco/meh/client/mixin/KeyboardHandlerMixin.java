@@ -15,7 +15,7 @@ public class KeyboardHandlerMixin {
 
     @SuppressWarnings("unused") // windowId
     @Inject(method = "keyPress(JILnet/minecraft/client/input/KeyEvent;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/InputConstants;isKeyDown(Lcom/mojang/blaze3d/platform/Window;I)Z", ordinal = 0), cancellable = true)
-    private void onKeyPress(long windowId, int action, KeyEvent event, CallbackInfo callback) {
+    private void onKeyPress(long handle, int action, KeyEvent event, CallbackInfo callback) {
         if (!LWJGLEvents.KEY_STATE_CHANGE.invoker().onKeyStateChange(action, event)) {
             callback.cancel();
         }
